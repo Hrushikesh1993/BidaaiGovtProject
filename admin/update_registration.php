@@ -5,15 +5,24 @@ include("checklogin.php");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 check_login();
 $show="";
-
+$status="";
+$message="";
 if(isset($_POST['searchButton']))
 {
   $search_text=$_POST['search'];
   $_SESSION['search']=$search_text;
-  $result=mysqli_query($con,"SELECT * from application_table where app_id='$search_text'");
-  $result_array=mysqli_fetch_array($result);
+  $result_array="";
+  $result=mysqli_query($con,"SELECT * from application_table where app_id='$search_text' and (status=1 or status=2)");
+  $rowcount=mysqli_num_rows($result);
+  if($rowcount==1)
+  {
+	    $result_array=mysqli_fetch_array($result);
   $show=1;
-  $status="";
+  }
+  else
+  {
+	  $message="Oooops!!! No Records Found...!!!";
+  }
   
 }
 if(isset($_POST['updateApp']))
@@ -22,20 +31,38 @@ if(isset($_POST['updateApp']))
   $taluk=$_POST['taluk'];
   $constituency=$_POST['constituency'];
   $village=$_POST['village'];
+$village_kannada=$_POST['village_kannada'];
   $applicant_name=$_POST['applicant_name'];
   $parent=$_POST['applicant_parent'];
   $address=$_POST['applicant_address'];
+$applicant_name_kannada=$_POST['applicant_name_kannada'];
+	$parent_kannada=$_POST['applicant_parent_kannada'];
+	$address_kannada=$_POST['applicant_address_kannada'];
   $religion=$_POST['religion'];
   $mobile=$_POST['mobile'];
   $annual_income=$_POST['annual_income'];
   $dob=$_POST['date_of_birth'];
   $received_date=$_POST['received_date'];
   $marriage_place=$_POST['place_of_marriage'];
+$marriage_place_kannada=$_POST['place_of_marriage_kannada'];
   $marriage_date=$_POST['date_of_marriage'];
    $age_proof=implode(",",$_POST['age_proof']);
   $domicile_state=$_POST['domicile_state'];
   $physically_handicap=$_POST['physical_handicap'];
-  $applicant_photo=$_FILES['applicant_photo']['name'];
+$path="";
+	$applicant_photo=$applicant_photo=$_FILES['applicant_photo']['name'];
+	if(empty($applicant_photo))
+	{ 
+		 $path=$_POST['hidden_applicant_photo'];
+	}
+	else
+	{
+		$applicant_photo=$_FILES['applicant_photo']['name'];
+		  	 $path = "images/";
+    $path = $path . basename($applicant_photo);
+    move_uploaded_file($_FILES['applicant_photo']['tmp_name'], $path);
+	}
+   $applicant_photo=$_FILES['applicant_photo']['name'];
   $aadhar_no=$_POST['aadhar'];
   $father_aadhar=$_POST['father_aadhar'];
   $mother_aadhar=$_POST['mother_aadhar'];
@@ -49,6 +76,8 @@ if(isset($_POST['updateApp']))
   $ifsc_code=$_POST['ifsc_code'];
   $name_of_the_would_be_groom=$_POST['groom_name'];
   $address_of_the_would_be_groom=$_POST['groom_address'];
+		$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
+	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
   $groom_mobile=$_POST['groom_mobile'];
   $groom_dob=$_POST['groom_date_of_birth'];
   $groom_age_proof=implode(",",$_POST['groom_age_proof']);
@@ -57,36 +86,24 @@ if(isset($_POST['updateApp']))
   $marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
   $marriage_document=$_POST['document_status'];
   $affidavit_attached=$_POST['affidavit_status'];
-  $verify_status=$_POST['verify_status'];
-  	 $path = "images/";
-    $path = $path . basename($applicant_photo);
-    move_uploaded_file($_FILES['applicant_photo']['tmp_name'], $path);
-  if($verify_status=='Yes')
-  {
-	  $status=3;
-  }
-  else
+  $verify_status="";
+  if($marriage_document=='Yes' && $affidavit_attached=='Yes')
   {
 	  $status=2;
   }
+  else
+  {
+	  $status=1; 
+  }
 	  
 
- $sql_query=
-  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village', applicant_name='$applicant_name', parent='$parent', address='$address', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id=".$_SESSION['search']."";
+  $sql_query=
+  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id=".$_SESSION['search']."";
+
   $sql_exec=mysqli_query($con,$sql_query);
   if($sql_exec)
   {
-    if($status==3)
-    {
-      $message="Hurrey! The Application is completed!";
-    }
-    else
-    {
-       $message="The Application is still pending!"; 
-    } 
-	//$message="Details have been Updated Successfully!";
-   
-    
+    $message="Details have been Updated Successfully!";
   }
   else
   {
@@ -110,6 +127,15 @@ if(isset($_POST['updateApp']))
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+ <link href="assets/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+	
+
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+google.load("elements", "1", {packages: "transliteration"});
+</script> 
 	    <script>
      function previewFile(){
 	   var fileTypes = ['jpg', 'jpeg', 'png'];
@@ -140,6 +166,161 @@ if(isset($_POST['updateApp']))
 
 
   
+    </script>
+    <script>
+
+
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+
+      function onLoad() {
+
+        var options = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.KANNADA],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        // Create an instance on TransliterationControl with the required
+        // options.
+	
+        var control =
+            new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textbox with id
+        // 'transliterateTextarea'.
+		var ids = [ "inputVillageKannada", "inputNameKannada","inputParentKannada","inputAddressKannada","inputPlaceOfMarriageKannada","inputGroomNameKannada","inputGroomAddressKannada" ];
+        control.makeTransliteratable(ids);
+		
+		
+		var keyVal = 32; // Space key
+    $("#inputVillage").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputVillage").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputVillageKannada").val($("#inputVillageKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputVillageKannada").focus();
+            $("#inputVillageKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	    $("#inputName").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputName").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputNameKannada").val($("#inputNameKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputNameKannada").focus();
+            $("#inputNameKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	 $("#inputParent").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputParent").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputParentKannada").val($("#inputParentKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputParentKannada").focus();
+            $("#inputParentKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+		 $("#inputAddress").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputAddress").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputAddressKannada").val($("#inputAddressKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputAddressKannada").focus();
+            $("#inputAddressKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+			 $("#inputPlaceOfMarriage").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputPlaceOfMarriage").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputPlaceOfMarriageKannada").val($("#inputPlaceOfMarriageKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputPlaceOfMarriageKannada").focus();
+            $("#inputPlaceOfMarriageKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	$("#inputGroomName").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputGroomName").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputGroomNameKannada").val($("#inputGroomNameKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputGroomNameKannada").focus();
+            $("#inputGroomNameKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+  $("#inputGroomAddress").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputGroomAddress").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputGroomAddressKannada").val($("#inputGroomAddressKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputGroomAddressKannada").focus();
+            $("#inputGroomAddressKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+
+    $("#inputVillageKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputVillage").val($("#inputVillage").val() + " "); document.getElementById("inputVillage").focus()},0);
+    });
+    $("#inputNameKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputName").val($("#inputName").val() + " "); document.getElementById("inputName").focus()},0);
+    });
+	$("#inputParentKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputParent").val($("#inputParent").val() + " "); document.getElementById("inputParent").focus()},0);
+    });
+		$("#inputAddressKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputAddress").val($("#inputAddress").val() + " "); document.getElementById("inputAddress").focus()},0);
+    });
+			$("#inputPlaceOfMarriageKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputPlaceOfMarriage").val($("#inputPlaceOfMarriage").val() + " "); document.getElementById("inputPlaceOfMarriage").focus()},0);
+    });
+  		$("#inputGroomNameKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputGroomName").val($("#inputGroomName").val() + " "); document.getElementById("inputGroomName").focus()},0);
+    });
+		$("#inputGroomAddressKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputGroomAddress").val($("#inputGroomAddress").val() + " "); document.getElementById("inputGroomAddress").focus()},0);
+    });
+
+      }
+      google.setOnLoadCallback(onLoad);
+/* 
+function calculateAge(birthday) {
+	// birthday is a date
+	var parts = birthday.match(/(\d+)/g);
+  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+	var bday= new Date(parts[0], parts[1]-1, parts[2]);
+    var ageDifMs = Date.now() - bday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    document.getElementById('displayAge').innerHTML=Math.abs(ageDate.getUTCFullYear() - 1970);
+} */
+
+
+ 
     </script>
   </head>
 
@@ -211,11 +392,11 @@ if(isset($_POST['updateApp']))
           	<h3><i class="fa fa-angle-right"></i> Update Registration</h3>
             <form action="" method="POST"><div class="col-md-12"><div class="form-group col-md-6"> <input type="text" class="form-control" placeholder="Search.." name="search"></div>
                   <div class="form-group col-md-6"><button type="submit" name="searchButton" class="btn btn-primary"><i class="fa fa-search"></i></button></div></div></form>
-            
-			<form action="" method="POST" enctype="multipart/form-data">
-			<div class="col-md-12">
+            <div class="col-md-12">
           <p class="high-light text-center"><?php echo $message;?></p>
         </div>
+			<?php if($show==1){ ?><form action="" method="POST" enctype="multipart/form-data">
+			
 				<div class="row">
 				
 				
@@ -237,63 +418,100 @@ if(isset($_POST['updateApp']))
     </div>
 	   
 	    <div class="form-group col-md-3">
+		<?php
+			$talukQuery=mysqli_query($con,"SELECT * FROM taluk_details WHERE district_fn_id=(SELECT district_details.district_id from district_details WHERE district_details.district_name='".$_SESSION['login']."' )");
+		?>
       <label for="inputTaluk">2. Taluk </label>&nbsp;<span class="high-light">*</span>
             <select class="form-control" name="taluk" id="inputTaluk" placeholder="" required>
 	  <option  value="<?php echo $result_array['taluk']; ?>" selected><?php echo $result_array['taluk']; ?></option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+	 <?php
+				while($taluk_row=mysqli_fetch_array($talukQuery))
+				{	
+				     $district_ref_id=$taluk_row['district_fn_id'];
+			?>
+					<option value="<?php echo $taluk_row['taluk_name'];?>"><?php echo $taluk_row['taluk_name'];?></option>
+
+			<?php
+					
+				}
+					
+	           
+				
+				?>
 	  </select>
     </div>
     <div class="form-group col-md-3">
+<?php
+				
+			$constituencyQuery=mysqli_query($con,"SELECT * FROM constituency_details WHERE constituency_district_id='".$district_ref_id."'");
+		?>
       <label for="inputConstituency">3. Constituency </label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="constituency" id="inputConstituency" placeholder="" required>
 	  <option  value="<?php echo $result_array['constituency']; ?>" selected><?php echo $result_array['constituency']; ?></option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+	
+	<?php
+				while($constituency_row=mysqli_fetch_array($constituencyQuery))
+				{	
+				     
+			?>
+					<option value="<?php echo $constituency_row['constituency_name'];?>"><?php echo $constituency_row['constituency_name'];?></option>
+
+			<?php
+					
+				}
+					
+	           
+				
+				?>
 	  </select>
     </div>
   </div>
   <div class="form-group col-md-3">
     <label for="inputVillage">4. Village </label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputVillage" name="village" placeholder="" required value="<?php echo $result_array['village']; ?>">
+    <input type="text" class="form-control" id="inputVillage" name="village" placeholder="" required value="<?php echo $result_array['village']; ?>" pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputVillageKannada" name="village_kannada" value="<?php echo $result_array['village_kannada']; ?>">
   </div>
   <div class="form-group col-md-4">
     <label for="inputName">5. Name of the Applicant </label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputName" name="applicant_name" placeholder="" required value="<?php echo $result_array['applicant_name'] ;?>">
+    <input type="text" class="form-control" id="inputName" name="applicant_name" placeholder="" required value="<?php echo $result_array['applicant_name'] ;?>" pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputNameKannada" name="applicant_name_kannada" value="<?php echo $result_array['applicant_name_kannada'] ;?>">
   </div>
   <div class="form-group col-md-4">
     <label for="inputParent">6. Name of the Father/Mother/Guardian</label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputParent" name="applicant_parent" placeholder="" required value="<?php echo $result_array['parent'] ;?>">
+    <input type="text" class="form-control" id="inputParent" name="applicant_parent" placeholder="" required value="<?php echo $result_array['parent'] ;?>" pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputParentKannada" name="applicant_parent_kannada" value="<?php echo $result_array['parent_kannada'] ;?>">
   </div>
   <div class="form-group col-md-4">
     <label for="inputAddress">7. Address </label>&nbsp;<span class="high-light">*</span>
     <input type="text" class="form-control" id="inputAddress" name="applicant_address" placeholder="" required value="<?php echo $result_array['address']; ?>">
+	<input type="text" class="form-control" id="inputAddressKannada" name="applicant_address_kannada" value="<?php echo $result_array['address_kannada']; ?>">
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputReligon">8.Religion</label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="religion" id="inputReligon" placeholder="" required>
 	  <option  value="<?php echo $result_array['religion']; ?>" selected><?php echo $result_array['religion']; ?></option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+	  <option  value="Muslim">Muslim</option>
+	  <option value="Christian">Christian</option>
+	  <option value="Sikh">Sikh</option>
+<option value="Buddh">Buddh</option>
+	<option value="Jain">Jain</option>
+	<option value="Parsi">Parsi</option> 
 	  </select>
     </div>
     <div class="form-group col-md-4">
       <label for="inputMobile">9. Mobile</label>&nbsp;<span class="high-light">*</span>
-       <input type="tel" class="form-control" id="inputMobile" name="mobile" pattern="[6789][0-9]{9}" required value="<?php echo $result_array['mobile'] ;?>">
+       <input type="tel" class="form-control" id="inputMobile" name="mobile" pattern="[6789][0-9]{9}" required value="<?php echo $result_array['mobile'] ;?>" maxlength="10">
     </div>
     <div class="form-group col-md-4">
       <label for="inputAnnualIncome">10. Annual Income</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputAnnualIncome" name="annual_income" required maxlength="6" value="<?php echo $result_array['annual_income'];  ?>">
+      <input type="text" class="form-control" id="inputAnnualIncome" name="annual_income" required maxlength="6" value="<?php echo $result_array['annual_income'];  ?>"maxlength="6">
     </div>
   </div>
     <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required value="<?php echo $result_array['dob']; ?>">
+       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required value="<?php echo $result_array['dob']; ?>" max="2000-07-31">
     </div>
     <div class="form-group col-md-3">
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
@@ -306,6 +524,7 @@ if(isset($_POST['updateApp']))
 	 <div class="form-group col-md-3">
       <label for="inputPlaceOfMarriage">14. Place of Marriage </label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputPlaceOfMarriage" name="place_of_marriage" required value="<?php echo $result_array['marriage_place'] ;?>">
+	<input type="text" class="form-control" id="inputPlaceOfMarriageKannada" name="place_of_marriage_kannada"value="<?php echo $result_array['marriage_place_kannada'] ;?>">
     </div>
   </div>
   <div class="form-row">
@@ -347,10 +566,12 @@ if(isset($_POST['updateApp']))
     <div class="form-group col-md-4">
       <label for="inputPhoto">18. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
       <input class="form-control" type="file" id="inputPhoto" name="applicant_photo"onchange="previewFile()">
+		
 	  <p id="errorText" class="high-light"></p>
     </div>
 	<div class="form-group col-md-4">
       <img src="<?php echo $result_array['applicant_photo']; ?>" id="inputPhotoUpload" height="100" width="100" alt="Applicant Photo">
+	  <input type="hidden" id="inputHiddenPhoto" name="hidden_applicant_photo" value="<?php echo $result_array['applicant_photo']; ?>" >
     </div>
 	
 	
@@ -358,31 +579,31 @@ if(isset($_POST['updateApp']))
 	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputAadhar">19.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-       <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['aadhar_no']; ?>">
+       <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['aadhar_no']; ?>"maxlength="12">
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputFatherAadhar">20. Father Aadhar No.</label>
-       <input type="tel" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['father_aadhar']; ?>">
+       <input type="text" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['father_aadhar']; ?>"maxlength="12"  >
     </div>
     <div class="form-group col-md-4">
       <label for="inputMotherAadhar">21. Mother Aadhar No.</label>
-      <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['mother_aadhar']; ?>">
+      <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['mother_aadhar']; ?>" maxlength="12" >
     </div>
   </div>
   	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputCasteNo">22.Caste Certificate No. </label>
-       <input type="text" pattern="[0-9]{12}" class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
+       <input type="text" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" maxlength="17" class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputIncomeNo">23. Income Certificate No.</label>
-       <input type="tel" class="form-control" id="inputIncomeNo" name="father_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['income_certificate_no']; ?>">
+       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" maxlength="17" value="<?php echo $result_array['income_certificate_no']; ?>">
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" pattern="[a-zA-Z][a-zA-Z][0-9]{5}" required placeholder="Ex:AZXXXXX" value="<?php echo $result_array['bpl_card_no']; ?>">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required maxlength="15" pattern="[a-zA-Z][a-zA-Z][0-9]{5,13}" value="<?php echo $result_array['bpl_card_no']; ?>">
     </div>
   </div>
 	
@@ -420,25 +641,48 @@ if(isset($_POST['updateApp']))
       <input type="text" class="form-control" id="inputAccountNo" name="account_no" placeholder="Ex: 1234XXXXXXX..." pattern="[0-9]{9,18}" required title="Please Verify the Account No. Properly" value="<?php echo $result_array['account_no']; ?>">
     </div>
     <div class="form-group col-md-3">
+			<?php 
+		$bankQuery=mysqli_query($con,"Select distinct(bank_name) from bank_details");
+?>
       <label for="inputBankName">2.Bank Name</label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="bank_name" id="inputBankName" required >
-	  <option  value="<?php echo $result_array['bank']; ?>" selected><?php echo $result_array['bank']; ?></option>
-	  <option  value="">Dummy 1</option>
-	  <option value="">Dummy 2</option>
-	  <option value="">Dummy 3</option>
+	  <option  value="<?php echo $result_array['bank']; ?>" selected><?php echo $result_array['bank']; ?></option> 
+	<?php
+	
+	while($bank_row=mysqli_fetch_array($bankQuery))
+	{
+	?>
+	  <option  value="<?php echo $bank_row['bank_name'] ?>"><?php echo $bank_row['bank_name'] ?></option>
+	<?php
+	}
+   ?>
 	  </select>
     </div>
 		    <div class="form-group col-md-3">
+	<?php 
+		$disQuery=mysqli_query($con,"Select distinct(bank_district) from bank_details");
+?>
+  
       <label for="inputDistrict">3.District</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputDistrict" name="district" placeholder="Ex: Tumkur" required value="<?php echo $result_array['district']; ?>">
+       <select class="form-control" id="inputDistrict" name="district"  required>
+		<option value="<?php echo $result_array['district']; ?>" selected><?php echo $result_array['district']; ?></option>
+<?php
+	
+	while($bank_dis_row=mysqli_fetch_array($disQuery))
+	{
+	?>
+	  <option  value="<?php echo $bank_dis_row['bank_district'] ?>"><?php echo $bank_dis_row['bank_district'] ?></option>
+	<?php
+	}
+   ?></select>
     </div>
 	    <div class="form-group col-md-3">
       <label for="inputBranchName">4.Branch Name</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputBranchName" name="branch_name" placeholder="Ex: Market Branch" required value="<?php echo $result_array['branch']; ?>">
+       <input type="text" class="form-control" id="inputBranchName" name="branch_name" placeholder="Ex: Market Branch" required value="<?php echo $result_array['branch']; ?>"onfocus="fetchBranch()">
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputIfsc">5.IFSC Code</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" required value="<?php echo $result_array['ifsc_code']; ?>">
+       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" onfocus="fetchIfsc()" required value="<?php echo $result_array['ifsc_code']; ?>" readonly>
     </div>
   </div>
 
@@ -464,21 +708,23 @@ if(isset($_POST['updateApp']))
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputGroomName">1.Name of the Groom</label>
-      <input type="text" class="form-control" id="groom_name" name="groom_name" placeholder="" value="<?php echo $result_array['name_of_the_would_be_groom']; ?>">
+      <input type="text" class="form-control" id="inputGroomName" name="groom_name" placeholder="" value="<?php echo $result_array['name_of_the_would_be_groom']; ?>"pattern="[a-zA-Z\s]+">
+	  <input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" value="<?php echo $result_array['name_of_the_would_be_groom_kannada']; ?>">
     </div>
 
   </div>
   <div class="form-group col-md-4">
     <label for="inputGroomAddress">2.Address</label>
-    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="1234 Main St" value="<?php echo $result_array['address_of_the_would_be_groom']; ?>">
+    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" value="<?php echo $result_array['address_of_the_would_be_groom']; ?>">
+	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" value="<?php echo $result_array['address_of_the_would_be_groom_kannada']; ?>">
   </div>
     <div class="form-group col-md-4">
       <label for="inputGroomMobile">3. Mobile</label>&nbsp;<span class="high-light">*</span>
-       <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" required value="<?php echo $result_array['groom_mobile']; ?>">
+       <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" maxlength="10" required value="<?php echo $result_array['groom_mobile']; ?>">
     </div>
 	  <div class="form-group col-md-4">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required value="<?php echo $result_array['groom_dob']; ?>">
+       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required value="<?php echo $result_array['groom_dob']; ?>" max="1997-07-31"> 
     </div>
 	    <div class="form-group col-md-4">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
@@ -492,7 +738,7 @@ if(isset($_POST['updateApp']))
     </div>
 	 <div class="form-group col-md-4">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-      <input type="text" pattern="[0-9]{12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?>">
+      <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?>">
 	  
     </div>
 
@@ -585,37 +831,7 @@ if(isset($_POST['updateApp']))
                       </div>
                   </div>
 				  
-              </div><br/>
-			  <?php
-			  if($show==1)
-			  {
-				?>  
-				<div class="row">
-				
-				
-                  
-	                  
-                  <div class="col-md-12">
-                      <div class="content-panel col-md-12">
-					  <h5><i class="fa fa-file-word-o"></i>After Marriage Verification</h5>
-					 
-	<div class="form-row">
-  <div class="form-group col-md-12">
-    <label for="inputDocumentStatus">&nbsp;Are Marriage Photo and Necessary Document have submitted? </label><br/>
-    <input type="Radio"  id="inputVerifyStatusYes" name="verify_status" value="Yes"><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio" id="inputVerifyStatusNo" name="verify_status" value="No"><label for="inputDocumentStatusYes">&nbsp;No</label>
-  </div>
-  </div>
-
-                         </div>
-                  </div>
-				  
               </div>
-				
-			  
-			  <?php
-			  }
-				  ?>
 			  
 			  <br/>
 			  <div class="form-row">
@@ -626,7 +842,7 @@ if(isset($_POST['updateApp']))
 			  
 			  </div>
 			  </form>
-		</section>
+			<?php }?></section>
       </section
   ></section>
     <script src="assets/js/jquery.js"></script>
@@ -635,12 +851,49 @@ if(isset($_POST['updateApp']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-  <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+<script src="assets/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 
-  </script>
+<script>
+function fetchBranch()
+{
+	var bank_name=document.getElementById("inputBankName").value;
+	var district_name =document.getElementById("inputDistrict").value;
+		 $.ajax({
+       type: "POST",
+       url: "find_branch.php",
+       data: 'bank_name='+bank_name+'&district_name='+district_name,
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+
+$( "#inputBranchName" ).autocomplete({
+	source: array
+});
+         
+       }
+     });
+}
+function fetchIfsc()
+{
+	var bank_name=document.getElementById("inputBankName").value;
+	var district_name =document.getElementById("inputDistrict").value;
+	var branchName =document.getElementById("inputBranchName").value;
+		 $.ajax({
+       type: "POST",
+       url: "find_ifsc.php",
+       data: 'bank_name='+bank_name+'&district_name='+district_name+'&branchName='+branchName,
+       cache: false,
+       success: function(response)
+       {
+		   document.getElementById("inputIfsc").value=response;
+       }
+     });
+}
+
+
+</script>
 
   </body>
 </html>

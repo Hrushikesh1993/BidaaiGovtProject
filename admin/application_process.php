@@ -14,11 +14,11 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4";
+		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) ";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -202,6 +202,12 @@ if(isset($_POST['process']))
 								   <td><?php echo $row['received_date'];?></td>
 								    <td><?php echo $row['name_of_the_would_be_groom'];?></td>
 								  <td><?php echo status_description($row['status']);?></td>
+									<td>
+                                     
+                                     <a href="application_process_update.php?uid=<?php echo $row['app_id'];?>&appstatus=<?php echo $appStatus;?>"> 
+                                     <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a>
+                                     
+                                  </td>
                               </tr>
                               <?php $cnt=$cnt+1; }?>
                              

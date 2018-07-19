@@ -18,11 +18,11 @@ if(isset($_POST['searchReport']))
 	}
 	else if($appStatus=='Pending in Eligibility Check')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2)";
 	}
 	else if($appStatus=='Pending Eligible Application')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3";
 	}
 	else if($appStatus=='Rejected')
 	{
@@ -30,7 +30,7 @@ if(isset($_POST['searchReport']))
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);

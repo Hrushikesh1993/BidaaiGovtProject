@@ -6,7 +6,7 @@ function status_description($status)
 	{
 		return "Rejected";
 	}
-	else if($status==1)
+	else if($status==1 || $status==2)
 	{
 		return "Pending Eligibility Check";
 		
@@ -21,6 +21,12 @@ function status_description($status)
 		return "Pending to get Sanctioned";
 		
 	}
+			else if($status==4)
+	{
+		return " Sanctioned";
+		
+	}
+	
 	
 	
 }

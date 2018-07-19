@@ -1,25 +1,32 @@
 <?php
+
 session_start();
 include'dbconnection.php';
 include("checklogin.php");
 check_login();
 $message="";
+$district_ref_id="";
 if(isset($_POST['submit_app']))
 {
   $created_by=$_SESSION['login'];
 	$financial_year=$_POST['financial_year'];
 	$taluk=$_POST['taluk'];
 	$constituency=$_POST['constituency'];
-	$village=$_POST['village'];
+	 $village=$_POST['village'];
+	$village_kannada=$_POST['village_kannada'];
 	$applicant_name=$_POST['applicant_name'];
 	$parent=$_POST['applicant_parent'];
 	$address=$_POST['applicant_address'];
+		$applicant_name_kannada=$_POST['applicant_name_kannada'];
+	$parent_kannada=$_POST['applicant_parent_kannada'];
+	$address_kannada=$_POST['applicant_address_kannada'];
 	$religion=$_POST['religion'];
 	$mobile=$_POST['mobile'];
 	$annual_income=$_POST['annual_income'];
 	$dob=$_POST['date_of_birth'];
 	$received_date=$_POST['received_date'];
 	$marriage_place=$_POST['place_of_marriage'];
+	$marriage_place_kannada=$_POST['place_of_marriage_kannada'];
 	$marriage_date=$_POST['date_of_marriage'];
 	 $age_proof=implode(",",$_POST['age_proof']);
   $domicile_state=$_POST['domicile_state'];
@@ -38,6 +45,8 @@ if(isset($_POST['submit_app']))
 	$ifsc_code=$_POST['ifsc_code'];
 	$name_of_the_would_be_groom=$_POST['groom_name'];
 	$address_of_the_would_be_groom=$_POST['groom_address'];
+		$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
+	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
 	$groom_mobile=$_POST['groom_mobile'];
 	$groom_dob=$_POST['groom_date_of_birth'];
 	$groom_age_proof=implode(",",$_POST['groom_age_proof']);
@@ -68,8 +77,7 @@ else
 
 	
   $sql_query=
-	"INSERT INTO application_table(app_id,financial_year, taluk, constituency, village, applicant_name, parent, address, religion, mobile, annual_income, dob, received_date, marriage_place, marriage_date, age_proof, domicile_state, physically_handicap, applicant_photo, aadhar_no, father_aadhar, mother_aadhar, caste_certificate_no, income_certificate_no, bpl_card_no, account_no, bank, district, branch, ifsc_code, name_of_the_would_be_groom, address_of_the_would_be_groom, groom_mobile, groom_dob, groom_age_proof, groom_aadhar_no, marital_status_of_the_would_be_groom, marital_status_of_the_would_be_bride, marriage_document, affidavit_attached,verify_document,created_by,status) VALUES (null,'$financial_year','$taluk','$constituency','$village','$applicant_name'
-	,'$parent','$address','$religion','$mobile','$annual_income','$dob','$received_date','$marriage_place','$marriage_date','$age_proof','$domicile_state','$physically_handicap','$path','$aadhar_no','$father_aadhar','$mother_aadhar','$caste_certificate_no','$income_certificate_no','$bpl_card_no','$account_no','$bank','$district','$branch','$ifsc_code','$name_of_the_would_be_groom','$address_of_the_would_be_groom','$groom_mobile','$groom_dob','$groom_age_proof','$groom_aadhar_no','$marital_status_of_the_would_be_groom','$marital_status_of_the_would_be_bride','$marriage_document','$affidavit_attached','','$created_by','$status')";
+	"INSERT INTO application_table(app_id,financial_year, taluk, constituency,village,village_kannada,applicant_name,applicant_name_kannada, parent,parent_kannada, address,address_kannada, religion, mobile, annual_income, dob, received_date, marriage_place,marriage_place_kannada, marriage_date, age_proof, domicile_state, physically_handicap, applicant_photo, aadhar_no, father_aadhar, mother_aadhar, caste_certificate_no, income_certificate_no, bpl_card_no, account_no, bank, district, branch, ifsc_code, name_of_the_would_be_groom,name_of_the_would_be_groom_kannada, address_of_the_would_be_groom,address_of_the_would_be_groom_kannada, groom_mobile, groom_dob, groom_age_proof, groom_aadhar_no, marital_status_of_the_would_be_groom, marital_status_of_the_would_be_bride, marriage_document, affidavit_attached,verify_document,created_by,status) VALUES (null,'$financial_year','$taluk','$constituency','$village','$village_kannada','$applicant_name','$applicant_name_kannada','$parent','$parent_kannada','$address','$address_kannada','$religion','$mobile','$annual_income','$dob','$received_date','$marriage_place','$marriage_place_kannada','$marriage_date','$age_proof','$domicile_state','$physically_handicap','$path','$aadhar_no','$father_aadhar','$mother_aadhar','$caste_certificate_no','$income_certificate_no','$bpl_card_no','$account_no','$bank','$district','$branch','$ifsc_code','$name_of_the_would_be_groom','$name_of_the_would_be_groom_kannada','$address_of_the_would_be_groom','$address_of_the_would_be_groom_kannada','$groom_mobile','$groom_dob','$groom_age_proof','$groom_aadhar_no','$marital_status_of_the_would_be_groom','$marital_status_of_the_would_be_bride','$marriage_document','$affidavit_attached','','$created_by','$status')";
 	$sql_exec=mysqli_query($con,$sql_query);
 	if($sql_exec)
 	{
@@ -94,7 +102,7 @@ else
 ?><!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
@@ -105,6 +113,19 @@ else
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+   <link href="assets/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+	
+
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+google.load("elements", "1", {packages: "transliteration"});
+</script> 
+
+
+
+
     <script>
      function previewFile(){
 	   var fileTypes = ['jpg', 'jpeg', 'png'];
@@ -134,8 +155,164 @@ else
   }
 
 
-  
     </script>
+	    <script>
+
+
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+
+      function onLoad() {
+
+        var options = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.KANNADA],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        // Create an instance on TransliterationControl with the required
+        // options.
+	
+        var control =
+            new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textbox with id
+        // 'transliterateTextarea'.
+		var ids = [ "inputVillageKannada", "inputNameKannada","inputParentKannada","inputAddressKannada","inputPlaceOfMarriageKannada","inputGroomNameKannada","inputGroomAddressKannada" ];
+        control.makeTransliteratable(ids);
+		
+		
+		var keyVal = 32; // Space key
+    $("#inputVillage").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputVillage").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputVillageKannada").val($("#inputVillageKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputVillageKannada").focus();
+            $("#inputVillageKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	    $("#inputName").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputName").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputNameKannada").val($("#inputNameKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputNameKannada").focus();
+            $("#inputNameKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	 $("#inputParent").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputParent").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputParentKannada").val($("#inputParentKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputParentKannada").focus();
+            $("#inputParentKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+		 $("#inputAddress").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputAddress").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputAddressKannada").val($("#inputAddressKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputAddressKannada").focus();
+            $("#inputAddressKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+			 $("#inputPlaceOfMarriage").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputPlaceOfMarriage").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputPlaceOfMarriageKannada").val($("#inputPlaceOfMarriageKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputPlaceOfMarriageKannada").focus();
+            $("#inputPlaceOfMarriageKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+	$("#inputGroomName").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputGroomName").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputGroomNameKannada").val($("#inputGroomNameKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputGroomNameKannada").focus();
+            $("#inputGroomNameKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+  $("#inputGroomAddress").on('keydown', function(event) {
+        if(event.keyCode === 32) {
+            var engText = $("#inputGroomAddress").val() + " ";
+            var engTextArray = engText.split(" ");
+            $("#inputGroomAddressKannada").val($("#inputGroomAddressKannada").val() + engTextArray[engTextArray.length-2]);
+
+            document.getElementById("inputGroomAddressKannada").focus();
+            $("#inputGroomAddressKannada").trigger ( {
+                type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
+            } );
+        }
+    });
+
+    $("#inputVillageKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputVillage").val($("#inputVillage").val() + " "); document.getElementById("inputVillage").focus()},0);
+    });
+    $("#inputNameKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputName").val($("#inputName").val() + " "); document.getElementById("inputName").focus()},0);
+    });
+	$("#inputParentKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputParent").val($("#inputParent").val() + " "); document.getElementById("inputParent").focus()},0);
+    });
+		$("#inputAddressKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputAddress").val($("#inputAddress").val() + " "); document.getElementById("inputAddress").focus()},0);
+    });
+			$("#inputPlaceOfMarriageKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputPlaceOfMarriage").val($("#inputPlaceOfMarriage").val() + " "); document.getElementById("inputPlaceOfMarriage").focus()},0);
+    });
+  		$("#inputGroomNameKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputGroomName").val($("#inputGroomName").val() + " "); document.getElementById("inputGroomName").focus()},0);
+    });
+		$("#inputGroomAddressKannada").bind ("keyup",  function (event) {
+        setTimeout(function(){ $("#inputGroomAddress").val($("#inputGroomAddress").val() + " "); document.getElementById("inputGroomAddress").focus()},0);
+    });
+
+      }
+      google.setOnLoadCallback(onLoad);
+/* 
+function calculateAge(birthday) {
+	// birthday is a date
+	var parts = birthday.match(/(\d+)/g);
+  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+	var bday= new Date(parts[0], parts[1]-1, parts[2]);
+    var ageDifMs = Date.now() - bday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    document.getElementById('displayAge').innerHTML=Math.abs(ageDate.getUTCFullYear() - 1970);
+} */
+
+
+ 
+    </script>
+
+
   </head>
 
   <body>
@@ -206,6 +383,7 @@ else
           	<h3><i class="fa fa-angle-right"></i> Application Registration</h3>
 
 			<form action="" method="POST" enctype="multipart/form-data">
+			
                 <div class="col-md-12">
           <p class="high-light text-center"><?php echo $message;?></p>
         </div>
@@ -217,6 +395,7 @@ else
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
 					  <h5><i class="fa fa-female"></i> Applicant Details</h5>
+					  
 					
   <div class="form-row">
     <div class="form-group col-md-3">
@@ -230,53 +409,94 @@ else
     </div>
 	   
 	    <div class="form-group col-md-3">
+		<?php
+			$talukQuery=mysqli_query($con,"SELECT * FROM taluk_details WHERE district_fn_id=(SELECT district_details.district_id from district_details WHERE district_details.district_name='".$_SESSION['login']."' )");
+		?>
       <label for="inputTaluk">2. Taluk </label>&nbsp;<span class="high-light">*</span>
-            <select class="form-control" name="taluk" id="inputTaluk" placeholder="" required>
-	  <option  value="" selected>Choose..</option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+            <select class="form-control" name="taluk" id="inputTaluk" placeholder="" required">
+			<option>Choose..</option>
+			<?php
+				while($taluk_row=mysqli_fetch_array($talukQuery))
+				{	
+				     $district_ref_id=$taluk_row['district_fn_id'];
+			?>
+					<option value="<?php echo $taluk_row['taluk_name'];?>"><?php echo $taluk_row['taluk_name'];?></option>
+
+			<?php
+					
+				}
+					
+	           
+				
+				?>
 	  </select>
+	
+
     </div>
     <div class="form-group col-md-3">
+		<?php
+				
+			$constituencyQuery=mysqli_query($con,"SELECT * FROM constituency_details WHERE constituency_district_id='".$district_ref_id."'");
+		?>
       <label for="inputConstituency">3. Constituency </label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="constituency" id="inputConstituency" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 1">Dummy 3</option>
+
+	<?php
+				while($constituency_row=mysqli_fetch_array($constituencyQuery))
+				{	
+				     
+			?>
+					<option value="<?php echo $constituency_row['constituency_name'];?>"><?php echo $constituency_row['constituency_name'];?></option>
+
+			<?php
+					
+				}
+					
+	           
+				
+				?>
 	  </select>
     </div>
   </div>
   <div class="form-group col-md-3">
     <label for="inputVillage">4. Village </label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputVillage" name="village" placeholder="" required>
+    <input type="text" class="form-control" id="inputVillage" name="village" placeholder="" required pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputVillageKannada" name="village_kannada">
+	
+	
   </div>
   <div class="form-group col-md-4">
     <label for="inputName">5. Name of the Applicant </label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputName" name="applicant_name" placeholder="" required>
+    <input type="text" class="form-control" id="inputName" name="applicant_name" placeholder="" required pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputNameKannada" name="applicant_name_kannada">
   </div>
   <div class="form-group col-md-4">
     <label for="inputParent">6. Name of the Father/Mother/Guardian</label>&nbsp;<span class="high-light">*</span>
-    <input type="text" class="form-control" id="inputParent" name="applicant_parent" placeholder="" required>
+    <input type="text" class="form-control" id="inputParent" name="applicant_parent" placeholder="" required pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" id="inputParentKannada" name="applicant_parent_kannada">
   </div>
   <div class="form-group col-md-4">
     <label for="inputAddress">7. Address </label>&nbsp;<span class="high-light">*</span>
     <input type="text" class="form-control" id="inputAddress" name="applicant_address" placeholder="" required>
+<input type="text" class="form-control" id="inputAddressKannada" name="applicant_address_kannada">
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputReligon">8.Religion</label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="religion" id="inputReligon" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+	  <option  value="Muslim">Muslim</option>
+	  <option value="Christian">Christian</option>
+	  <option value="Sikh">Sikh</option>
+<option value="Buddh">Buddh</option>
+	<option value="Jain">Jain</option>
+	<option value="Parsi">Parsi</option>
 	  </select>
     </div>
     <div class="form-group col-md-4">
       <label for="inputMobile">9. Mobile</label>&nbsp;<span class="high-light">*</span>
-       <input type="tel" class="form-control" id="inputMobile" name="mobile" pattern="[6789][0-9]{9}" required>
+       <input type="tel" class="form-control" id="inputMobile" name="mobile" pattern="[6789][0-9]{9}" required maxlength="10">
     </div>
     <div class="form-group col-md-4">
       <label for="inputAnnualIncome">10. Annual Income</label>&nbsp;<span class="high-light">*</span>
@@ -286,7 +506,8 @@ else
     <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required>
+       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required max="2000-07-31"> 
+		
     </div>
     <div class="form-group col-md-3">
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
@@ -299,6 +520,7 @@ else
 	 <div class="form-group col-md-3">
       <label for="inputPlaceOfMarriage">14. Place of Marriage </label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputPlaceOfMarriage" name="place_of_marriage" required>
+	<input type="text" class="form-control" id="inputPlaceOfMarriageKannada" name="place_of_marriage_kannada">
     </div>
   </div>
   <div class="form-row">
@@ -339,6 +561,7 @@ else
     <div class="form-group col-md-4">
       <label for="inputPhoto">18. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
       <input class="form-control" type="file" id="inputPhoto" name="applicant_photo" onchange="previewFile()">
+	
 	  <p id="errorText" class="high-light"></p>
     </div>
     <div class="form-group col-md-4">
@@ -351,31 +574,31 @@ else
 	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputAadhar">19.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-       <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required>
+       <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required maxlength="12">
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputFatherAadhar">20. Father Aadhar No.</label>
-       <input type="tel" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}">
+       <input type="tel" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}" maxlength="12">
     </div>
     <div class="form-group col-md-4">
       <label for="inputMotherAadhar">21. Mother Aadhar No.</label>
-      <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}">
+      <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}" maxlength="12">
     </div>
   </div>
   	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputCasteNo">22.Caste Certificate No. </label>
-       <input type="text" pattern="[0-9]{12}" class="form-control" name="caste_no" id="inputCasteNo" >
+       <input type="text" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" class="form-control" name="caste_no" id="inputCasteNo" maxlength="17">
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputIncomeNo">23. Income Certificate No.</label>
-       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[0-9]{12}">
+       <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" maxlength="17" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}">
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" pattern="[a-zA-Z][a-zA-Z][0-9]{5}" required placeholder="Ex:AZXXXXX">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  maxlength="15" pattern="[a-zA-Z][a-zA-Z][0-9]{5,13}">
     </div>
   </div>
 	
@@ -413,25 +636,48 @@ else
       <input type="text" class="form-control" id="inputAccountNo" name="account_no" placeholder="Ex: 1234XXXXXXX..." pattern="[0-9]{9,18}" required title="Please Verify the Account No. Properly">
     </div>
     <div class="form-group col-md-3">
+	<?php 
+		$bankQuery=mysqli_query($con,"Select distinct(bank_name) from bank_details");
+?>
       <label for="inputBankName">2.Bank Name</label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="bank_name" id="inputBankName" required>
 	  <option  value="" selected>Choose..</option>
-	  <option  value="Dummy 1">Dummy 1</option>
-	  <option value="Dummy 2">Dummy 2</option>
-	  <option value="Dummy 3">Dummy 3</option>
+	<?php
+	
+	while($bank_row=mysqli_fetch_array($bankQuery))
+	{
+	?>
+	  <option  value="<?php echo $bank_row['bank_name'] ?>"><?php echo $bank_row['bank_name'] ?></option>
+	<?php
+	}
+   ?>
 	  </select>
     </div>
 		    <div class="form-group col-md-3">
+	<?php 
+		$disQuery=mysqli_query($con,"Select distinct(bank_district) from bank_details");
+?>
       <label for="inputDistrict">3.District</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputDistrict" name="district" placeholder="Ex: Tumkur" required>
+       <select class="form-control" id="inputDistrict" name="district" required>
+<option  value="" selected>Choose..</option>
+<?php
+	
+	while($bank_dis_row=mysqli_fetch_array($disQuery))
+	{
+	?>
+	  <option  value="<?php echo $bank_dis_row['bank_district'] ?>"><?php echo $bank_dis_row['bank_district'] ?></option>
+	<?php
+	}
+   ?>
+	</select>
     </div>
 	    <div class="form-group col-md-3">
       <label for="inputBranchName">4.Branch Name</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputBranchName" name="branch_name" placeholder="Ex: Market Branch" required>
+       <input type="text" class="form-control" id="inputBranchName" name="branch_name" placeholder="Ex: Market Branch" required onfocus="fetchBranch()">
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputIfsc">5.IFSC Code</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" required>
+       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" required onfocus="fetchIfsc()" readonly>
     </div>
   </div>
 
@@ -457,21 +703,23 @@ else
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputGroomName">1.Name of the Groom</label>
-      <input type="text" class="form-control" name="groom_name" id="inputGroomName" placeholder="">
+      <input type="text" class="form-control" name="groom_name" id="inputGroomName" pattern="[a-zA-Z\s]+">
+	<input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" placeholder="">
     </div>
 
   </div>
   <div class="form-group col-md-4">
     <label for="inputGroomAddress">2.Address</label>
-    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="1234 Main St">
+    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="">
+	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" placeholder="">
   </div>
     <div class="form-group col-md-4">
       <label for="inputGroomMobile">3. Mobile</label>&nbsp;<span class="high-light">*</span>
-       <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" required>
+       <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" required maxlength="10">
     </div>
 	  <div class="form-group col-md-4">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required>
+       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required max="1997-07-31">
     </div>
 	    <div class="form-group col-md-4">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
@@ -485,7 +733,7 @@ else
     </div>
 	 <div class="form-group col-md-4">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-      <input type="text" pattern="[0-9]{12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required>
+      <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required maxlength="12">
 	  
     </div>
 
@@ -531,13 +779,13 @@ else
   </div>
   <div class="form-group col-md-6">
     <label for="inputDocumentStatus">Marriage Document/Invitation Card Attached ? </label><br/>
-    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes"><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No"><label for="inputDocumentStatusYes">&nbsp;No</label>
+    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" required><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" required><label for="inputDocumentStatusYes">&nbsp;No</label>
   </div>
  <div class="form-group col-md-6">
     <label for="inputAffidavitStatus">Affidavit Attached? </label><br/>
-    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes"><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No"><label for="inputAffidavitStatusNo">&nbsp;No</label>
+    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required><label for="inputAffidavitStatusNo">&nbsp;No</label>
   </div>
 
 
@@ -569,12 +817,69 @@ else
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-  <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
 
-  </script>
+  <script src="assets/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script>
+function fetchBranch()
+{
+	var bank_name=document.getElementById("inputBankName").value;
+	var district_name =document.getElementById("inputDistrict").value;
+		 $.ajax({
+       type: "POST",
+       url: "find_branch.php",
+       data: 'bank_name='+bank_name+'&district_name='+district_name,
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+
+$( "#inputBranchName" ).autocomplete({
+	source: array
+});
+         
+       }
+     });
+}
+function fetchIfsc()
+{
+	var bank_name=document.getElementById("inputBankName").value;
+	var district_name =document.getElementById("inputDistrict").value;
+	var branchName =document.getElementById("inputBranchName").value;
+		 $.ajax({
+       type: "POST",
+       url: "find_ifsc.php",
+       data: 'bank_name='+bank_name+'&district_name='+district_name+'&branchName='+branchName,
+       cache: false,
+       success: function(response)
+       {
+		   document.getElementById("inputIfsc").value=response;
+       }
+     });
+}
+
+
+</script>
+<script>
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+by=yyyy-18;
+gy=yyyy-21;
+ if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+
+var today_bride = by+'-'+mm+'-'+dd;
+var today_groom=gy+'-'+mm+'-'+dd;
+
+</script>
+	
+
 
   </body>
 </html>
