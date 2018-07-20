@@ -589,16 +589,16 @@ function calculateAge(birthday) {
   	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputCasteNo">22.Caste Certificate No. </label>
-       <input type="text" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" class="form-control" name="caste_no" id="inputCasteNo" maxlength="17">
+       <input type="text" pattern="[a-zA-Z0-9]+" class="form-control" name="caste_no" id="inputCasteNo">
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputIncomeNo">23. Income Certificate No.</label>
-       <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" maxlength="17" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}">
+       <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+">
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  maxlength="15" pattern="[a-zA-Z][a-zA-Z][0-9]{5,13}">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+">
     </div>
   </div>
 	

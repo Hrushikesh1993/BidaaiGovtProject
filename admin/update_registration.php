@@ -529,6 +529,7 @@ function calculateAge(birthday) {
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
+		<input type="hidden" id="hiddenAgeProof" value="<?php echo $result_array['age_proof']; ?>">
       <label for="inputAgeProof">15. Age Proof </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="age_proof[]" id="inputAgeProof" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options">
 	  <option  value="Birth Certificate">Birth Certificate</option>
@@ -594,16 +595,16 @@ function calculateAge(birthday) {
   	  <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputCasteNo">22.Caste Certificate No. </label>
-       <input type="text" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" maxlength="17" class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
+       <input type="text" pattern="[a-zA-Z0-9]+"  class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
 	  
     </div>
     <div class="form-group col-md-4">
       <label for="inputIncomeNo">23. Income Certificate No.</label>
-       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z][a-zA-Z][0-9]{5,15}" maxlength="17" value="<?php echo $result_array['income_certificate_no']; ?>">
+       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['income_certificate_no']; ?>">
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required maxlength="15" pattern="[a-zA-Z][a-zA-Z][0-9]{5,13}" value="<?php echo $result_array['bpl_card_no']; ?>">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['bpl_card_no']; ?>">
     </div>
   </div>
 	
@@ -727,6 +728,7 @@ function calculateAge(birthday) {
        <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required value="<?php echo $result_array['groom_dob']; ?>" max="1997-07-31"> 
     </div>
 	    <div class="form-group col-md-4">
+		<input type="hidden" id="hiddenGroomAgeProof" value="<?php echo $result_array['groom_age_proof']; ?>">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="groom_age_proof[]" id="inputAgeProofGroom" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options">
 	  <option  value="Birth Certificate">Birth Certificate</option>
@@ -892,7 +894,16 @@ function fetchIfsc()
      });
 }
 
+var age_proof=document.getElementById('hiddenAgeProof').value;
 
+$.each(age_proof.split(","), function(i,e){
+    $("#inputAgeProof option[value='" + e + "']").prop("selected", true);
+});
+var groom_age_proof=document.getElementById('hiddenGroomAgeProof').value;
+
+$.each(groom_age_proof.split(","), function(i,e){
+    $("#inputAgeProofGroom option[value='" + e + "']").prop("selected", true);
+});
 </script>
 
   </body>

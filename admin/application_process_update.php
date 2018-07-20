@@ -223,25 +223,16 @@ if(isset($_POST['process']))
 								<tr>
                               <td>Domicile State</td>
                                   <td><?php echo $row['domicile_state']; ?></td>
-								  <td>Domicile Certificate</td>
-                                  <td></td>
-                                 
-                                  <td>Annual Income</td> 
+								  <td>Annual Income</td> 
 								   <td><?php echo $row['annual_income']; ?></td>
-								
-
-                              </tr>
-								<tr>
-                              <td>Physically handicap</td>
+								  <td>Physically handicap</td>
                                   <td><?php echo $row['physically_handicap']; ?></td>
-								  <td></td>
-                                  <td></td>
                                  
-                                  <td></td> 
-								   <td></td>
+                                  
 								
 
                               </tr>
+								
                              
                              
                               </tbody>

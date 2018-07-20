@@ -14,23 +14,23 @@ if(isset($_POST['searchReport']))
 	 $appStatus=$_POST['status'];
 	if($appStatus=='Total Applications Applied')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year'";
+		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."'";
 	}
 	else if($appStatus=='Pending in Eligibility Check')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2)";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2) and created_by='".$_SESSION['login']."'";
 	}
 	else if($appStatus=='Pending Eligible Application')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'";
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0";
+		$sql="SELECT app_id,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."'";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$_SESSION['login']."'";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -184,7 +184,7 @@ if(isset($_POST['searchReport']))
                       <div class="content-panel">
                          <div class="table-responsive">
 						  <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> All User Details </h4>
+	                  	  	  
 	                  	  	  <hr>
                               <thead>
                               <tr>

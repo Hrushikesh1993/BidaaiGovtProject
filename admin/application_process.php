@@ -14,11 +14,11 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3";
+		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) ";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) and created_by='".$_SESSION['login']."' ";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -172,7 +172,7 @@ if(isset($_POST['process']))
                       <div class="content-panel">
                          <div class="table-responsive">
 						  <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> All User Details </h4>
+	                  	  	  
 	                  	  	  <hr>
                               <thead>
                               <tr>

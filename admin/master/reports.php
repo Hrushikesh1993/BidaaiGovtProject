@@ -16,23 +16,23 @@ if(isset($_POST['searchReport']))
 	 $district=$_POST['district'];
 	if($appStatus=='Total Applications Applied')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where created_by='$district' and financial_year='$financial_year'";
+		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."'";
 	}
 	else if($appStatus=='Pending in Eligibility Check')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where created_by='$district' and  financial_year='$financial_year' and  status=1";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2) and created_by='".$district."'";
 	}
 	else if($appStatus=='Pending Eligible Application')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where created_by='$district' and  financial_year='$financial_year' and status=2";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$district."'";
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where created_by='$district' and  financial_year='$financial_year' and status=0";
+		$sql="SELECT app_id,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."'";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where created_by='$district' and  financial_year='$financial_year' and status=3";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."'";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -143,11 +143,11 @@ if(isset($_POST['searchReport']))
       <label for="inputStatus">2. Status </label>&nbsp;<span class="high-light">*</span>
             <select class="form-control" name="status" id="inputStatus" required>
 	  <option  value="" selected>Choose..</option>
-	  <option  value="">Total Applications Applied</option>
-	  <option value="">Pending in Eligibility Check</option>
-	  <option value="">Pending Eligible Application</option>
-	  <option value="">Rejected</option>
-	  <option value="">Sanctioned</option>
+	  <option  value="Total Applications Applied">Total Applications Applied</option>
+	  <option value="Pending in Eligibility Check">Pending in Eligibility Check</option>
+	  <option value="Pending Eligible Application">Pending Eligible Application</option>
+	  <option value="Rejected">Rejected</option>
+	  <option value="Sanctioned">Sanctioned</option>
 	 
 	  </select>
     </div>
@@ -198,7 +198,7 @@ if(isset($_POST['searchReport']))
                       <div class="content-panel">
                          <div class="table-responsive">
 						  <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> All User Details </h4>
+	                  	  	  
 	                  	  	  <hr>
                               <thead>
                               <tr>
