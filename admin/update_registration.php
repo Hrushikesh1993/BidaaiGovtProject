@@ -7,12 +7,13 @@ check_login();
 $show="";
 $status="";
 $message="";
+
 if(isset($_POST['searchButton']))
 {
   $search_text=$_POST['search'];
   $_SESSION['search']=$search_text;
   $result_array="";
-  $result=mysqli_query($con,"SELECT * from application_table where app_id='$search_text' and (status=1 or status=2)");
+  $result=mysqli_query($con,"SELECT * from application_table where app_id='$search_text' and (status=1 or status=2) and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
   if($rowcount==1)
   {
@@ -46,8 +47,9 @@ $applicant_name_kannada=$_POST['applicant_name_kannada'];
   $marriage_place=$_POST['place_of_marriage'];
 $marriage_place_kannada=$_POST['place_of_marriage_kannada'];
   $marriage_date=$_POST['date_of_marriage'];
-   $age_proof=implode(",",$_POST['age_proof']);
+   $age_proof=$_POST['age_proof'];
   $domicile_state=$_POST['domicile_state'];
+  $domicile_proof=$_POST['domicile_proof'];
   $physically_handicap=$_POST['physical_handicap'];
 $path="";
 	$applicant_photo=$applicant_photo=$_FILES['applicant_photo']['name'];
@@ -80,7 +82,7 @@ $path="";
 	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
   $groom_mobile=$_POST['groom_mobile'];
   $groom_dob=$_POST['groom_date_of_birth'];
-  $groom_age_proof=implode(",",$_POST['groom_age_proof']);
+  $groom_age_proof=$_POST['groom_age_proof'];
   $groom_aadhar_no=$_POST['groom_aadhar'];
   $marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
   $marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
@@ -98,12 +100,12 @@ $path="";
 	  
 
   $sql_query=
-  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id=".$_SESSION['search']."";
+  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id='".$_SESSION['search']."'";
 
   $sql_exec=mysqli_query($con,$sql_query);
   if($sql_exec)
   {
-    $message="Details have been Updated Successfully!";
+    $message="Details of Application Id:".$_SESSION['search']. " Updated Successfully!";
   }
   else
   {
@@ -122,7 +124,7 @@ $path="";
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Admin | Manage Users</title>
+    <title><?php echo strtoupper($_SESSION['login']);?>| Application Update</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
@@ -390,7 +392,7 @@ function calculateAge(birthday) {
       <section id="main-content">
           <section class="wrapper">
           	<h3><i class="fa fa-angle-right"></i> Update Registration</h3>
-            <form action="" method="POST"><div class="col-md-12"><div class="form-group col-md-6"> <input type="text" class="form-control" placeholder="Search.." name="search"></div>
+            <form action="" method="POST"><div class="col-md-12"><div class="form-group col-md-6"> <input type="text" class="form-control" placeholder="Search.." name="search" id="inputSearch" onfocus="fetchId()"></div>
                   <div class="form-group col-md-6"><button type="submit" name="searchButton" class="btn btn-primary"><i class="fa fa-search"></i></button></div></div></form>
             <div class="col-md-12">
           <p class="high-light text-center"><?php echo $message;?></p>
@@ -528,10 +530,10 @@ function calculateAge(birthday) {
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
-		<input type="hidden" id="hiddenAgeProof" value="<?php echo $result_array['age_proof']; ?>">
+    <div class="form-group col-md-4">
       <label for="inputAgeProof">15. Age Proof </label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="age_proof[]" id="inputAgeProof" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options">
+       <select class="form-control" name="age_proof" id="inputAgeProof" placeholder="" required>
+	   <option value="<?php echo $result_array['age_proof']; ?>"><?php echo $result_array['age_proof']; ?></option> 
 	  <option  value="Birth Certificate">Birth Certificate</option>
 	  <option  value="SSLC">SSLC</option>
 	  <option value="TC">TC</option>
@@ -539,7 +541,7 @@ function calculateAge(birthday) {
 	  <option value="Affidavit">Affidavit</option>
 	  </select>
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="inputDomicile">16. Domicile State </label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="domicile_state" id="inputDomicile" placeholder="" required >
      <option value="<?php echo $result_array['domicile_state']; ?>"><?php echo $result_array['domicile_state']; ?></option>   
@@ -547,6 +549,20 @@ function calculateAge(birthday) {
 	  <option  value="Non-Karnataka">Non-Karnataka</option>
 	
 	  </select>
+    </div>
+		    <div class="form-group col-md-4">
+      <label for="inputDomicileProof">15. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
+       <select class="form-control" name="domicile_proof" id="inputDomicileProof" placeholder="" required>
+	  <option value="<?php echo $result_array['domicile_proof']; ?>"><?php echo $result_array['domicile_proof']; ?></option> 
+	  <option value="Aadhar Card">Aadhar Card</option>
+		<option value="Ration Card">Ration Card</option>
+		<option value="Voter ID">Voter ID</option>
+		<option value="Driving License">Driving License</option>
+		<option value="Others">Others</option>
+		<option value="PAN Card">PAN Card</option>
+		<option value="Passport">Passport</option>
+	  </select>
+	
     </div>
 	
 	</div>
@@ -604,7 +620,7 @@ function calculateAge(birthday) {
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['bpl_card_no']; ?>">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['bpl_card_no']; ?>" maxlength="15">
     </div>
   </div>
 	
@@ -642,22 +658,9 @@ function calculateAge(birthday) {
       <input type="text" class="form-control" id="inputAccountNo" name="account_no" placeholder="Ex: 1234XXXXXXX..." pattern="[0-9]{9,18}" required title="Please Verify the Account No. Properly" value="<?php echo $result_array['account_no']; ?>">
     </div>
     <div class="form-group col-md-3">
-			<?php 
-		$bankQuery=mysqli_query($con,"Select distinct(bank_name) from bank_details");
-?>
-      <label for="inputBankName">2.Bank Name</label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="bank_name" id="inputBankName" required >
-	  <option  value="<?php echo $result_array['bank']; ?>" selected><?php echo $result_array['bank']; ?></option> 
-	<?php
+    <label for="inputBankName">2.Bank Name</label>&nbsp;<span class="high-light">*</span>
+       <input type="text" class="form-control" name="bank_name" id="inputBankName" required onfocus="fetchBank()"value="<?php echo $result_array['bank']; ?>" >
 	
-	while($bank_row=mysqli_fetch_array($bankQuery))
-	{
-	?>
-	  <option  value="<?php echo $bank_row['bank_name'] ?>"><?php echo $bank_row['bank_name'] ?></option>
-	<?php
-	}
-   ?>
-	  </select>
     </div>
 		    <div class="form-group col-md-3">
 	<?php 
@@ -683,7 +686,7 @@ function calculateAge(birthday) {
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputIfsc">5.IFSC Code</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" onfocus="fetchIfsc()" required value="<?php echo $result_array['ifsc_code']; ?>" readonly>
+       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" onfocus="fetchIfsc()" required value="<?php echo $result_array['ifsc_code']; ?>">
     </div>
   </div>
 
@@ -728,9 +731,10 @@ function calculateAge(birthday) {
        <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required value="<?php echo $result_array['groom_dob']; ?>" max="1997-07-31"> 
     </div>
 	    <div class="form-group col-md-4">
-		<input type="hidden" id="hiddenGroomAgeProof" value="<?php echo $result_array['groom_age_proof']; ?>">
+		
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="groom_age_proof[]" id="inputAgeProofGroom" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options">
+       <select class="form-control" name="groom_age_proof" id="inputAgeProofGroom" placeholder="" required>
+	    <option value="<?php echo $result_array['groom_age_proof']; ?>"><?php echo $result_array['groom_age_proof']; ?></option>  
 	  <option  value="Birth Certificate">Birth Certificate</option>
 	  <option  value="SSLC">SSLC</option>
 	  <option value="TC">TC</option>
@@ -779,7 +783,7 @@ function calculateAge(birthday) {
 	  <option  value="<?php echo $result_array['marital_status_of_the_would_be_bride']; ?>" selected><?php echo $result_array['marital_status_of_the_would_be_bride']; ?></option>
 	  <option  value="Married">Married</option>
 	  <option value="Unmarried">Unmarried</option>
-	  <option value="Divocered">Divocered</option>
+	  <option value="Divorced">Divorced</option>
 	  <option value="Widow">Widow</option>
 	  </select>
     </div>
@@ -856,6 +860,44 @@ function calculateAge(birthday) {
 <script src="assets/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 
 <script>
+function fetchId()
+{
+	  $.ajax({
+       type: "POST",
+       url: "find_id.php",
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			console.log(array)
+
+$( "#inputSearch" ).autocomplete({
+	source: array
+});
+         
+       }
+     });
+}
+function fetchBank()
+{
+	  $.ajax({
+       type: "POST",
+       url: "find_bank.php",
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			
+
+$( "#inputBankName" ).autocomplete({
+	source: array
+});
+         
+       }
+     });
+}
 function fetchBranch()
 {
 	var bank_name=document.getElementById("inputBankName").value;
@@ -894,16 +936,6 @@ function fetchIfsc()
      });
 }
 
-var age_proof=document.getElementById('hiddenAgeProof').value;
-
-$.each(age_proof.split(","), function(i,e){
-    $("#inputAgeProof option[value='" + e + "']").prop("selected", true);
-});
-var groom_age_proof=document.getElementById('hiddenGroomAgeProof').value;
-
-$.each(groom_age_proof.split(","), function(i,e){
-    $("#inputAgeProofGroom option[value='" + e + "']").prop("selected", true);
-});
 </script>
 
   </body>

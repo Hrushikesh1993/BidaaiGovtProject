@@ -37,7 +37,7 @@ $msg="Profile Updated successfully";
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Admin Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Admin Dashboard</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          
@@ -55,7 +55,7 @@ $msg="Profile Updated successfully";
               <ul class="sidebar-menu" id="nav-accordion">
               
               	  <p class="centered"><a href="#"><img src="assets/img/ui-sam.png" class="img-circle" width="60"></a></p>
-              	  <h5 class="centered"><?php echo $_SESSION['login'];?></h5>
+              	  <h5 class="centered"><?php echo strtoupper($_SESSION['login']);?></h5>
               	  	<li class="mt">
                       <a href="create_user.php">
                           <i class="fa fa-pencil"></i>

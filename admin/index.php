@@ -1,16 +1,28 @@
 <?php
 session_start();
 include("dbconnection.php");
+
 if(isset($_POST['login']))
 {
-  $adminusername=$_POST['username'];
+ $adminusername=trim(strtolower($_POST['username']));
+ 
+
   $pass=md5($_POST['password']);
 $ret=mysqli_query($con,"SELECT * FROM admin WHERE username='$adminusername' and password='$pass'");
 $num=mysqli_fetch_array($ret);
+$ret_new=mysqli_query($con,"SELECT district_id FROM district_details WHERE district_name='$adminusername'");
+$num_new=mysqli_fetch_array($ret_new);
+if($num_new>0)
+{
+	  $n=sprintf("%02d", $num_new['district_id']%100);
+	  $_SESSION['district_code']=$n;
+}
 if($num>0)
 {
-  $_SESSION['login']=$_POST['username'];
+  $_SESSION['login']=trim(strtolower($_POST['username']));
   $_SESSION['id']=$num['id'];
+
+  
  if($num['utype']=="super_admin")
  {
     $extra="master/admin-home.php";
@@ -46,25 +58,24 @@ exit();
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Registration | Login</title>
+    <title>BIDAAI |  Login</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+
   </head>
 
   <body>
   <header>
   <nav class="navbar navbar-default">
   <div class="container-fluid">
-    <div class="navbar-header">
-	<div class="row">
-	<div class="col-md-3 text-left"><img alt="Brand" src="assets/img/karnataka.png" class="img-responsive" style="max-width:100px;"></div>
-	<div class="col-md-6 text-center"></div>
-	<div class="col-md-3"></div>
+    <div class="row">
+	<div class="col-md-4" align="left"><img  src="assets/img/gokdom_new.png" class="img-responsive" width="150" height="150"></div>
+	<div class="col-md-4" align="center"><h3><strong>Bidaai Scheme</strong></h3><p><strong>20th Floor, V.V. Towers, Dr Ambedkar Veedhi,Bangalore - 560001.</strong></p></div>
+	<div class="col-md-4" align="right"></div>
 	</div>
-      
-    </div>
+
   </div>
 </nav>
   </header>

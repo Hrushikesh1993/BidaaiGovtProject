@@ -1,6 +1,7 @@
 <?php
 session_start();
 include'dbconnection.php';
+include("function.php");
 include("checklogin.php");
 check_login();
 
@@ -18,6 +19,26 @@ check_login();
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	<style>
+
+	.timer_box{
+    margin: 35px 24px;
+    display: inline-block;
+    padding: 20px 12px 0px 12px;
+    text-align: center;
+    width: 130px;
+    border-radius: 50%;
+        border: 4px solid #ffd777;
+}
+.timer_box h1{
+    font-size: 48px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: black;
+}
+.timer_box p{ margin-top: 0px;}
+	</style>
   </head>
 
   <body>
@@ -27,7 +48,7 @@ check_login();
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Bidaai Scheme</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          
@@ -84,10 +105,22 @@ check_login();
           </div>
       </aside>
       <section id="main-content">
-	  <img alt="Brand" src="assets/img/karnataka.png" class="img-responsive" width="500" height="500" style="padding-top:100px;display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%"> 
+	  <section class="wrapper">
+	            <div class="container">
+				
+				<div class="row">
+				            <div id="timer" data-animated="FadeIn" align="center">
+							<img alt="Brand" src="assets/img/gokdom_new.png" class="img-responsive">
+                
+                <div id="days" class="timer_box"><h1><?php echo get_count(1);?></h1><p>Received<br>Applications</p></div>
+                <div id="hours" class="timer_box"><h1><?php echo get_count(2);?></h1><p>Eligibility<br>Check</p></div>
+                <div id="minutes" class="timer_box"><h1><?php echo get_count(3);?></h1><p>Eligible<br>Applications</p></div>
+                <div id="seconds" class="timer_box"><h1><?php echo get_count(4);?></h1><p>Rejected<br>Applications</p></div>
+				<div id="seconds" class="timer_box"><h1><?php echo get_count(5);?></h1><p>Sanctioned<br>Applications</p></div>
+            </div>
+				</div>
+				</div>
+			</section>
            </section>
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>

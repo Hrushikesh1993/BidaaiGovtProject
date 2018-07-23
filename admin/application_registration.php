@@ -3,21 +3,27 @@
 session_start();
 include'dbconnection.php';
 include("checklogin.php");
+include("function.php");
 check_login();
 $message="";
 $district_ref_id="";
+$new_app_id="";
+$dis_app_id="";
+$print_var="";
+$disp_button="";
 if(isset($_POST['submit_app']))
 {
-  $created_by=$_SESSION['login'];
+	
+    $created_by=$_SESSION['login'];
 	$financial_year=$_POST['financial_year'];
 	$taluk=$_POST['taluk'];
 	$constituency=$_POST['constituency'];
-	 $village=$_POST['village'];
+	$village=$_POST['village'];
 	$village_kannada=$_POST['village_kannada'];
 	$applicant_name=$_POST['applicant_name'];
 	$parent=$_POST['applicant_parent'];
 	$address=$_POST['applicant_address'];
-		$applicant_name_kannada=$_POST['applicant_name_kannada'];
+	$applicant_name_kannada=$_POST['applicant_name_kannada'];
 	$parent_kannada=$_POST['applicant_parent_kannada'];
 	$address_kannada=$_POST['applicant_address_kannada'];
 	$religion=$_POST['religion'];
@@ -28,8 +34,9 @@ if(isset($_POST['submit_app']))
 	$marriage_place=$_POST['place_of_marriage'];
 	$marriage_place_kannada=$_POST['place_of_marriage_kannada'];
 	$marriage_date=$_POST['date_of_marriage'];
-	 $age_proof=implode(",",$_POST['age_proof']);
-  $domicile_state=$_POST['domicile_state'];
+	$age_proof=$_POST['age_proof'];
+    $domicile_state=$_POST['domicile_state'];
+	$domicile_proof=$_POST['domicile_proof'];
 	$physically_handicap=$_POST['physical_handicap'];
 	$applicant_photo=$_FILES['applicant_photo']['name'];
 	$aadhar_no=$_POST['aadhar'];
@@ -45,11 +52,11 @@ if(isset($_POST['submit_app']))
 	$ifsc_code=$_POST['ifsc_code'];
 	$name_of_the_would_be_groom=$_POST['groom_name'];
 	$address_of_the_would_be_groom=$_POST['groom_address'];
-		$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
+	$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
 	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
 	$groom_mobile=$_POST['groom_mobile'];
 	$groom_dob=$_POST['groom_date_of_birth'];
-	$groom_age_proof=implode(",",$_POST['groom_age_proof']);
+	$groom_age_proof=$_POST['groom_age_proof'];
 	$groom_aadhar_no=$_POST['groom_aadhar'];
 	$marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
 	$marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
@@ -74,20 +81,124 @@ else
   $status=0;
   
 }
+$new_relogion= substr($religion, 0, 1);
+$new_financial_year1=substr($financial_year, 2, 2);
+$new_financial_year2=substr($financial_year, 7,8);
+$new_rand=sprintf("%06d", mt_rand(1,100000));
+$new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2.$new_relogion.$new_rand;
+
 
 	
   $sql_query=
-	"INSERT INTO application_table(app_id,financial_year, taluk, constituency,village,village_kannada,applicant_name,applicant_name_kannada, parent,parent_kannada, address,address_kannada, religion, mobile, annual_income, dob, received_date, marriage_place,marriage_place_kannada, marriage_date, age_proof, domicile_state, physically_handicap, applicant_photo, aadhar_no, father_aadhar, mother_aadhar, caste_certificate_no, income_certificate_no, bpl_card_no, account_no, bank, district, branch, ifsc_code, name_of_the_would_be_groom,name_of_the_would_be_groom_kannada, address_of_the_would_be_groom,address_of_the_would_be_groom_kannada, groom_mobile, groom_dob, groom_age_proof, groom_aadhar_no, marital_status_of_the_would_be_groom, marital_status_of_the_would_be_bride, marriage_document, affidavit_attached,verify_document,created_by,status) VALUES (null,'$financial_year','$taluk','$constituency','$village','$village_kannada','$applicant_name','$applicant_name_kannada','$parent','$parent_kannada','$address','$address_kannada','$religion','$mobile','$annual_income','$dob','$received_date','$marriage_place','$marriage_place_kannada','$marriage_date','$age_proof','$domicile_state','$physically_handicap','$path','$aadhar_no','$father_aadhar','$mother_aadhar','$caste_certificate_no','$income_certificate_no','$bpl_card_no','$account_no','$bank','$district','$branch','$ifsc_code','$name_of_the_would_be_groom','$name_of_the_would_be_groom_kannada','$address_of_the_would_be_groom','$address_of_the_would_be_groom_kannada','$groom_mobile','$groom_dob','$groom_age_proof','$groom_aadhar_no','$marital_status_of_the_would_be_groom','$marital_status_of_the_would_be_bride','$marriage_document','$affidavit_attached','','$created_by','$status')";
+	"INSERT INTO application_table(app_id,financial_year, taluk, constituency,village,village_kannada,applicant_name,applicant_name_kannada, parent,parent_kannada, address,address_kannada, religion, mobile, annual_income, dob, received_date, marriage_place,marriage_place_kannada, marriage_date, age_proof, domicile_state,domicile_proof, physically_handicap, applicant_photo, aadhar_no, father_aadhar, mother_aadhar, caste_certificate_no, income_certificate_no, bpl_card_no, account_no, bank, district, branch, ifsc_code, name_of_the_would_be_groom,name_of_the_would_be_groom_kannada, address_of_the_would_be_groom,address_of_the_would_be_groom_kannada, groom_mobile, groom_dob, groom_age_proof, groom_aadhar_no, marital_status_of_the_would_be_groom, marital_status_of_the_would_be_bride, marriage_document, affidavit_attached,verify_document,created_by,status) VALUES ('$new_app_id','$financial_year','$taluk','$constituency','$village','$village_kannada','$applicant_name','$applicant_name_kannada','$parent','$parent_kannada','$address','$address_kannada','$religion','$mobile','$annual_income','$dob','$received_date','$marriage_place','$marriage_place_kannada','$marriage_date','$age_proof','$domicile_state','$domicile_proof','$physically_handicap','$path','$aadhar_no','$father_aadhar','$mother_aadhar','$caste_certificate_no','$income_certificate_no','$bpl_card_no','$account_no','$bank','$district','$branch','$ifsc_code','$name_of_the_would_be_groom','$name_of_the_would_be_groom_kannada','$address_of_the_would_be_groom','$address_of_the_would_be_groom_kannada','$groom_mobile','$groom_dob','$groom_age_proof','$groom_aadhar_no','$marital_status_of_the_would_be_groom','$marital_status_of_the_would_be_bride','$marriage_document','$affidavit_attached','','$created_by','$status')";
 	$sql_exec=mysqli_query($con,$sql_query);
 	if($sql_exec)
 	{
     if($status==0)
     {
       $message="Sorry! the Application got Rejected!";
+	  $dis_app_id="Application ID:".$new_app_id;
     }
     else
-    {
+	{ 
+		                                
+											$set_status=status_description($status);
+
+		 $print_var= "<div class='container'><h2 align='center'>Acknowledgement</h2>
+						  <table class='table table-bordered'>
+	                  	  	  
+	                  	  	 <thead>
+							 <tr>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+							 </tr>
+							 </thead>
+                              <tbody>
+								 <tr>
+                              <td><img src='$path'  height='100' width='100; alt='Applicant Photo'></td>
+                                  <td> </td>
+								  <td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								
+
+                              </tr>
+                           
+                              <tr>
+                              <td>Permanent ID</td>
+                                  <td>$new_app_id</td>
+								  <td>Received Date</td>
+                                  <td>".convert_date($received_date)."</td>
+                                 
+                                  <td>Difference</td> 
+								   <td>".$diff_days." "."years</td>
+								
+
+                              </tr>
+								<tr>
+                              <td>Name of the Applicant</td>
+                                  <td>$applicant_name<br>$applicant_name_kannada</td>
+								  <td>Name of the Father / Mother/ Guardian</td>
+                                  <td>$parent<br>$parent_kannada</td>
+                                 
+                                  <td>Name of the Would -be Groom</td> 
+								   <td>$name_of_the_would_be_groom<br>$name_of_the_would_be_groom_kannada</td>
+								
+
+                              </tr>
+								<tr>
+                              <td>Applicant Date of Birth</td>
+                                  <td>".convert_date($dob)."<br>Age:".date_diff(date_create($dob), date_create('today'))->y." "."years</td>
+								  <td>Would-be Groom Date of Birth</td> 
+                                  <td>".convert_date($groom_dob)."<br>Age:".date_diff(date_create($groom_dob), date_create('today'))->y." "."years</td>
+                                 
+                                  <td>Marriage Date Fixed</td> 
+								   <td>".convert_date($marriage_date)."</td>
+								
+
+                              </tr>
+								<tr>
+                              <td>Domicile State</td>
+                                  <td>$domicile_state</td>
+								  <td>Annual Income</td> 
+								   <td>$annual_income</td>
+								  <td>Physically handicap</td>
+                                  <td>$physically_handicap</td>
+                                 
+                                  
+								
+
+                              </tr>
+							  <tr>
+                              <td>Application Status</td>
+                                  <td>$set_status</td>
+								  <td></td> 
+								   <td></td>
+								  <td></td>
+                                  <td></td>
+                                 
+                                  
+								
+
+                              </tr>
+								
+                             
+                             
+                              </tbody>
+                          </table>
+						 </div>";
+						  
+    
+     
+         
        $message="Details have been Saved Successfully!";
+	   $dis_app_id="Application ID:".$new_app_id;
+	   $disp_button="<button id='disp_button' class='btn btn-primary' onclick='printDiv()'>Print</button>";
     }
    
 		
@@ -108,7 +219,7 @@ else
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Admin | Manage Users</title>
+    <title>Bidaai | Registration</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
@@ -382,10 +493,10 @@ function calculateAge(birthday) {
           <section class="wrapper">
           	<h3><i class="fa fa-angle-right"></i> Application Registration</h3>
 
-			<form action="" method="POST" enctype="multipart/form-data">
+			<form action="" method="POST" enctype="multipart/form-data" id="app_form">
 			
                 <div class="col-md-12">
-          <p class="high-light text-center"><?php echo $message;?></p>
+          <p class="high-light text-center"><?php echo $message."<br>".$dis_app_id;?></p>
         </div>
 				<div class="row">
 				
@@ -524,9 +635,10 @@ function calculateAge(birthday) {
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="inputAgeProof">15. Age Proof </label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="age_proof[]" id="inputAgeProof" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options" >
+       <select class="form-control" name="age_proof" id="inputAgeProof" placeholder="" required >
+	  <option  value="">Choose..</option>
 	  <option  value="Birth Certificate">Birth Certificate</option>
 	  <option  value="SSLC">SSLC</option>
 	  <option value="TC">TC</option>
@@ -534,13 +646,27 @@ function calculateAge(birthday) {
 	  <option value="Affidavit">Affidavit</option>
 	  </select>
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="inputDomicile">16. Domicile State </label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="domicile_state" id="inputDomicile" placeholder="" required>
 	  <option  value="Karnataka">Karnataka</option>
 	  <option  value="Non-Karnataka">Non-Karnataka</option>
 	
 	  </select>
+    </div>
+	    <div class="form-group col-md-4">
+      <label for="inputDomicileProof">15. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
+       <select class="form-control" name="domicile_proof" id="inputDomicileProof" placeholder="" required>
+	  <option value="">Choose..</option>
+	  <option value="Aadhar Card">Aadhar Card</option>
+		<option value="Ration Card">Ration Card</option>
+		<option value="Voter ID">Voter ID</option>
+		<option value="Driving License">Driving License</option>
+		<option value="Others">Others</option>
+		<option value="PAN Card">PAN Card</option>
+		<option value="Passport">Passport</option>
+	  </select>
+	
     </div>
 	
 	</div>
@@ -598,7 +724,7 @@ function calculateAge(birthday) {
     </div>
     <div class="form-group col-md-4">
       <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
-      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+">
+      <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" maxlength="15">
     </div>
   </div>
 	
@@ -636,22 +762,11 @@ function calculateAge(birthday) {
       <input type="text" class="form-control" id="inputAccountNo" name="account_no" placeholder="Ex: 1234XXXXXXX..." pattern="[0-9]{9,18}" required title="Please Verify the Account No. Properly">
     </div>
     <div class="form-group col-md-3">
-	<?php 
-		$bankQuery=mysqli_query($con,"Select distinct(bank_name) from bank_details");
-?>
+
       <label for="inputBankName">2.Bank Name</label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="bank_name" id="inputBankName" required>
-	  <option  value="" selected>Choose..</option>
-	<?php
+       <input type="text" class="form-control" name="bank_name" id="inputBankName" required onfocus="fetchBank()">
 	
-	while($bank_row=mysqli_fetch_array($bankQuery))
-	{
-	?>
-	  <option  value="<?php echo $bank_row['bank_name'] ?>"><?php echo $bank_row['bank_name'] ?></option>
-	<?php
-	}
-   ?>
-	  </select>
+
     </div>
 		    <div class="form-group col-md-3">
 	<?php 
@@ -677,7 +792,7 @@ function calculateAge(birthday) {
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputIfsc">5.IFSC Code</label>&nbsp;<span class="high-light">*</span>
-       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" required onfocus="fetchIfsc()" readonly>
+       <input type="text" class="form-control" id="inputIfsc" name="ifsc_code" placeholder="Ex: ABCDXXXXXXX" pattern="[a-zA-Z]{4}[0-9]{7}" required onfocus="fetchIfsc()">
     </div>
   </div>
 
@@ -703,14 +818,14 @@ function calculateAge(birthday) {
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputGroomName">1.Name of the Groom</label>
-      <input type="text" class="form-control" name="groom_name" id="inputGroomName" pattern="[a-zA-Z\s]+">
+      <input type="text" class="form-control" name="groom_name" id="inputGroomName" pattern="[a-zA-Z\s]+" required>
 	<input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" placeholder="">
     </div>
 
   </div>
   <div class="form-group col-md-4">
     <label for="inputGroomAddress">2.Address</label>
-    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="">
+    <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="" required>
 	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" placeholder="">
   </div>
     <div class="form-group col-md-4">
@@ -723,7 +838,8 @@ function calculateAge(birthday) {
     </div>
 	    <div class="form-group col-md-4">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
-       <select class="form-control" name="groom_age_proof[]" id="inputAgeProofGroom" placeholder="" required multiple title="Please Press and hold Ctrl Button to Select Multiple Options">
+       <select class="form-control" name="groom_age_proof" id="inputAgeProofGroom" placeholder="" required >
+	   <option  value="">Choose..</option>
 	  <option  value="Birth Certificate">Birth Certificate</option>
 	  <option  value="SSLC">SSLC</option>
 	  <option value="TC">TC</option>
@@ -762,7 +878,7 @@ function calculateAge(birthday) {
 	  <option  value="" selected>Choose..</option>
 	  <option  value="Married">Married</option>
 	  <option value="Unmarried">Unmarried</option>
-	  <option value="Divocered">Divocered</option>
+	  <option value="Divorced">Divorced</option>
 	  <option value="Widower">Widower</option>
 	  </select>
     </div>
@@ -772,7 +888,7 @@ function calculateAge(birthday) {
 	  <option  value="" selected>Choose..</option>
 	  <option  value="Married">Married</option>
 	  <option value="Unmarried">Unmarried</option>
-	  <option value="Divocered">Divocered</option>
+	  <option value="Divorced">Divorced</option>
 	  <option value="Widow">Widow</option>
 	  </select>
     </div>
@@ -799,8 +915,8 @@ function calculateAge(birthday) {
 			  <br/>
 			  <div class="form-row">
 			  <div class="form-group col-md-5">&nbsp;</div>
-			  <div class="form-group col-md-5"><button type="submit" name="submit_app" class="btn btn-primary">Save</button>
-			  <button type="reset" class="btn btn-primary">Reset</button></div>
+			  <div class="form-group col-md-5"><?php echo $disp_button; ?>&nbsp;<button type="submit" name="submit_app" id="submit_app"  class="btn btn-primary">Save</button>
+			  <button type="reset" class="btn btn-primary">Reset</button>  </div>
 			  <div class="form-group col-md-2">&nbsp;</div>
 			  
 			  </div>
@@ -809,6 +925,12 @@ function calculateAge(birthday) {
         </div>
 			  </form>
 		</section>
+	<div id="divToPrint" style="display:none">
+  <div style="">
+           <?php echo $print_var; ?>      
+  </div>
+</div>
+
       </section
   ></section>
     <script src="assets/js/jquery.js"></script>
@@ -857,6 +979,25 @@ function fetchIfsc()
        }
      });
 }
+function fetchBank()
+{
+	  $.ajax({
+       type: "POST",
+       url: "find_bank.php",
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			
+
+$( "#inputBankName" ).autocomplete({
+	source: array
+});
+         
+       }
+     });
+}
 
 
 </script>
@@ -878,6 +1019,22 @@ var today_bride = by+'-'+mm+'-'+dd;
 var today_groom=gy+'-'+mm+'-'+dd;
 
 </script>
+<script>
+	
+		 
+      function printDiv()
+	  {
+		   var divToPrint = document.getElementById('divToPrint');
+           var popupWin = window.open('', '_blank', 'width=300,height=300');
+            popupWin.document.open();
+            popupWin.document.write('<html><body onload="window.print()" style="border: solid black; border-width: thin;">' + divToPrint.innerHTML + '</html>');
+            popupWin.document.close();
+			window.location='application_registration.php';
+	  }
+	  
+	
+</script>
+
 	
 
 

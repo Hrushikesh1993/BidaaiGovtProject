@@ -4,14 +4,52 @@ include'dbconnection.php';
 include("checklogin.php");
 check_login();
 $message="";
-if(isset($_POST['createButton']))
+$show="";
+$info="";
+if(isset($_POST['searchInfo']))
 {
-	$user=$_POST['username'];
+	$info=$_POST['info'];
+	if($info=='User')
+	{
+		$show=1;
+	}
+	else if($info=='Bank')
+	{
+		$show=2;
+	}
+	
+	
+}
+if(isset($_POST['createUser']))
+{
+	$user=trim(strtolower($_POST['username'])," ");
 	$pass=md5($_POST['password']);
 	$sqlQuery=mysqli_query($con,"INSERT into admin(id,username,password,utype) VALUES(null,'$user','$pass','admin')");
 	if($sqlQuery)
 	{
 		$message="Login has been created successfully";
+	}
+	else
+	{
+		$message="Awwwww! There is some error occured . Please try again!"." ".mysqli_error($con);
+	}
+}
+if(isset($_POST['createBank']))
+{
+	$bank_name=$_POST['bank_name'];
+	$ifsc_code=$_POST['ifsc_code'];
+	$micr_code=$_POST['micr_code'];
+	$branch_name=$_POST['branch_name'];
+	$address=$_POST['address'];
+	$bank_mobile=$_POST['bank_mobile'];
+	$bank_taluk=$_POST['bank_taluk'];
+	$bank_district=$_POST['bank_district'];
+	$bank_state=$_POST['bank_state'];
+	
+	$sqlQuery=mysqli_query($con,"INSERT INTO bank_details(bank_id, bank_name, ifsc_code, micr_code, branch_name, address, bank_mobile, bank_taluk, bank_district, bank_state) VALUES (null,'$bank_name','$ifsc_code','$micr_code','$branch_name','$address','$bank_mobile','$bank_taluk','$bank_district','$bank_state')");
+	if($sqlQuery)
+	{
+		$message="Bank has been added successfully";
 	}
 	else
 	{
@@ -41,7 +79,7 @@ if(isset($_POST['createButton']))
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Admin Dashboard</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          
@@ -63,13 +101,13 @@ if(isset($_POST['createButton']))
               	  	<li class="mt">
                       <a href="create_user.php">
                           <i class="fa fa-pencil"></i>
-                          <span>Create User</span>
+                          <span>Create</span>
                       </a>
                   </li>
 				  <li class="mt">
                       <a href="manage-users.php" >
                           <i class="fa fa-users"></i>
-                          <span>Manage Users</span>
+                          <span>Manage</span>
                       </a>
                    
                   </li>
@@ -95,14 +133,61 @@ if(isset($_POST['createButton']))
       </aside>
       <section id="main-content">
 	            <section class="wrapper">
-          	<h3><i class="fa fa-angle-right"></i>Create User</h3>
+          	<h3><i class="fa fa-angle-right"></i>Create</h3>
 			<form action="" method="POST" enctype="multipart/form-data">
 			<div class="col-md-12">
           <p class="high-light text-center"><?php echo $message;?></p>
         </div>
+		
+				<div class="row">
+				<form action="" method="POST" enctype="multipart/form-data">
+				
+				
+                  
+	                  
+                  <div class="col-md-12">
+                      <div class="content-panel col-md-12">
+					  
+					
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="inputInfo">1. Add Information</label>&nbsp;<span class="high-light">*</span>
+      <select class="form-control" name="info" id="inputInfo" placeholder="" required>
+	  <option  value="" selected>Choose..</option>
+	  <option  value="User">User Details</option>
+	  <option value="Bank">Bank Details</option>
+	  </select>
+    </div>
+	   
+
+		    
+	<br/>
+	<div class="form-group col-md-3"><button type="submit" name="searchInfo" class="btn btn-primary"><i class="fa fa-search"></i></button></div>
+  </div>
+
+
+
+
+
+	 
+
+	
+
+  
+
+                         
+                      </div>
+                  </div>
+				</form>  
+              </div>
+			  
+			  <?php 
+			  if($show==1)
+			  {
+			  ?>
 				<div class="row">
 				
-				
+				<form action="" method="POST">
                   
 	                  
                   <div class="col-md-12">
@@ -117,7 +202,7 @@ if(isset($_POST['createButton']))
     <label for="exampleInputPassword1">Password</label>
     <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
   </div>
-<button type="submit" name="createButton" class="btn btn-primary">Create</button>
+<button type="submit" name="createUser" class="btn btn-primary">Create</button>
 </form>
  
 
@@ -134,11 +219,82 @@ if(isset($_POST['createButton']))
                          
                       </div>
                   </div>
-				  
+		 
               </div>
+			  <?php }?>
+			  			  <?php 
+			  if($show==2)
+			  {
+			  ?>
+				<div class="row">
+				
+				<form action="" method="POST">
+                  
+	                  
+                  <div class="col-md-12">
+                      <div class="content-panel col-md-12">
+					  
+					<div class="form-group">
+    <label for="inputBankName">Bank Name</label>
+    <input type="text" class="form-control" name="bank_name" id="inputBankName" placeholder="" required>
+    
+  </div>
+    <div class="form-group">
+    <label for="inputBranch">Branch Name</label>
+    <input type="text" class="form-control" name="branch_name" id="inputBranch" placeholder="" required>
+  </div>
+     <div class="form-group">
+    <label for="inputIfsc">IFSC Code</label>
+    <input type="text" class="form-control" name="ifsc_code" id="inputIfsc" placeholder="" required>
+  </div>
+     <div class="form-group">
+    <label for="inputMicr">MICR Code</label>
+    <input type="text" class="form-control" name="micr_code" id="inputMicr" placeholder="" required>
+  </div>
+       <div class="form-group">
+    <label for="inputAddress">Address</label>
+    <input type="text" class="form-control" name="address" id="inputAddress" placeholder=""required>
+  </div>
+         <div class="form-group">
+    <label for="inputContact">Contact No.</label>
+    <input type="tel" class="form-control" name="bank_mobile" id="inputContact" placeholder="" required>
+  </div>
+  <div class="form-group">
+    <label for="inputDistrict">District</label>
+    <input type="text" class="form-control" name="bank_district" id="inputDistrict" placeholder="" required>
+  </div>
+    <div class="form-group">
+    <label for="inputTaluk">Taluk</label>
+    <input type="text" class="form-control" name="bank_taluk" id="inputTaluk" placeholder="" required>
+  </div>
+      <div class="form-group">
+    <label for="inputState">State</label>
+    <input type="text" class="form-control" name="bank_state" id="inputState" placeholder="" required>
+  </div>
+  
+<button type="submit" name="createBank" class="btn btn-primary">Create</button>
+</form>
+ 
 
 
-			  </form>
+
+
+
+	 
+
+	
+
+  
+
+                         
+                      </div>
+                  </div>
+		 
+              </div>
+			  <?php }?>
+
+
+			  
 		</section>
           
       </section

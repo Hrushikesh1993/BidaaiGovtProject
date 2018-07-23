@@ -14,12 +14,13 @@ $adminid=$_SESSION['id'];
 $newpass=md5($_POST['newpass']);
  $ret=mysqli_query($con,"update admin set password='$newpass' where id='$adminid'");
 $_SESSION['msg']="Password Changed Successfully !!";
-//header('location:user.php');
+header('location:logout.php');
 }
 else
 {
 $_SESSION['msg']="Old Password not match !!";
 }
+
 }
 ?>
 <script language="javascript" type="text/javascript">

@@ -54,6 +54,8 @@ if(isset($_POST['searchReport']))
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet">
   </head>
 
   <body>
@@ -63,7 +65,7 @@ if(isset($_POST['searchReport']))
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Admin Dashboard</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          
@@ -81,7 +83,7 @@ if(isset($_POST['searchReport']))
               <ul class="sidebar-menu" id="nav-accordion">
               
               	  <p class="centered"><a href="#"><img src="assets/img/ui-sam.png" class="img-circle" width="60"></a></p>
-              	  <h5 class="centered"><?php echo $_SESSION['login'];?></h5>
+              	  <h5 class="centered"><?php echo strtoupper($_SESSION['login']);?></h5>
               	  	<li class="mt">
                       <a href="create_user.php">
                           <i class="fa fa-pencil"></i>
@@ -197,13 +199,13 @@ if(isset($_POST['searchReport']))
                   <div class="col-md-12">
                       <div class="content-panel">
                          <div class="table-responsive">
-						  <table class="table table-striped table-advance table-hover">
+						  <table class="table table-striped table-advance table-hover display"id="example"   style="width:100%">
 	                  	  	  
 	                  	  	  <hr>
                               <thead>
                               <tr>
                                   <th>SL.No</th>
-                                  <th class="hidden-phone">Applicant ID</th>
+                                  <th>Applicant ID</th>
                                   <th> Applicant Name</th>
                                   <th> Applicant DOB</th>
                          
@@ -211,6 +213,7 @@ if(isset($_POST['searchReport']))
 								  <th>Application Received Date</th>
 								  <th>Applicant's Would-be Groom</th>
 								  <th>Applicantion Status</th>
+								   <th>Action</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -228,6 +231,12 @@ if(isset($_POST['searchReport']))
 								   <td><?php echo $row['received_date'];?></td>
 								    <td><?php echo $row['name_of_the_would_be_groom'];?></td>
 								  <td><?php echo status_description($row['status']);?></td>
+								  								  <td>
+                                     
+                                     <a href="acknowledge.php?uid=<?php echo $row['app_id'];?>"> 
+                                     <button class="btn btn-primary btn-xs"><i class="fa fa-print"></i></button></a>
+                                     
+                                  </td>
                               </tr>
                               <?php $cnt=$cnt+1; }?>
                              
@@ -254,10 +263,30 @@ if(isset($_POST['searchReport']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+
+
+
+
+
+
   <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+     $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
+} );
 
   </script>
 

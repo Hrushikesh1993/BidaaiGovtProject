@@ -14,11 +14,11 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'";
+		 $sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) and created_by='".$_SESSION['login']."' ";
+		$sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) and created_by='".$_SESSION['login']."' ";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -35,11 +35,14 @@ if(isset($_POST['process']))
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Admin | Manage Users</title>
+    <title><?php echo strtoupper($_SESSION['login']);?>| Application Process</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet">
+	
   </head>
 
   <body>
@@ -170,21 +173,22 @@ if(isset($_POST['process']))
 	                  
                   <div class="col-md-12">
                       <div class="content-panel">
-                         <div class="table-responsive">
-						  <table class="table table-striped table-advance table-hover">
+                         
+						  <table  id="example"  class="display" style="width:100%">
 	                  	  	  
 	                  	  	  <hr>
                               <thead>
                               <tr>
                                   <th>SL.No</th>
-                                  <th class="hidden-phone">Applicant ID</th>
+                                  <th >Applicant ID</th>
                                   <th> Applicant Name</th>
-                                  <th> Applicant DOB</th>
-                         
+                                  <th> Applicant Age</th>
+								  <th> Applicant Parent Name</th>
                                   <th>Applicant Marriage Date</th>
 								  <th>Application Received Date</th>
 								  <th>Applicant's Would-be Groom</th>
 								  <th>Applicantion Status</th>
+								   <th>Action</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -196,10 +200,10 @@ if(isset($_POST['process']))
                               <td><?php echo $cnt;?></td>
                                   <td><?php echo $row['app_id'];?></td>
 								  <td><?php echo $row['applicant_name'];?></td>
-                                  <td><?php echo $row['dob'];?></td>
-                                 
-                                  <td><?php echo $row['marriage_date'];?></td> 
-								   <td><?php echo $row['received_date'];?></td>
+                                  <td><?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                                 <td><?php echo $row['parent'];?></td>
+                                  <td><?php echo convert_date($row['marriage_date']);?></td> 
+								   <td><?php echo convert_date($row['received_date']);?></td>
 								    <td><?php echo $row['name_of_the_would_be_groom'];?></td>
 								  <td><?php echo status_description($row['status']);?></td>
 									<td>
@@ -213,7 +217,7 @@ if(isset($_POST['process']))
                              
                               </tbody>
                           </table>
-						 </div>
+						 
                       </div>
                   </div>
               </div>
@@ -230,10 +234,31 @@ if(isset($_POST['process']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
+	
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+
+
+
+
+
+
   <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+     $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
+} );
 
   </script>
 

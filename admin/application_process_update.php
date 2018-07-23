@@ -77,11 +77,12 @@ if(isset($_POST['process']))
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Admin | Manage Users</title>
+    <title><?php echo strtoupper($_SESSION['login']);?>| Application Process</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+
   </head>
 
   <body>
@@ -188,7 +189,7 @@ if(isset($_POST['process']))
                               <td>Permanent ID</td>
                                   <td><?php echo $row['app_id']; ?></td>
 								  <td>Received Date</td>
-                                  <td><?php echo $row['received_date']; ?></td>
+                                  <td><?php echo convert_date($row['received_date']); ?></td>
                                  
                                   <td>Difference</td> 
 								   <td><?php $date1=date_create($row['received_date']);
@@ -211,22 +212,36 @@ if(isset($_POST['process']))
                               </tr>
 								<tr>
                               <td>Applicant Date of Birth</td>
-                                  <td><?php echo $row['dob']; ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                                  <td><?php echo convert_date($row['dob']); ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
 								  <td>Would-be Groom Date of Birth</td>
-                                  <td><?php echo $row['groom_dob']; ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                                  <td><?php echo convert_date($row['groom_dob']); ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</td>
                                  
                                   <td>Marriage Date Fixed</td> 
-								   <td><?php echo $row['marriage_date']; ?></td>
+								   <td><?php echo convert_date($row['marriage_date']); ?></td>
 								
 
                               </tr>
 								<tr>
                               <td>Domicile State</td>
                                   <td><?php echo $row['domicile_state']; ?></td>
+								  <td>Domicile Certificate</td>
+                                  <td><?php echo $row['domicile_proof']; ?></td>
 								  <td>Annual Income</td> 
 								   <td><?php echo $row['annual_income']; ?></td>
+								  
+                                 
+                                  
+								
+
+                              </tr>
+							  <tr>
+                              
 								  <td>Physically handicap</td>
                                   <td><?php echo $row['physically_handicap']; ?></td>
+								  <td></td>
+                                  <td></td>
+								  <td></td> 
+								   <td></td>
                                  
                                   
 								
@@ -237,7 +252,8 @@ if(isset($_POST['process']))
                              
                               </tbody>
                           </table>
-						 </div>
+						  </div>
+						 
 				
                   
 	                  
@@ -334,12 +350,13 @@ if(isset($_POST['process']))
 								
 
                               </tr>
-								<tr><td align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></td>
-									<td></td></tr>
+								
                              
                              
                               </tbody>
                           </table>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <br>
 						</form>
 						 </div>
 				
@@ -429,12 +446,13 @@ if(isset($_POST['process']))
 								
 
                               </tr>
-								<tr><td align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></td>
-									<td></td></tr>
+								
                              
                              
                               </tbody>
                           </table>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <br>
 						</form>
 						 </div>
 				
@@ -483,12 +501,9 @@ if(isset($_POST['process']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-  <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+		
 
-  </script>
+
 
   </body>
 </html>
