@@ -52,7 +52,7 @@ if(isset($_POST['process']))
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Bidaai Scheme</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          

@@ -136,7 +136,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
                                   <td>".convert_date($received_date)."</td>
                                  
                                   <td>Difference</td> 
-								   <td>".$diff_days." "."years</td>
+								   <td>".$diff_days." "."days</td>
 								
 
                               </tr>
@@ -433,7 +433,7 @@ function calculateAge(birthday) {
               <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
-            <a href="#" class="logo"><b>Dashboard</b></a>
+            <a href="admin-home.php" class="logo"><b>Bidaai Scheme</b></a>
             <div class="nav notify-row" id="top_menu">
                
                          
@@ -617,7 +617,7 @@ function calculateAge(birthday) {
     <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required max="2000-07-31"> 
+       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required max=""> 
 		
     </div>
     <div class="form-group col-md-3">
@@ -1017,7 +1017,8 @@ gy=yyyy-21;
 
 var today_bride = by+'-'+mm+'-'+dd;
 var today_groom=gy+'-'+mm+'-'+dd;
-
+document.getElementById('inputDateOfBirth').setAttribute("max",today_bride);
+document.getElementById('inputDateOfBirthGroom').setAttribute("max",today_groom);
 </script>
 <script>
 	
