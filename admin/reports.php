@@ -14,23 +14,23 @@ if(isset($_POST['searchReport']))
 	 $appStatus=$_POST['status'];
 	if($appStatus=='Total Applications Applied')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."'";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Pending in Eligibility Check')
 	{
-		$sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2) and created_by='".$_SESSION['login']."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2) and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
 	else if($appStatus=='Pending Eligible Application')
 	{
-		$sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,dob,applicant_name,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."'";
+		$sql="SELECT app_id,id_parse,dob,applicant_name,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else
 	{
-		$sql="SELECT app_id,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$_SESSION['login']."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -209,7 +209,7 @@ if(isset($_POST['searchReport']))
 							  {?>
                               <tr>
                               <td><?php echo $cnt;?></td>
-                                  <td><?php echo $row['app_id'];?></td>
+                                  <td><?php echo $row['id_parse'].sprintf("%05d",$row['app_id']);?></td>
 								  <td><?php echo $row['applicant_name'];?></td>
                                   <td><?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
 								  <td><?php echo $row['parent'];?></td>

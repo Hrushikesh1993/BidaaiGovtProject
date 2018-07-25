@@ -9,6 +9,7 @@ $appstatus=$_GET['appstatus'];
 $sql="SELECT * from application_table where app_id='".$app_id."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
+
 if('Sanction'==$appstatus)
 {
 	if(isset($_POST['process']))
@@ -20,7 +21,7 @@ if('Sanction'==$appstatus)
 		{
 			 $sqlStatus="update application_table set verify_document='".$doc."' ,status=4 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Application got Sanctioned');
+					alert('Application Sanctioned');
 					window.location='application_process.php'
             </script>";
 		}
@@ -28,7 +29,7 @@ if('Sanction'==$appstatus)
 		{
 			  $sqlStatus="update application_table set verify_document='".$doc."', status=0 where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
-					alert('Application got rejected');
+					alert('Application Rejected');
 					window.location='application_process.php'
             </script>";
 		}	
@@ -47,7 +48,7 @@ if(isset($_POST['process']))
 		{
 			 $sqlStatus="update application_table set status=3 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Application got moved to Sanction');
+					alert('Application Sanction');
 					window.location='application_process.php'
             </script>";
 		}
@@ -55,7 +56,7 @@ if(isset($_POST['process']))
 		{
 			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
-					alert('Application got Rejected');
+					alert('Application Rejected');
 					window.location='application_process.php'
             </script>";
 		}	
@@ -187,9 +188,9 @@ if(isset($_POST['process']))
                            
                               <tr>
                               <td>Permanent ID</td>
-                                  <td><?php echo $row['app_id']; ?></td>
+                                  <td><?php echo $row['id_parse'].sprintf('%05d',$row['app_id']);?></td>
 								  <td>Received Date</td>
-                                  <td><?php echo convert_date($row['received_date']); ?></td>
+                                  <td><?php echo convert_date_dmy($row['received_date']); ?></td>
                                  
                                   <td>Difference</td> 
 								   <td><?php $date1=date_create($row['received_date']);
@@ -212,12 +213,12 @@ if(isset($_POST['process']))
                               </tr>
 								<tr>
                               <td>Applicant Date of Birth</td>
-                                  <td><?php echo convert_date($row['dob']); ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                                  <td><?php echo convert_date_dmy($row['dob']); ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
 								  <td>Would-be Groom Date of Birth</td>
-                                  <td><?php echo convert_date($row['groom_dob']); ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                                  <td><?php echo convert_date_dmy($row['groom_dob']); ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</td>
                                  
                                   <td>Marriage Date Fixed</td> 
-								   <td><?php echo convert_date($row['marriage_date']); ?></td>
+								   <td><?php echo convert_date_dmy($row['marriage_date']); ?></td>
 								
 
                               </tr>
@@ -341,10 +342,10 @@ if(isset($_POST['process']))
 
                               </tr>
 								
-								<tr>
+								<tr id="showStatus">
                               <td>Application Sanction &nbsp;<span class="high-light">*</span> </td>
                                   <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputDocumentStatusYes">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputAccept" name="inputAccept" value="reject" required><label for="inputDocumentStatusYes">&nbsp;Reject</label></td>
+	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputDocumentStatusYes">&nbsp;Reject</label></td>
 								  
                            
 								
@@ -437,11 +438,17 @@ if(isset($_POST['process']))
 
                               </tr>
 								
-								<tr>
+								<tr><?php if($row['marital_status_of_the_would_be_groom']=="Unmarried" && $row['marital_status_of_the_would_be_bride']=="Unmarried" && $row['marriage_document']=="Yes" && $row['affidavit_attached']=="Yes" ){?>
                               <td>Application Status &nbsp;<span class="high-light">*</span></td>
-                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputDocumentStatusYes">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputAccept" name="inputAccept" value="reject" required><label for="inputDocumentStatusYes">&nbsp;Reject</label></td>
-								  
+                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
+	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
+								<?php } 
+								else{
+									?>
+								<td>Application Status &nbsp;<span class="high-light">*</span></td>
+                                  <td><input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
+								<?php
+								} ?>
                            
 								
 
@@ -501,7 +508,24 @@ if(isset($_POST['process']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-		
+	<script>
+	
+	$(document).ready(function() {
+	$('#inputVerifyStatusNo').click(function(e){
+	jQuery('#inputAccept').hide();
+	
+	});
+	});
+		$(document).ready(function() {
+			
+			
+			
+	$('#inputVerifyStatusYes').click(function(e){
+	jQuery('#inputAccept').show();
+	
+	});
+	});
+	</script>
 
 
 

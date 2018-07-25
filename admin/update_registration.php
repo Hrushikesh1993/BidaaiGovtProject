@@ -2,6 +2,7 @@
 session_start();
 include'dbconnection.php';
 include("checklogin.php");
+include("function.php");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 check_login();
 $show="";
@@ -10,10 +11,12 @@ $message="";
 
 if(isset($_POST['searchButton']))
 {
-  $search_text=$_POST['search'];
-  $_SESSION['search']=$search_text;
+  $search_text_unparse=$_POST['search'];
+  $search_text=(int)substr($_POST['search'], -5);
+  $_SESSION['search']=$search_text_unparse;
+  $_SESSION['search_id']=$search_text;
   $result_array="";
-  $result=mysqli_query($con,"SELECT * from application_table where app_id='$search_text' and (status=1 or status=2) and created_by='".$_SESSION['login']."'");
+  $result=mysqli_query($con,"SELECT * from application_table where app_id=$search_text and (status=1 or status=2) and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
   if($rowcount==1)
   {
@@ -42,11 +45,11 @@ $applicant_name_kannada=$_POST['applicant_name_kannada'];
   $religion=$_POST['religion'];
   $mobile=$_POST['mobile'];
   $annual_income=$_POST['annual_income'];
-  $dob=$_POST['date_of_birth'];
-  $received_date=$_POST['received_date'];
+  $dob=convert_date($_POST['date_of_birth']);
+  $received_date=convert_date($_POST['received_date']);
   $marriage_place=$_POST['place_of_marriage'];
 $marriage_place_kannada=$_POST['place_of_marriage_kannada'];
-  $marriage_date=$_POST['date_of_marriage'];
+  $marriage_date=convert_date($_POST['date_of_marriage']);
    $age_proof=$_POST['age_proof'];
   $domicile_state=$_POST['domicile_state'];
   $domicile_proof=$_POST['domicile_proof'];
@@ -81,7 +84,7 @@ $path="";
 		$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
 	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
   $groom_mobile=$_POST['groom_mobile'];
-  $groom_dob=$_POST['groom_date_of_birth'];
+$groom_dob=convert_date($_POST['groom_date_of_birth']);
   $groom_age_proof=$_POST['groom_age_proof'];
   $groom_aadhar_no=$_POST['groom_aadhar'];
   $marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
@@ -100,7 +103,7 @@ $path="";
 	  
 
   $sql_query=
-  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id='".$_SESSION['search']."'";
+  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id='".$_SESSION['search_id']."'";
 
   $sql_exec=mysqli_query($con,$sql_query);
   if($sql_exec)
@@ -130,6 +133,8 @@ $path="";
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
  <link href="assets/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+ <link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
 <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
 	
 
@@ -510,18 +515,29 @@ function calculateAge(birthday) {
       <input type="text" class="form-control" id="inputAnnualIncome" name="annual_income" required maxlength="6" value="<?php echo $result_array['annual_income'];  ?>"maxlength="6">
     </div>
   </div>
-    <div class="form-row">
+<div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required value="<?php echo $result_array['dob']; ?>" max="2000-07-31">
+       <div id="inputDateOfBirth" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly  name="date_of_birth" required  value="<?php echo convert_date_dmy($result_array['dob']); ?>"/>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div> 
+		
     </div>
     <div class="form-group col-md-3">
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputReceivedDate" name="received_date" required value="<?php echo $result_array['received_date']; ?>">
+      
+	   <div id="inputReceivedDate" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="received_date" value="<?php echo convert_date_dmy($result_array['received_date']); ?>"/>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div> 
     </div>
     <div class="form-group col-md-3">
       <label for="inputDateOfMarriage">13. Date of Marriage </label>&nbsp;<span class="high-light">*</span>
-      <input type="Date" class="form-control" id="inputDateOfMarriage" name="date_of_marriage" required value="<?php echo $result_array['marriage_date']; ?>">
+ <div id="inputDateOfMarriage" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="date_of_marriage" value="<?php echo convert_date_dmy($result_array['marriage_date']); ?>" />
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputPlaceOfMarriage">14. Place of Marriage </label>&nbsp;<span class="high-light">*</span>
@@ -529,6 +545,7 @@ function calculateAge(birthday) {
 	<input type="text" class="form-control" id="inputPlaceOfMarriageKannada" name="place_of_marriage_kannada"value="<?php echo $result_array['marriage_place_kannada'] ;?>">
     </div>
   </div>
+      
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputAgeProof">15. Age Proof </label>&nbsp;<span class="high-light">*</span>
@@ -551,7 +568,7 @@ function calculateAge(birthday) {
 	  </select>
     </div>
 		    <div class="form-group col-md-4">
-      <label for="inputDomicileProof">15. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputDomicileProof">17. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="domicile_proof" id="inputDomicileProof" placeholder="" required>
 	  <option value="<?php echo $result_array['domicile_proof']; ?>"><?php echo $result_array['domicile_proof']; ?></option> 
 	  <option value="Aadhar Card">Aadhar Card</option>
@@ -568,8 +585,8 @@ function calculateAge(birthday) {
 	</div>
 	
 	  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputPhysicalHandicap">17.Physically Handicaped </label>&nbsp;<span class="high-light">*</span>
+    <div class="form-group col-md-4">
+      <label for="inputPhysicalHandicap">18.Physically Handicaped </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="physical_handicap" id="inputPhysicalHandicap" placeholder="" required>
 	   <option  value="<?php echo $result_array['physically_handicap']; ?>"><?php echo $result_array['physically_handicap']; ?></option>
 	  <option  value="Applicant">Applicant</option>
@@ -581,7 +598,7 @@ function calculateAge(birthday) {
 	  </select>
     </div>
     <div class="form-group col-md-4">
-      <label for="inputPhoto">18. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputPhoto">19. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
       <input class="form-control" type="file" id="inputPhoto" name="applicant_photo"onchange="previewFile()">
 		
 	  <p id="errorText" class="high-light"></p>
@@ -595,31 +612,31 @@ function calculateAge(birthday) {
 	</div>
 	  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputAadhar">19.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputAadhar">20.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
        <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['aadhar_no']; ?>"maxlength="12">
 	  
     </div>
     <div class="form-group col-md-4">
-      <label for="inputFatherAadhar">20. Father Aadhar No.</label>
+      <label for="inputFatherAadhar">21. Father Aadhar No.</label>
        <input type="text" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['father_aadhar']; ?>"maxlength="12"  >
     </div>
     <div class="form-group col-md-4">
-      <label for="inputMotherAadhar">21. Mother Aadhar No.</label>
+      <label for="inputMotherAadhar">22. Mother Aadhar No.</label>
       <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}" value="<?php echo $result_array['mother_aadhar']; ?>" maxlength="12" >
     </div>
   </div>
   	  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputCasteNo">22.Caste Certificate No. </label>
+      <label for="inputCasteNo">23.Caste Certificate No. </label>
        <input type="text" pattern="[a-zA-Z0-9]+"  class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
 	  
     </div>
     <div class="form-group col-md-4">
-      <label for="inputIncomeNo">23. Income Certificate No.</label>
+      <label for="inputIncomeNo">24. Income Certificate No.</label>
        <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['income_certificate_no']; ?>">
     </div>
     <div class="form-group col-md-4">
-      <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
+      <label for="inputBPL">25. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['bpl_card_no']; ?>" maxlength="15">
     </div>
   </div>
@@ -715,9 +732,7 @@ function calculateAge(birthday) {
       <input type="text" class="form-control" id="inputGroomName" name="groom_name" placeholder="" value="<?php echo $result_array['name_of_the_would_be_groom']; ?>"pattern="[a-zA-Z\s]+">
 	  <input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" value="<?php echo $result_array['name_of_the_would_be_groom_kannada']; ?>">
     </div>
-
-  </div>
-  <div class="form-group col-md-4">
+	  <div class="form-group col-md-4">
     <label for="inputGroomAddress">2.Address</label>
     <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" value="<?php echo $result_array['address_of_the_would_be_groom']; ?>">
 	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" value="<?php echo $result_array['address_of_the_would_be_groom_kannada']; ?>">
@@ -726,9 +741,20 @@ function calculateAge(birthday) {
       <label for="inputGroomMobile">3. Mobile</label>&nbsp;<span class="high-light">*</span>
        <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" maxlength="10" required value="<?php echo $result_array['groom_mobile']; ?>">
     </div>
-	  <div class="form-group col-md-4">
+	    <div class="form-group col-md-4">
+			<br><br>
+    </div>
+
+  </div>
+
+<div class="form-row">
+
+		  <div class="form-group col-md-4">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required value="<?php echo $result_array['groom_dob']; ?>" max="1997-07-31"> 
+	    <div id="inputDateOfBirthGroom" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="groom_date_of_birth" value="<?php echo convert_date_dmy($result_array['groom_dob']); ?>" />
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
     </div>
 	    <div class="form-group col-md-4">
 		
@@ -747,6 +773,7 @@ function calculateAge(birthday) {
       <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?>">
 	  
     </div>
+</div>
 
   
 
@@ -857,7 +884,10 @@ function calculateAge(birthday) {
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-<script src="assets/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	    <script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    
 
 <script>
 function fetchId()
@@ -873,7 +903,7 @@ function fetchId()
 			console.log(array)
 
 $( "#inputSearch" ).autocomplete({
-	source: array
+	lookup: array
 });
          
        }
@@ -892,7 +922,7 @@ function fetchBank()
 			
 
 $( "#inputBankName" ).autocomplete({
-	source: array
+	lookup: array
 });
          
        }
@@ -913,7 +943,7 @@ function fetchBranch()
 			var array = response.split(",");
 
 $( "#inputBranchName" ).autocomplete({
-	source: array
+	lookup: array
 });
          
        }
@@ -935,6 +965,131 @@ function fetchIfsc()
        }
      });
 }
+
+</script>
+<script>
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+by=yyyy-18;
+gy=yyyy-21;
+ if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+
+var today_bride = dd+'-'+mm+'-'+by;
+var today_groom=dd+'-'+mm+'-'+gy;
+ 
+$(function () {
+  $("#inputDateOfBirth").datepicker({ 
+        autoclose: true, 
+		endDate:today_bride
+  }).datepicker();
+});
+$(function () {
+  $("#inputReceivedDate").datepicker({ 
+        autoclose: true, 
+		todayHighlight: true
+  }).datepicker();
+});
+$(function () {
+  $("#inputDateOfMarriage").datepicker({ 
+        autoclose: true, 
+		
+  }).datepicker();
+});
+$(function () {
+  $("#inputDateOfBirthGroom").datepicker({ 
+        autoclose: true, 
+		endDate:today_groom
+  }).datepicker();
+});
+
+$(document).ready(function() {
+   $('#inputAadhar, #inputFatherAadhar, #inputMotherAadhar,#inputAadharGroom').change(function (e) 
+{
+	var aadhar=e.target.value;
+	console.log(aadhar);
+	  $.ajax({
+       type: "POST",
+       url: "search_aadhar.php",
+	   data:"aadhar="+aadhar,
+       cache: false,
+       success: function(response)
+       {
+		   console.log(response);
+			if(response==0)
+			{
+				alert("Aadhar No. already exists in the database, Please check and verify!!!!");
+				e.target.value="";
+			}
+			else
+			{
+				var ids=[];
+				var search=e.target.value;
+			ids=$('#inputAadhar, #inputFatherAadhar, #inputMotherAadhar,#inputAadharGroom').map(function() {
+			return this.value;}).get();
+			var numOf = 0;
+			for(var i=0;i<ids.length;i++){
+			if(ids[i] === search)
+				numOf++;
+										}
+			if(numOf>1)
+			{
+			alert("Found to be multiple entries of Aadhar No.!!!!");
+			e.target.value="";
+			}
+			}
+         
+       }
+     });
+});
+});
+$(document).ready(function() {
+   $('#inputCasteNo, #inputIncomeNo, #inputBPL').change(function (e) 
+{
+	var doc=e.target.value;
+	console.log(doc);
+	  $.ajax({
+       type: "POST",
+       url: "search_doc.php",
+	   data:"doc="+doc,
+       cache: false,
+       success: function(response)
+       {
+		   console.log(response);
+			if(response==0)
+			{
+				alert("Please check and verify the certificate!!!!");
+				e.target.value="";
+			}
+			else
+			{
+				var ids=[];
+				var search=e.target.value;
+			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL').map(function() {
+			return this.value;}).get();
+			var numOf = 0;
+			for(var i=0;i<ids.length;i++){
+			if(ids[i] === search)
+				numOf++;
+										}
+			if(numOf>1)
+			{
+			alert("Found to be multiple entries!!!!");
+			e.target.value="";
+			}
+			}
+         
+       }
+     });
+});
+});
+
 
 </script>
 

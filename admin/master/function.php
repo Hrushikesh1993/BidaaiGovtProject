@@ -30,6 +30,37 @@ function status_description($status)
 	
 	
 }
+function status_full_description($status)
+{
+	
+	if($status==0)
+	{
+		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days. ";
+	}
+	else if($status==1 || $status==2)
+	{
+		return "Application is pending at eligibility check.";
+		
+	}
+		else if($status==2)
+	{
+		return "Eligible application is pending to get processed";
+		
+	}
+		else if($status==3)
+	{
+		return "Eligible application is pending to get Sanctioned";
+		
+	}
+			else if($status==4)
+	{
+		return " Application successfully approved and sanctioned.";
+		
+	}
+	
+	
+	
+}
 function get_count($cnt)
 {
 	global $con;
@@ -91,6 +122,12 @@ function admin_get_count($cnt)
 	
 }
 function convert_date($dt)
+{
+	$originalDate = $dt ;
+$newDate = date("Y-m-d", strtotime($originalDate));
+return $newDate;
+}
+function convert_date_dmy($dt)
 {
 	$originalDate = $dt ;
 $newDate = date("d-m-Y", strtotime($originalDate));

@@ -29,11 +29,11 @@ if(isset($_POST['submit_app']))
 	$religion=$_POST['religion'];
 	$mobile=$_POST['mobile'];
 	$annual_income=$_POST['annual_income'];
-	$dob=$_POST['date_of_birth'];
-	$received_date=$_POST['received_date'];
+	$dob=convert_date($_POST['date_of_birth']);
+	$received_date=convert_date($_POST['received_date']);
 	$marriage_place=$_POST['place_of_marriage'];
 	$marriage_place_kannada=$_POST['place_of_marriage_kannada'];
-	$marriage_date=$_POST['date_of_marriage'];
+	$marriage_date=convert_date($_POST['date_of_marriage']);
 	$age_proof=$_POST['age_proof'];
     $domicile_state=$_POST['domicile_state'];
 	$domicile_proof=$_POST['domicile_proof'];
@@ -55,7 +55,7 @@ if(isset($_POST['submit_app']))
 	$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
 	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
 	$groom_mobile=$_POST['groom_mobile'];
-	$groom_dob=$_POST['groom_date_of_birth'];
+	$groom_dob=convert_date($_POST['groom_date_of_birth']);
 	$groom_age_proof=$_POST['groom_age_proof'];
 	$groom_aadhar_no=$_POST['groom_aadhar'];
 	$marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
@@ -84,16 +84,149 @@ else
 $new_relogion= substr($religion, 0, 1);
 $new_financial_year1=substr($financial_year, 2, 2);
 $new_financial_year2=substr($financial_year, 7,8);
-$new_rand=sprintf("%06d", mt_rand(1,100000));
-$new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2.$new_relogion.$new_rand;
+$new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2.$new_relogion;
 
 
 	
-  $sql_query=
-	"INSERT INTO application_table(app_id,financial_year, taluk, constituency,village,village_kannada,applicant_name,applicant_name_kannada, parent,parent_kannada, address,address_kannada, religion, mobile, annual_income, dob, received_date, marriage_place,marriage_place_kannada, marriage_date, age_proof, domicile_state,domicile_proof, physically_handicap, applicant_photo, aadhar_no, father_aadhar, mother_aadhar, caste_certificate_no, income_certificate_no, bpl_card_no, account_no, bank, district, branch, ifsc_code, name_of_the_would_be_groom,name_of_the_would_be_groom_kannada, address_of_the_would_be_groom,address_of_the_would_be_groom_kannada, groom_mobile, groom_dob, groom_age_proof, groom_aadhar_no, marital_status_of_the_would_be_groom, marital_status_of_the_would_be_bride, marriage_document, affidavit_attached,verify_document,created_by,status) VALUES ('$new_app_id','$financial_year','$taluk','$constituency','$village','$village_kannada','$applicant_name','$applicant_name_kannada','$parent','$parent_kannada','$address','$address_kannada','$religion','$mobile','$annual_income','$dob','$received_date','$marriage_place','$marriage_place_kannada','$marriage_date','$age_proof','$domicile_state','$domicile_proof','$physically_handicap','$path','$aadhar_no','$father_aadhar','$mother_aadhar','$caste_certificate_no','$income_certificate_no','$bpl_card_no','$account_no','$bank','$district','$branch','$ifsc_code','$name_of_the_would_be_groom','$name_of_the_would_be_groom_kannada','$address_of_the_would_be_groom','$address_of_the_would_be_groom_kannada','$groom_mobile','$groom_dob','$groom_age_proof','$groom_aadhar_no','$marital_status_of_the_would_be_groom','$marital_status_of_the_would_be_bride','$marriage_document','$affidavit_attached','','$created_by','$status')";
+    $sql_query=
+	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='',created_by='$created_by',status='$status'";
+	$last_id="";
 	$sql_exec=mysqli_query($con,$sql_query);
 	if($sql_exec)
 	{
+		$last_id = $con->insert_id;
+			
+		$new_app_id=$new_app_id.sprintf("%05d",$last_id);
+		
+		$set_status=status_description($status);
+		$showVar="";
+		
+							if($status==2 || $status==3 )
+							{
+							
+							 $showVar="<td colspan='3' ><p>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></td>";
+							
+						
+							}
+						
+
+		 $print_var= "<div class='container'><h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'>".strtoupper($_SESSION['login'])."</h4>
+						
+						  <table>
+	                  	  	  
+	                  	  	 <thead>
+							 <tr>
+								<th></th>
+								<th></th>
+								<th></th>
+								
+
+							 </tr>
+							 </thead>
+                              <tbody>
+								 <tr>
+                              <td colspan='3'><img src='$path'  height='100' width='100' alt='Applicant Photo'></td>
+
+								
+
+                              </tr>
+                           
+                              <tr>
+                              <td colspan='3'><h4>Registration ID:$new_app_id</h4></td>
+                                  
+
+							</tr>
+							<tr>
+								<td><p>Application Received Date:".convert_date_dmy($received_date)."</p></td>
+								<td></td>
+                                 
+                                 <td><p>Marriage Date:".convert_date_dmy($marriage_date)."</p></td> 
+							</tr>
+							  <tr>
+								<td ><p>Application Received before:$diff_days</p></td> 
+
+									<td></td>
+									<td><p>Location Marriage:$marriage_place </p><p> $marriage_place_kannada</td>
+									
+											 
+							  
+							  </tr>
+							  <tr><td colspan='3'><h4><u>Bride Details</u></h4></td> </tr>
+								<tr>
+                              <td><p>Name:$applicant_name</p><p>$applicant_name_kannada</p></td>
+                             
+							  <td><p>Date of birth:".convert_date_dmy($dob)."</p></td>
+							  
+							  <td><p>Age:".date_diff(date_create($dob), date_create('today'))->y."&nbsp;Years</p></td>
+							  
+							    
+                                 
+                                  
+								
+
+                              </tr>
+							  <tr>
+								  <td><p>Parent/Guardian Name:$parent</p><p>$parent_kannada</p></td>
+								   <td></td>
+                                  
+								  <td><p>Religion:$religion</p><td>
+                                  
+								  </tr>
+						
+							<tr>
+								  <td><p>Mobile No:$mobile</p></td>
+                                  
+								  <td></td>
+                                  
+								   <td><p>Annual Income:$annual_income</p></td> 
+								   
+							</tr>
+							<tr>
+							<td><p>Address:$address</p><p>;$address_kannada</p></td>
+							</tr>
+					
+								<tr ><td colspan='3' ><h4><u>Bride Groom Details</u></h4></td></tr>
+
+							<tr>
+							       <td ><p>Name:$name_of_the_would_be_groom</p><p>$name_of_the_would_be_groom_kannada</p></td> 
+									
+								  <td  ><p>Date of birth:".convert_date_dmy($groom_dob)."</p></td>
+                                 
+								  <td ><p>Age:".date_diff(date_create($groom_dob), date_create('today'))->y."&nbsp;Years</p></td> 
+							
+							</tr>
+							<tr>
+							       <td colspan='3'><p>Address:$address_of_the_would_be_groom</p><p>$address_of_the_would_be_groom_kannada</p></td> 
+								   
+							
+							</tr>
+							<tr>
+                              
+								  <td colspan='3' ><h4><u>Application Status</u></h4><p>".status_full_description($status)."</p></td>
+
+                            </tr>
+							<tr>
+							$showVar
+							 </tr> 
+							    <tr>                        
+								  <td><p><strong>Date:</strong></p><p><strong>Place:</strong></p></td>
+								  <td></td>
+                                  <td  align='center'><p><strong>District Officer,</strong></p><p><strong>Minority Welfare Department</strong></p><p><strong>".strtoupper($_SESSION['login'])."</strong></p></td>
+								
+                                 
+                                  
+								
+
+                              </tr>
+							                              
+								
+                             
+                             
+                              </tbody>
+                          </table>
+						 </div>";
+						 $disp_button="<button id='disp_button' class='btn btn-primary' onclick='printDiv()'>Print</button>";
+		
     if($status==0)
     {
       $message="Sorry! the Application got Rejected!";
@@ -102,103 +235,14 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
     else
 	{ 
 		                                
-											$set_status=status_description($status);
-
-		 $print_var= "<div class='container'><h2 align='center'>Acknowledgement</h2>
-						  <table class='table table-bordered'>
-	                  	  	  
-	                  	  	 <thead>
-							 <tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-							 </tr>
-							 </thead>
-                              <tbody>
-								 <tr>
-                              <td><img src='$path'  height='100' width='100; alt='Applicant Photo'></td>
-                                  <td> </td>
-								  <td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								
-
-                              </tr>
-                           
-                              <tr>
-                              <td>Permanent ID</td>
-                                  <td>$new_app_id</td>
-								  <td>Received Date</td>
-                                  <td>".convert_date($received_date)."</td>
-                                 
-                                  <td>Difference</td> 
-								   <td>".$diff_days." "."days</td>
-								
-
-                              </tr>
-								<tr>
-                              <td>Name of the Applicant</td>
-                                  <td>$applicant_name<br>$applicant_name_kannada</td>
-								  <td>Name of the Father / Mother/ Guardian</td>
-                                  <td>$parent<br>$parent_kannada</td>
-                                 
-                                  <td>Name of the Would -be Groom</td> 
-								   <td>$name_of_the_would_be_groom<br>$name_of_the_would_be_groom_kannada</td>
-								
-
-                              </tr>
-								<tr>
-                              <td>Applicant Date of Birth</td>
-                                  <td>".convert_date($dob)."<br>Age:".date_diff(date_create($dob), date_create('today'))->y." "."years</td>
-								  <td>Would-be Groom Date of Birth</td> 
-                                  <td>".convert_date($groom_dob)."<br>Age:".date_diff(date_create($groom_dob), date_create('today'))->y." "."years</td>
-                                 
-                                  <td>Marriage Date Fixed</td> 
-								   <td>".convert_date($marriage_date)."</td>
-								
-
-                              </tr>
-								<tr>
-                              <td>Domicile State</td>
-                                  <td>$domicile_state</td>
-								  <td>Annual Income</td> 
-								   <td>$annual_income</td>
-								  <td>Physically handicap</td>
-                                  <td>$physically_handicap</td>
-                                 
-                                  
-								
-
-                              </tr>
-							  <tr>
-                              <td>Application Status</td>
-                                  <td>$set_status</td>
-								  <td></td> 
-								   <td></td>
-								  <td></td>
-                                  <td></td>
-                                 
-                                  
-								
-
-                              </tr>
-								
-                             
-                             
-                              </tbody>
-                          </table>
-						 </div>";
+											
 						  
     
      
          
        $message="Details have been Saved Successfully!";
 	   $dis_app_id="Application ID:".$new_app_id;
-	   $disp_button="<button id='disp_button' class='btn btn-primary' onclick='printDiv()'>Print</button>";
+	   
     }
    
 		
@@ -225,6 +269,9 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
    <link href="assets/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+    <link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
+   
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
 <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
 	
 
@@ -617,16 +664,26 @@ function calculateAge(birthday) {
     <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirth" name="date_of_birth" required max=""> 
+       <div id="inputDateOfBirth" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly  name="date_of_birth" required />
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div> 
 		
     </div>
     <div class="form-group col-md-3">
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputReceivedDate" name="received_date" required>
+      
+	   <div id="inputReceivedDate" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="received_date"/>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div> 
     </div>
     <div class="form-group col-md-3">
       <label for="inputDateOfMarriage">13. Date of Marriage </label>&nbsp;<span class="high-light">*</span>
-      <input type="Date" class="form-control" id="inputDateOfMarriage" name="date_of_marriage" required>
+ <div id="inputDateOfMarriage" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="date_of_marriage" />
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputPlaceOfMarriage">14. Place of Marriage </label>&nbsp;<span class="high-light">*</span>
@@ -655,7 +712,7 @@ function calculateAge(birthday) {
 	  </select>
     </div>
 	    <div class="form-group col-md-4">
-      <label for="inputDomicileProof">15. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputDomicileProof">17. Domicile Certificate </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="domicile_proof" id="inputDomicileProof" placeholder="" required>
 	  <option value="">Choose..</option>
 	  <option value="Aadhar Card">Aadhar Card</option>
@@ -665,6 +722,7 @@ function calculateAge(birthday) {
 		<option value="Others">Others</option>
 		<option value="PAN Card">PAN Card</option>
 		<option value="Passport">Passport</option>
+		
 	  </select>
 	
     </div>
@@ -673,7 +731,7 @@ function calculateAge(birthday) {
 	
 	  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputPhysicalHandicap">17.Physically Handicaped </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputPhysicalHandicap">18.Physically Handicaped </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="physical_handicap" id="inputPhysicalHandicap" placeholder="" required>
 	   <option  value="">Choose..</option>
 	  <option  value="Applicant">Applicant</option>
@@ -685,7 +743,7 @@ function calculateAge(birthday) {
 	  </select>
     </div>
     <div class="form-group col-md-4">
-      <label for="inputPhoto">18. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputPhoto">19. Applicant Photo </label>&nbsp;<span class="high-light">*</span>
       <input class="form-control" type="file" id="inputPhoto" name="applicant_photo" onchange="previewFile()">
 	
 	  <p id="errorText" class="high-light"></p>
@@ -699,31 +757,31 @@ function calculateAge(birthday) {
 	</div>
 	  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputAadhar">19.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
+      <label for="inputAadhar">20.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
        <input type="text" pattern="[0-9]{12}" class="form-control" name="aadhar" id="inputAadhar" placeholder="xxxx-xxxx-xxxx" required maxlength="12">
 	  
     </div>
     <div class="form-group col-md-4">
-      <label for="inputFatherAadhar">20. Father Aadhar No.</label>
+      <label for="inputFatherAadhar">21. Father Aadhar No.</label>
        <input type="tel" class="form-control" id="inputFatherAadhar" name="father_aadhar" pattern="[0-9]{12}" maxlength="12">
     </div>
     <div class="form-group col-md-4">
-      <label for="inputMotherAadhar">21. Mother Aadhar No.</label>
+      <label for="inputMotherAadhar">22. Mother Aadhar No.</label>
       <input type="text" class="form-control" id="inputMotherAadhar" name="mother_aadhar" pattern="[0-9]{12}" maxlength="12">
     </div>
   </div>
   	  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputCasteNo">22.Caste Certificate No. </label>
+      <label for="inputCasteNo">23.Caste Certificate No. </label>
        <input type="text" pattern="[a-zA-Z0-9]+" class="form-control" name="caste_no" id="inputCasteNo">
 	  
     </div>
     <div class="form-group col-md-4">
-      <label for="inputIncomeNo">23. Income Certificate No.</label>
+      <label for="inputIncomeNo">24. Income Certificate No.</label>
        <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+">
     </div>
     <div class="form-group col-md-4">
-      <label for="inputBPL">24. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
+      <label for="inputBPL">25. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" maxlength="15">
     </div>
   </div>
@@ -821,9 +879,7 @@ function calculateAge(birthday) {
       <input type="text" class="form-control" name="groom_name" id="inputGroomName" pattern="[a-zA-Z\s]+" required>
 	<input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" placeholder="">
     </div>
-
-  </div>
-  <div class="form-group col-md-4">
+	  <div class="form-group col-md-4">
     <label for="inputGroomAddress">2.Address</label>
     <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="" required>
 	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" placeholder="">
@@ -832,9 +888,19 @@ function calculateAge(birthday) {
       <label for="inputGroomMobile">3. Mobile</label>&nbsp;<span class="high-light">*</span>
        <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" required maxlength="10">
     </div>
-	  <div class="form-group col-md-4">
+		  <div class="form-group col-md-4">
+		  <br>
+		  <br>
+    
+          </div>
+    </div>
+	<div class="form-row">
+		  <div class="form-group col-md-4">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
-       <input type="Date" class="form-control" id="inputDateOfBirthGroom" name="groom_date_of_birth" required max="1997-07-31">
+	    <div id="inputDateOfBirthGroom" class="input-group date" data-date-format="dd-mm-yyyy">
+    <input class="form-control" type="text" readonly required name="groom_date_of_birth" />
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
     </div>
 	    <div class="form-group col-md-4">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
@@ -852,6 +918,11 @@ function calculateAge(birthday) {
       <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required maxlength="12">
 	  
     </div>
+	</div>
+
+  </div>
+	
+
 
   
 
@@ -939,9 +1010,30 @@ function calculateAge(birthday) {
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-
-  <script src="assets/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
+	
+  
 <script>
+$(document).ready(function() {
+    $('#inputAadhar, #inputFatherAadhar, #inputMotherAadhar,#inputAadharGroom,#inputMobile,#inputGroomMobile,#inputAccountNo').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+});
+
 function fetchBranch()
 {
 	var bank_name=document.getElementById("inputBankName").value;
@@ -955,10 +1047,9 @@ function fetchBranch()
        {
 			
 			var array = response.split(",");
-
-$( "#inputBranchName" ).autocomplete({
-	source: array
-});
+   $('#inputBranchName').autocomplete({
+        lookup: array
+    });
          
        }
      });
@@ -990,14 +1081,94 @@ function fetchBank()
 			
 			var array = response.split(",");
 			
-
-$( "#inputBankName" ).autocomplete({
-	source: array
-});
+   $('#inputBankName').autocomplete({
+        lookup: array
+    });
          
        }
      });
 }
+$(document).ready(function() {
+   $('#inputAadhar, #inputFatherAadhar, #inputMotherAadhar,#inputAadharGroom').change(function (e) 
+{
+	var aadhar=e.target.value;
+	console.log(aadhar);
+	  $.ajax({
+       type: "POST",
+       url: "search_aadhar.php",
+	   data:"aadhar="+aadhar,
+       cache: false,
+       success: function(response)
+       {
+		   console.log(response);
+			if(response==0)
+			{
+				alert("Aadhar No. already exists in the database, Please check and verify!!!!");
+				e.target.value="";
+			}
+			else
+			{
+				var ids=[];
+				var search=e.target.value;
+			ids=$('#inputAadhar, #inputFatherAadhar, #inputMotherAadhar,#inputAadharGroom').map(function() {
+			return this.value;}).get();
+			var numOf = 0;
+			for(var i=0;i<ids.length;i++){
+			if(ids[i] === search)
+				numOf++;
+										}
+			if(numOf>1)
+			{
+			alert("Found to be multiple entries of Aadhar No.!!!!");
+			e.target.value="";
+			}
+			}
+         
+       }
+     });
+});
+});
+$(document).ready(function() {
+   $('#inputCasteNo, #inputIncomeNo, #inputBPL').change(function (e) 
+{
+	var doc=e.target.value;
+	console.log(doc);
+	  $.ajax({
+       type: "POST",
+       url: "search_doc.php",
+	   data:"doc="+doc,
+       cache: false,
+       success: function(response)
+       {
+		   console.log(response);
+			if(response==0)
+			{
+				alert("Please check and verify the certificate!!!!");
+				e.target.value="";
+			}
+			else
+			{
+				var ids=[];
+				var search=e.target.value;
+			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL').map(function() {
+			return this.value;}).get();
+			var numOf = 0;
+			for(var i=0;i<ids.length;i++){
+			if(ids[i] === search)
+				numOf++;
+										}
+			if(numOf>1)
+			{
+			alert("Found to be multiple entries!!!!");
+			e.target.value="";
+			}
+			}
+         
+       }
+     });
+});
+});
+
 
 
 </script>
@@ -1015,10 +1186,35 @@ gy=yyyy-21;
         mm='0'+mm
     } 
 
-var today_bride = by+'-'+mm+'-'+dd;
-var today_groom=gy+'-'+mm+'-'+dd;
-document.getElementById('inputDateOfBirth').setAttribute("max",today_bride);
-document.getElementById('inputDateOfBirthGroom').setAttribute("max",today_groom);
+var today_bride = dd+'-'+mm+'-'+by;
+var today_groom=dd+'-'+mm+'-'+gy;
+ 
+$(function () {
+  $("#inputDateOfBirth").datepicker({ 
+        autoclose: true, 
+		endDate:today_bride
+  }).datepicker('update', new Date());
+});
+$(function () {
+  $("#inputReceivedDate").datepicker({ 
+        autoclose: true, 
+		todayHighlight: true
+  }).datepicker('update', new Date());
+});
+$(function () {
+  $("#inputDateOfMarriage").datepicker({ 
+        autoclose: true, 
+		todayHighlight: true
+  }).datepicker('update', new Date());
+});
+$(function () {
+  $("#inputDateOfBirthGroom").datepicker({ 
+        autoclose: true, 
+		endDate:today_groom
+  }).datepicker('update', new Date());
+});
+
+
 </script>
 <script>
 	
@@ -1028,7 +1224,7 @@ document.getElementById('inputDateOfBirthGroom').setAttribute("max",today_groom)
 		   var divToPrint = document.getElementById('divToPrint');
            var popupWin = window.open('', '_blank', 'width=300,height=300');
             popupWin.document.open();
-            popupWin.document.write('<html><body onload="window.print()" style="border: solid black; border-width: thin;">' + divToPrint.innerHTML + '</html>');
+             popupWin.document.write("<html><body onload='window.print()' style='border: solid black; border-width: thin;'><head> <link href='assets/font-awesome/css/font-awesome.css' rel='stylesheet' /><link href='assets/css/style.css' rel='stylesheet'></head>" + divToPrint.innerHTML + "</html>");
             popupWin.document.close();
 			window.location='application_registration.php';
 	  }
