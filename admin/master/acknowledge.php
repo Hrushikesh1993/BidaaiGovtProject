@@ -105,7 +105,7 @@ $row=mysqli_fetch_array($execQuery);
                             </tr>
 							<tr>
 							<?php
-							if($row['status']==2 || $row['status']==3 )
+							if($row['status']==1 || $row['status']==2 || $row['status']==3 )
 							{
 							?>
 							 <td colspan="3" ><p>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></td>

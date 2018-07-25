@@ -101,7 +101,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 		$set_status=status_description($status);
 		$showVar="";
 		
-							if($status==2 || $status==3 )
+							if($status==1 ||$status==2 || $status==3 )
 							{
 							
 							 $showVar="<td colspan='3' ><p>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></td>";
@@ -111,7 +111,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 						
 
 		 $print_var= "<div class='container'><h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'>".strtoupper($_SESSION['login'])."</h4>
-						
+						<div class='row'>
 						  <table>
 	                  	  	  
 	                  	  	 <thead>
@@ -182,7 +182,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 								   
 							</tr>
 							<tr>
-							<td><p>Address:$address</p><p>;$address_kannada</p></td>
+							<td><p>Address:$address</p><p>$address_kannada</p></td>
 							</tr>
 					
 								<tr ><td colspan='3' ><h4><u>Bride Groom Details</u></h4></td></tr>
@@ -223,7 +223,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
                              
                              
                               </tbody>
-                          </table>
+                          </table></div>
 						 </div>";
 						 $disp_button="<button id='disp_button' class='btn btn-primary' onclick='printDiv()'>Print</button>";
 		
