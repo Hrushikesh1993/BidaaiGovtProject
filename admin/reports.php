@@ -191,7 +191,7 @@ if(isset($_POST['searchReport']))
                               <thead>
                               <tr>
                                   <th>SL.No</th>
-                                  <th >Applicant ID</th>
+                                  <th >Registration ID</th>
                                   <th> Applicant Name</th>
                                   <th> Applicant Age</th>
 								  <th> Applicant Parent Name</th>

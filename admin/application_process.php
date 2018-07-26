@@ -14,13 +14,17 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		
+	}
+	else if($appStatus=='Scrutinize')
+	{
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=1 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and (status=1 or status=2) and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
-	
 	$execQuery=mysqli_query($con,$sql);
 	$showTab=1;
 	
@@ -137,6 +141,7 @@ if(isset($_POST['process']))
             <select class="form-control" name="app_process" id="inputTaluk" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
 	  <option  value="Scrutinize">Scrutinize</option>
+	  <option value="Eligible">Eligible</option>
 	  <option value="Sanction">Sanction</option>
 	 
 	  </select>
@@ -180,7 +185,7 @@ if(isset($_POST['process']))
                               <thead>
                               <tr>
                                   <th>SL.No</th>
-                                  <th >Applicant ID</th>
+                                  <th >Registration ID</th>
                                   <th> Applicant Name</th>
                                   <th> Applicant Age</th>
 								  <th> Applicant Parent Name</th>

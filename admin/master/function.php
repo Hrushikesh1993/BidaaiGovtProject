@@ -6,14 +6,14 @@ function status_description($status)
 	{
 		return "Rejected";
 	}
-	else if($status==1 || $status==2)
+	else if($status==1)
 	{
 		return "Pending Eligibility Check";
 		
 	}
 		else if($status==2)
 	{
-		return "Pending Eligibility Application";
+		return "Pending Eligible Application";
 		
 	}
 		else if($status==3)
@@ -35,9 +35,9 @@ function status_full_description($status)
 	
 	if($status==0)
 	{
-		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days. ";
+		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage or the applicant may be not resident of Karnataka. ";
 	}
-	else if($status==1 || $status==2)
+	else if($status==1)
 	{
 		return "Application is pending at eligibility check.";
 		

@@ -16,7 +16,7 @@ if(isset($_POST['searchButton']))
   $_SESSION['search']=$search_text_unparse;
   $_SESSION['search_id']=$search_text;
   $result_array="";
-  $result=mysqli_query($con,"SELECT * from application_table where app_id=$search_text and (status=1 or status=2) and created_by='".$_SESSION['login']."'");
+  $result=mysqli_query($con,"SELECT * from application_table where app_id=$search_text and status=1 and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
   if($rowcount==1)
   {
@@ -89,21 +89,11 @@ $groom_dob=convert_date($_POST['groom_date_of_birth']);
   $groom_aadhar_no=$_POST['groom_aadhar'];
   $marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
   $marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
-  $marriage_document=$_POST['document_status'];
-  $affidavit_attached=$_POST['affidavit_status'];
-  $verify_status="";
-  if($marriage_document=='Yes' && $affidavit_attached=='Yes')
-  {
-	  $status=2;
-  }
-  else
-  {
-	  $status=1; 
-  }
+  $status=1; 
 	  
 
   $sql_query=
-  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride', marriage_document='$marriage_document', affidavit_attached='$affidavit_attached',verify_document='$verify_status',status='$status' where app_id='".$_SESSION['search_id']."'";
+  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',status='$status' where app_id='".$_SESSION['search_id']."'";
 
   $sql_exec=mysqli_query($con,$sql_query);
   if($sql_exec)
@@ -519,7 +509,7 @@ function calculateAge(birthday) {
     <div class="form-group col-md-3">
       <label for="inputDateOfBirth">11. Date of Birth</label>&nbsp;<span class="high-light">*</span>
        <div id="inputDateOfBirth" class="input-group date" data-date-format="dd-mm-yyyy">
-    <input class="form-control" type="text" readonly  name="date_of_birth" required  value="<?php echo convert_date_dmy($result_array['dob']); ?>"/>
+    <input class="form-control" type="text" name="date_of_birth" required  value="<?php echo convert_date_dmy($result_array['dob']); ?>"/>
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div> 
 		
@@ -535,7 +525,7 @@ function calculateAge(birthday) {
     <div class="form-group col-md-3">
       <label for="inputDateOfMarriage">13. Date of Marriage </label>&nbsp;<span class="high-light">*</span>
  <div id="inputDateOfMarriage" class="input-group date" data-date-format="dd-mm-yyyy">
-    <input class="form-control" type="text" readonly required name="date_of_marriage" value="<?php echo convert_date_dmy($result_array['marriage_date']); ?>" />
+    <input class="form-control" type="text" required name="date_of_marriage" value="<?php echo convert_date_dmy($result_array['marriage_date']); ?>" />
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
     </div>
@@ -575,7 +565,6 @@ function calculateAge(birthday) {
 		<option value="Ration Card">Ration Card</option>
 		<option value="Voter ID">Voter ID</option>
 		<option value="Driving License">Driving License</option>
-		<option value="Others">Others</option>
 		<option value="PAN Card">PAN Card</option>
 		<option value="Passport">Passport</option>
 	  </select>
@@ -752,7 +741,7 @@ function calculateAge(birthday) {
 		  <div class="form-group col-md-4">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
 	    <div id="inputDateOfBirthGroom" class="input-group date" data-date-format="dd-mm-yyyy">
-    <input class="form-control" type="text" readonly required name="groom_date_of_birth" value="<?php echo convert_date_dmy($result_array['groom_dob']); ?>" />
+    <input class="form-control" type="text" required name="groom_date_of_birth" value="<?php echo convert_date_dmy($result_array['groom_dob']); ?>" />
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
     </div>
@@ -791,7 +780,7 @@ function calculateAge(birthday) {
 	                  
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
-					  <h5><i class="fa fa-file-word-o"></i> Document Details</h5>
+					  <h5><i class="fa fa-users"></i>&nbsp; Marital Status Details</h5>
 					 
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -815,48 +804,8 @@ function calculateAge(birthday) {
 	  </select>
     </div>
   </div>
-  <div class="form-group col-md-6">
-    
-	<?php 
-	if('Yes'==$result_array['marriage_document'])
-		
-	{
-		?>
-		<label for="inputDocumentStatus">Marriage Document/Invitation Card Attached ? </label><br/>
-    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" checked><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No"><label for="inputDocumentStatusYes">&nbsp;No</label>
-<?php
-	}
-	else{
-	?>
-			<label for="inputDocumentStatus">Marriage Document/Invitation Card Attached ? </label><br/>
-    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" ><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" checked><label for="inputDocumentStatusYes">&nbsp;No</label>
-	<?php
-	}
-	?>
-	
-  </div>
- <div class="form-group col-md-6">
- <?php 
-	if('Yes'==$result_array['affidavit_attached'])
-		
-	{
-		?>
-    <label for="inputAffidavitStatus">Affidavit Attached? </label><br/>
-    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" checked><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No"><label for="inputAffidavitStatusNo">&nbsp;No</label>
-	<?php
-	}else{
-		?>
-		    <label for="inputAffidavitStatus">Affidavit Attached? </label><br/>
-    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" ><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" checked><label for="inputAffidavitStatusNo">&nbsp;No</label>
 
-	<?php
-	}
-	?>
-  </div>
+
   
   
 
@@ -990,12 +939,12 @@ $(function () {
 		endDate:today_bride
   }).datepicker();
 });
-$(function () {
+/* $(function () {
   $("#inputReceivedDate").datepicker({ 
         autoclose: true, 
 		todayHighlight: true
   }).datepicker();
-});
+}); */
 $(function () {
   $("#inputDateOfMarriage").datepicker({ 
         autoclose: true, 

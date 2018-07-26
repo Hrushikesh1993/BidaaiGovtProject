@@ -12,16 +12,73 @@ $row=mysqli_fetch_array($execQuery);
 
 if('Sanction'==$appstatus)
 {
-	if(isset($_POST['process']))
+    	if(isset($_POST['process']))
+{
+	$sqlStatus="";
+		$resp=$_POST['inputAccept'];
+		if($resp=='accept')
+		{
+			 $sqlStatus="update application_table set status=4 where app_id='".$app_id."'";
+			  echo "<script type=\"text/javascript\">
+					alert('Completed with sanction process');
+					window.location='application_process.php'
+            </script>";
+		}
+		else
+		{
+			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
+			   echo "<script type=\"text/javascript\">
+					alert('Application Rejected');
+					window.location='application_process.php'
+            </script>";
+		}	
+    
+    $execQueryStatus=mysqli_query($con,$sqlStatus);	
+}	
+	
+}
+else if('Scrutinize'==$appstatus){
+
+if(isset($_POST['process']))
+{
+		$sqlStatus="";
+		$resp=$_POST['inputAccept'];
+	    $marriage_document=$_POST['document_status'];
+	    $affidavit_attached=$_POST['affidavit_status'];
+		if($resp=='accept')
+		{
+			 $sqlStatus="update application_table set status=2,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
+			  echo "<script type=\"text/javascript\">
+					alert('Application processed to eligibility check');
+					window.location='application_process.php'
+         </script>";
+		}
+		else
+		{
+			  $sqlStatus="update application_table set status=0,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
+			   echo "<script type=\"text/javascript\">
+					alert('Application Rejected');
+					window.location='application_process.php'
+            </script>";
+		}	
+    
+    $execQueryStatus=mysqli_query($con,$sqlStatus);	
+}
+
+}
+else
+{
+	  
+  	if(isset($_POST['process']))
 {
 		$sqlStatus="";
 		$resp=$_POST['inputAccept'];
 		$doc=$_POST['verify_status'];
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set verify_document='".$doc."' ,status=4 where app_id='".$app_id."'";
+			 $sqlStatus="update application_table set verify_document='".$doc."' ,status=3 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Application Sanctioned');
+					alert('Application in process to sanction');
 					window.location='application_process.php'
             </script>";
 		}
@@ -36,35 +93,8 @@ if('Sanction'==$appstatus)
     
     $execQueryStatus=mysqli_query($con,$sqlStatus);	
 }
-	
-}
-else{
 
-if(isset($_POST['process']))
-{
-		$sqlStatus="";
-		$resp=$_POST['inputAccept'];
-		if($resp=='accept')
-		{
-			 $sqlStatus="update application_table set status=3 where app_id='".$app_id."'";
-			  echo "<script type=\"text/javascript\">
-					alert('Application Sanction');
-					window.location='application_process.php'
-            </script>";
-		}
-		else
-		{
-			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
-			   echo "<script type=\"text/javascript\">
-					alert('Application Rejected');
-					window.location='application_process.php'
-            </script>";
-		}	
-    
-    $execQueryStatus=mysqli_query($con,$sqlStatus);	
-}
-
-}
+}	
 
 
 
@@ -187,7 +217,7 @@ if(isset($_POST['process']))
                               </tr>
                            
                               <tr>
-                              <td>Permanent ID</td>
+                              <td>Registration ID</td>
                                   <td><?php echo $row['id_parse'].sprintf('%05d',$row['app_id']);?></td>
 								  <td>Received Date</td>
                                   <td><?php echo convert_date_dmy($row['received_date']); ?></td>
@@ -284,8 +314,210 @@ if(isset($_POST['process']))
 			  if($appstatus=='Sanction')
 			  {
 			  ?>
+			  <div class="row">
+				
+				
+                  
+	                  
+                  <div class="col-md-12">
+                      <div class="content-panel col-md-12">
+					  <div class="row">
 
-				<div class="row">
+						<div class="table-responsive">
+						<form method='post' action="">
+						  <table class="table ">
+	        
+	                  	  	 <thead>
+							 <tr>
+								<th><h4>Document Details</h4></th>
+								<th></th>
+							
+							 </thead>
+                              <tbody>
+								 <tr>
+                              <td>Marital Status of the Would-be Groom</td>
+                                  <td> <?php echo $row['marital_status_of_the_would_be_groom']; ?></td>
+								  
+								
+
+                              </tr>
+                           
+                              <tr>
+                              <td>Marital Status of the Would-be Bride</td>
+                                  <td><?php echo $row['marital_status_of_the_would_be_bride']; ?></td>
+								 
+                                 
+								</tr>
+								<tr>
+                              <td>Marriage Document/Invitation Card Attached ?</td>
+                                  <td><?php echo $row['marriage_document']; ?></td>
+								 
+								
+
+                              </tr>
+								<tr>
+                              <td>Affidavit Attached ?</td>
+                                  <td><?php echo $row['affidavit_attached']; ?></td>
+								  
+								
+
+                              </tr>
+							  <td>Marriage Photo and Necessary Documents have been submitted?</td>
+                                  <td><?php echo $row['verify_document']; ?></td>
+								
+								<tr>
+                              <td>Application Status &nbsp;<span class="high-light">*</span></td>
+                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
+	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
+							
+                           
+								
+
+                              </tr>
+								
+                             
+                             
+                              </tbody>
+                          </table>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <br>
+						</form>
+						 </div>
+				
+                  
+	                  
+               
+                        </div>
+					
+  
+
+
+
+
+
+	 
+
+	
+
+  
+
+                         
+                      </div>
+                  </div>
+				  
+              </div>
+
+			  <?php
+			  }
+			  else if($appstatus=='Scrutinize')
+			  {
+				  ?>
+				  
+				  <div class="row">
+				
+				
+                  
+	                  
+                  <div class="col-md-12">
+                      <div class="content-panel col-md-12">
+					  <div class="row">
+
+						<div class="table-responsive">
+						<form method='post' action="">
+						  <table class="table ">
+	        
+	                  	  	 <thead>
+							 <tr>
+								<th><h4>Document Details</h4></th>
+								<th></th>
+							
+							 </thead>
+                              <tbody>
+								 <tr>
+                              <td>Marital Status of the Would-be Groom</td>
+                                  <td> <?php echo $row['marital_status_of_the_would_be_groom']; ?></td>
+								  
+								
+
+                              </tr>
+                           
+                              <tr>
+                              <td>Marital Status of the Would-be Bride</td>
+                                  <td><?php echo $row['marital_status_of_the_would_be_bride']; ?></td>
+								 
+                                 
+								</tr>
+								<tr>
+                              <td>Marriage Document/Invitation Card Attached ?&nbsp;<span class="high-light">*</span></td>
+                                  <td>
+    
+    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" required><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" required><label for="inputDocumentStatusYes">&nbsp;No</label>
+  </td>
+								 
+								
+
+                              </tr>
+								<tr>
+                              <td>Affidavit Attached ?&nbsp;<span class="high-light">*</span></td>
+                                  <td> 
+
+    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required><label for="inputAffidavitStatusNo">&nbsp;No</label>
+  </td>
+								  
+								
+
+                              </tr>
+								
+								<tr>
+                              <td>Application Status &nbsp;<span class="high-light">*</span></td>
+                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
+	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
+							
+                           
+								
+
+                              </tr>
+								
+                             
+                             
+                              </tbody>
+                          </table>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <br>
+						</form>
+						 </div>
+				
+                  
+	                  
+               
+                        </div>
+					
+  
+
+
+
+
+
+	 
+
+	
+
+  
+
+                         
+                      </div>
+                  </div>
+				  
+              </div>
+			  
+			  <?php
+			    }
+				else
+				{
+			  ?>
+			  				<div class="row">
 				
 				
                   
@@ -383,113 +615,15 @@ if(isset($_POST['process']))
                   </div>
 				  
               </div>
-			  <?php
-			  }
-			  else
-			  {
-				  ?>
-				  
-				  <div class="row">
-				
-				
-                  
-	                  
-                  <div class="col-md-12">
-                      <div class="content-panel col-md-12">
-					  <div class="row">
 
-						<div class="table-responsive">
-						<form method='post' action="">
-						  <table class="table ">
-	        
-	                  	  	 <thead>
-							 <tr>
-								<th><h4>Document Details</h4></th>
-								<th></th>
-							
-							 </thead>
-                              <tbody>
-								 <tr>
-                              <td>Marital Status of the Would-be Groom</td>
-                                  <td> <?php echo $row['marital_status_of_the_would_be_groom']; ?></td>
-								  
-								
-
-                              </tr>
-                           
-                              <tr>
-                              <td>Marital Status of the Would-be Bride</td>
-                                  <td><?php echo $row['marital_status_of_the_would_be_bride']; ?></td>
-								 
-                                 
-								</tr>
-								<tr>
-                              <td>Marriage Document/Invitation Card Attached ?</td>
-                                  <td><?php echo $row['marriage_document']; ?></td>
-								 
-								
-
-                              </tr>
-								<tr>
-                              <td>Affidavit Attached ?</td>
-                                  <td><?php echo $row['affidavit_attached']; ?></td>
-								  
-								
-
-                              </tr>
-								
-								<tr><?php if($row['marital_status_of_the_would_be_groom']=="Unmarried" && $row['marital_status_of_the_would_be_bride']=="Unmarried" && $row['marriage_document']=="Yes" && $row['affidavit_attached']=="Yes" ){?>
-                              <td>Application Status &nbsp;<span class="high-light">*</span></td>
-                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
-								<?php } 
-								else{
-									?>
-								<td>Application Status &nbsp;<span class="high-light">*</span></td>
-                                  <td><input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
-								<?php
-								} ?>
-                           
-								
-
-                              </tr>
-								
-                             
-                             
-                              </tbody>
-                          </table>
-						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
-						  <br>
-						</form>
-						 </div>
-				
-                  
-	                  
-               
-                        </div>
-					
-  
-
-
-
-
-
-	 
-
-	
-
-  
-
-                         
-                      </div>
-                  </div>
-				  
-              </div>
 			  
-			  <?php
-			    }
-			  ?>
+			  
 				  
+				  
+				  <?php
+				  
+				}
+				    ?>
 				  
 				  
 
@@ -511,8 +645,9 @@ if(isset($_POST['process']))
 	<script>
 	
 	$(document).ready(function() {
-	$('#inputVerifyStatusNo').click(function(e){
+	$('#inputDocumentStatusNo,#inputAffidavitStatusNo').change(function(e){
 	jQuery('#inputAccept').hide();
+	jQuery('#inputReject').show();
 	
 	});
 	});
@@ -520,8 +655,27 @@ if(isset($_POST['process']))
 			
 			
 			
-	$('#inputVerifyStatusYes').click(function(e){
+	$('#inputDocumentStatusYes,#inputAffidavitStatusYes').change(function(e){
 	jQuery('#inputAccept').show();
+	jQuery('#inputReject').hide();
+	
+	});
+	});
+	
+		$(document).ready(function() {
+	$('#inputVerifyStatusNo').change(function(e){
+	jQuery('#inputAccept').hide();
+	jQuery('#inputReject').show();
+	
+	});
+	});
+		$(document).ready(function() {
+			
+			
+			
+	$('#inputVerifyStatusYes').change(function(e){
+	jQuery('#inputAccept').show();
+	jQuery('#inputReject').hide();
 	
 	});
 	});
