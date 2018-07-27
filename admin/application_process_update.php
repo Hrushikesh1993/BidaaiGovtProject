@@ -16,17 +16,18 @@ if('Sanction'==$appstatus)
 {
 	$sqlStatus="";
 		$resp=$_POST['inputAccept'];
+		$doc=$_POST['verify_status'];
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set status=4 where app_id='".$app_id."'";
+			 $sqlStatus="update application_table set verify_document='".$doc."' , status=3 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Completed with sanction process');
+					alert('Application processed to fund release');
 					window.location='application_process.php'
             </script>";
 		}
 		else
 		{
-			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
+			  $sqlStatus="update application_table set verify_document='".$doc."', status=0 where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
 					alert('Application Rejected');
 					window.location='application_process.php'
@@ -49,7 +50,7 @@ if(isset($_POST['process']))
 		{
 			 $sqlStatus="update application_table set status=2,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Application processed to eligibility check');
+					alert('Application processed to sanction list');
 					window.location='application_process.php'
          </script>";
 		}
@@ -73,18 +74,18 @@ else
 {
 		$sqlStatus="";
 		$resp=$_POST['inputAccept'];
-		$doc=$_POST['verify_status'];
+		
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set verify_document='".$doc."' ,status=3 where app_id='".$app_id."'";
+			 $sqlStatus="update application_table set status=4 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
-					alert('Application in process to sanction');
+					alert('Fund has been processed');
 					window.location='application_process.php'
             </script>";
 		}
 		else
 		{
-			  $sqlStatus="update application_table set verify_document='".$doc."', status=0 where app_id='".$app_id."'";
+			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
 					alert('Application Rejected');
 					window.location='application_process.php'
@@ -311,7 +312,7 @@ else
 			  
 			  <?php 
 			  
-			  if($appstatus=='Sanction')
+			  if($appstatus=='Fund')
 			  {
 			  ?>
 			  <div class="row">

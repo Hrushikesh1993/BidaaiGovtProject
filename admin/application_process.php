@@ -14,7 +14,7 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		
 	}
 	else if($appStatus=='Scrutinize')
@@ -23,7 +23,7 @@ if(isset($_POST['process']))
 	}
 	else
 	{
-		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
 	$execQuery=mysqli_query($con,$sql);
 	$showTab=1;
@@ -141,8 +141,8 @@ if(isset($_POST['process']))
             <select class="form-control" name="app_process" id="inputTaluk" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
 	  <option  value="Scrutinize">Scrutinize</option>
-	  <option value="Eligible">Eligible</option>
 	  <option value="Sanction">Sanction</option>
+	  <option value="Fund">Fund Release</option>
 	 
 	  </select>
     </div>

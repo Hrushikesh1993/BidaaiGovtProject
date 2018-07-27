@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_WARNING | E_PARSE);
 define('DB_SERVER','localhost');
 define('DB_USER','root');
 define('DB_PASS' ,'');

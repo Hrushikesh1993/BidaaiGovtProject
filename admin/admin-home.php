@@ -113,10 +113,12 @@ check_login();
 							<img alt="Brand" src="assets/img/gokdom_new.png" class="img-responsive">
                 
                 <div id="days" class="timer_box"><h1><?php echo get_count(1);?></h1><p>Received<br>Applications</p></div>
-                <div id="hours" class="timer_box"><h1><?php echo get_count(2);?></h1><p>Eligibility<br>Check</p></div>
-                <div id="minutes" class="timer_box"><h1><?php echo get_count(3);?></h1><p>Eligible<br>Applications</p></div>
-                <div id="seconds" class="timer_box"><h1><?php echo get_count(4);?></h1><p>Rejected<br>Applications</p></div>
-				<div id="seconds" class="timer_box"><h1><?php echo get_count(5);?></h1><p>Sanctioned<br>Applications</p></div>
+				<div id="hours" class="timer_box"><h1><?php echo get_count(2);?></h1><p>Eligibility<br>Check</p></div>
+                <div id="hours" class="timer_box"><h1><?php echo get_count(3);?></h1><p>Eligible<br>Application</p></div>
+                <div id="minutes" class="timer_box"><h1><?php echo get_count(4);?></h1><p>Sanctioned<br>Applications</p></div>
+				<div id="seconds" class="timer_box"><h1><?php echo get_count(5);?></h1><p>Fund<br>Released</p></div>
+                <div id="seconds" class="timer_box"><h1><?php echo get_count(6);?></h1><p>Rejected<br>Applications</p></div>
+				
             </div>
 				</div>
 				</div>

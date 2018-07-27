@@ -12,25 +12,30 @@ if(isset($_POST['searchReport']))
 	$sql="";
 	$financial_year=$_POST['financial_year'];
 	 $appStatus=$_POST['status'];
-	if($appStatus=='Total Applications Applied')
+	if($appStatus=='Total')
 	{
 		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
-	else if($appStatus=='Pending in Eligibility Check')
+	else if($appStatus=='Eligibility')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  (status=1 or status=2) and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
-	else if($appStatus=='Pending Eligible Application')
+	else if($appStatus=='Sanction')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Rejected')
 	{
 		$sql="SELECT app_id,id_parse,dob,applicant_name,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
+	else if($appStatus=='Fund')
+	{
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+	}
 	else
 	{
 		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+		
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -147,11 +152,13 @@ if(isset($_POST['searchReport']))
       <label for="inputStatus">2. Status </label>&nbsp;<span class="high-light">*</span>
             <select class="form-control" name="status" id="inputStatus" required>
 	  <option  value="" selected>Choose..</option>
-	  <option  value="Total Applications Applied">Total Applications Applied</option>
-	  <option value="Pending in Eligibility Check">Pending in Eligibility Check</option>
-	  <option value="Pending Eligible Application">Pending Eligible Application</option>
+	  <option  value="Total">Total Applications Applied</option>
+	  <option value="Eligibility">Pending in Eligibility Check</option>
+	  <option value="Sanction">Pending in Sanction</option>
+	  <option value="Fund">Pending in Fund Release</option>
+	  <option value="Release">Fund Release</option>
 	  <option value="Rejected">Rejected</option>
-	  <option value="Sanctioned">Sanctioned</option>
+	  
 	 
 	  </select>
     </div>
@@ -213,8 +220,8 @@ if(isset($_POST['searchReport']))
 								  <td><?php echo $row['applicant_name'];?></td>
                                   <td><?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
 								  <td><?php echo $row['parent'];?></td>
-                                  <td><?php echo convert_date($row['marriage_date']);?></td> 
-								   <td><?php echo convert_date($row['received_date']);?></td>
+                                  <td><?php echo convert_date_dmy($row['marriage_date']);?></td> 
+								   <td><?php echo convert_date_dmy($row['received_date']);?></td>
 								    <td><?php echo $row['name_of_the_would_be_groom'];?></td>
 								  <td><?php echo status_description($row['status']);?></td>
 								  <td>

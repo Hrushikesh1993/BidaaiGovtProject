@@ -615,18 +615,22 @@ function calculateAge(birthday) {
     </div>
   </div>
   	  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputCasteNo">23.Caste Certificate No. </label>
-       <input type="text" pattern="[a-zA-Z0-9]+"  class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" >
+    <div class="form-group col-md-3">
+      <label for="inputCasteNo">23.Caste Certificate No. </label>&nbsp;<span class="high-light">*</span>
+       <input type="text" pattern="[a-zA-Z0-9]+"  class="form-control" name="caste_no" id="inputCasteNo" value="<?php echo $result_array['caste_certificate_no']; ?>" required>
 	  
     </div>
-    <div class="form-group col-md-4">
-      <label for="inputIncomeNo">24. Income Certificate No.</label>
-       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['income_certificate_no']; ?>">
+    <div class="form-group col-md-3">
+      <label for="inputIncomeNo">24. Income Certificate No.</label>&nbsp;<span class="high-light">*</span>
+       <input type="tel" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['income_certificate_no']; ?>" required>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label for="inputBPL">25. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" value="<?php echo $result_array['bpl_card_no']; ?>" maxlength="15">
+    </div>
+		<div class="form-group col-md-3">
+      <label for="inputSSLC">26. SSLC Registration No.</label>
+      <input type="text" class="form-control" id="inputSSLC" name="sslc_no" pattern="[a-zA-Z0-9]+" maxlength="15" value="<?php echo $result_array['sslc_no']; ?>">
     </div>
   </div>
 	
@@ -738,14 +742,14 @@ function calculateAge(birthday) {
 
 <div class="form-row">
 
-		  <div class="form-group col-md-4">
+		  <div class="form-group col-md-3">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
 	    <div id="inputDateOfBirthGroom" class="input-group date" data-date-format="dd-mm-yyyy">
     <input class="form-control" type="text" required name="groom_date_of_birth" value="<?php echo convert_date_dmy($result_array['groom_dob']); ?>" />
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
     </div>
-	    <div class="form-group col-md-4">
+	    <div class="form-group col-md-3">
 		
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="groom_age_proof" id="inputAgeProofGroom" placeholder="" required>
@@ -757,10 +761,14 @@ function calculateAge(birthday) {
 	  <option value="Affidavit">Affidavit</option>
 	  </select>
     </div>
-	 <div class="form-group col-md-4">
+	 <div class="form-group col-md-3">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
       <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?>">
 	  
+    </div>
+			<div class="form-group col-md-3">
+      <label for="inputGroomSSLC">7. SSLC Registration No.</label>
+      <input type="text" class="form-control" id="inputGroomSSLC" name="sslc_groom_no"  pattern="[a-zA-Z0-9]+" maxlength="15" value="<?php echo $result_array['sslc_groom_no']; ?>">
     </div>
 </div>
 

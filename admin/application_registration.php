@@ -55,12 +55,14 @@ if(isset($_POST['submit_app']))
 	$address_of_the_would_be_groom=$_POST['groom_address'];
 	$name_of_the_would_be_groom_kannada=$_POST['groom_name_kannada'];
 	$address_of_the_would_be_groom_kannada=$_POST['groom_address_kannada'];
+	$sslc_groom_no=$_POST['sslc_groom_no'];
 	$groom_mobile=$_POST['groom_mobile'];
 	$groom_dob=convert_date($_POST['groom_date_of_birth']);
 	$groom_age_proof=$_POST['groom_age_proof'];
 	$groom_aadhar_no=$_POST['groom_aadhar'];
 	$marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
 	$marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
+	$sslc_no=$_POST['sslc_no'];
 
 	 $path = "images/";
     $path = $path . basename($applicant_photo);
@@ -94,7 +96,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 
 	
     $sql_query=
-	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',created_by='$created_by',status='$status'";
+	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no',sslc_no='$sslc_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada',sslc_groom_no='$sslc_groom_no', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',created_by='$created_by',status='$status'";
 	$last_id="";
 	$sql_exec=mysqli_query($con,$sql_query);
 	if($sql_exec)
@@ -776,18 +778,22 @@ function calculateAge(birthday) {
     </div>
   </div>
   	  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputCasteNo">23.Caste Certificate No. </label>
-       <input type="text" pattern="[a-zA-Z0-9]+" class="form-control" name="caste_no" id="inputCasteNo">
+    <div class="form-group col-md-3">
+      <label for="inputCasteNo">23.Caste Certificate No. </label>&nbsp;<span class="high-light">*</span>
+       <input type="text" pattern="[a-zA-Z0-9]+" class="form-control" name="caste_no" id="inputCasteNo" required>
 	  
     </div>
-    <div class="form-group col-md-4">
-      <label for="inputIncomeNo">24. Income Certificate No.</label>
-       <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+">
+    <div class="form-group col-md-3">
+      <label for="inputIncomeNo">24. Income Certificate No.</label>&nbsp;<span class="high-light">*</span>
+       <input type="text" class="form-control" id="inputIncomeNo" name="income_certificate_no" pattern="[a-zA-Z0-9]+" required>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label for="inputBPL">25. BPL Card No.</label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" id="inputBPL" name="bpl_no" required  pattern="[a-zA-Z0-9]+" maxlength="15">
+    </div>
+	<div class="form-group col-md-3">
+      <label for="inputSSLC">25. SSLC Registration No.</label>
+      <input type="text" class="form-control" id="inputSSLC" name="sslc_no"   pattern="[a-zA-Z0-9]+" maxlength="15">
     </div>
   </div>
 	
@@ -893,21 +899,20 @@ function calculateAge(birthday) {
       <label for="inputGroomMobile">3. Mobile</label>&nbsp;<span class="high-light">*</span>
        <input type="tel" class="form-control" id="inputGroomMobile" name="groom_mobile" pattern="[6789][0-9]{9}" required maxlength="10">
     </div>
-		  <div class="form-group col-md-4">
-		  <br>
-		  <br>
-    
-          </div>
+	    <div class="form-group col-md-4">
+      <br><br>
+    </div>
+
     </div>
 	<div class="form-row">
-		  <div class="form-group col-md-4">
+		  <div class="form-group col-md-3">
       <label for="inputDateOfBirthGroom">4. Date of Birth</label>&nbsp;<span class="high-light">*</span>
 	    <div id="inputDateOfBirthGroom" class="input-group date" data-date-format="dd-mm-yyyy">
     <input class="form-control" type="text" required name="groom_date_of_birth" />
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
     </div>
-	    <div class="form-group col-md-4">
+	    <div class="form-group col-md-3">
       <label for="inputAgeProofGroom">5. Age Proof </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="groom_age_proof" id="inputAgeProofGroom" placeholder="" required >
 	   <option  value="">Choose..</option>
@@ -918,10 +923,14 @@ function calculateAge(birthday) {
 	  <option value="Affidavit">Affidavit</option>
 	  </select>
     </div>
-	 <div class="form-group col-md-4">
+	 <div class="form-group col-md-3">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
       <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required maxlength="12">
 	  
+    </div>
+		<div class="form-group col-md-3">
+      <label for="inputGroomSSLC">7. SSLC Registration No.</label>
+      <input type="text" class="form-control" id="inputGroomSSLC" name="sslc_groom_no"  pattern="[a-zA-Z0-9]+" maxlength="15">
     </div>
 	</div>
 
@@ -1125,7 +1134,7 @@ $(document).ready(function() {
 });
 });
 $(document).ready(function() {
-   $('#inputCasteNo, #inputIncomeNo, #inputBPL').change(function (e) 
+   $('#inputCasteNo, #inputIncomeNo, #inputBPL,#inputSSLC,#inputGroomSSLC').change(function (e) 
 {
 	var doc=e.target.value;
 	console.log(doc);
@@ -1146,10 +1155,11 @@ $(document).ready(function() {
 			{
 			var ids=[];
 			var search=e.target.value;
-			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL').map(function() {
+			var search_id=e.target.id;
+			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL,#inputSSLC,#inputGroomSSLC').map(function() {
 			return this.value;}).get();
 			var numOf = 0;
-			if(e.target.id=='inputBPL')
+			if(search_id=='inputBPL' || search_id=='inputSSLC' || search_id=='inputGroomSSLC' )
 			{
 			for(var i=0;i<ids.length;i++){
 			if(ids[i] === search)
