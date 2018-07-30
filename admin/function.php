@@ -18,7 +18,7 @@ function status_description($status)
 	}
 		else if($status==3)
 	{
-		return "Pending to get Funded";
+		return "Pending at Fund Released";
 		
 	}
 			else if($status==4)
@@ -35,7 +35,7 @@ function status_full_description($status)
 	
 	if($status==0)
 	{
-		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage or the applicant may be not resident of Karnataka. ";
+		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage or the applicant may not be resident of Karnataka. ";
 	}
 	else if($status==1)
 	{
@@ -54,7 +54,7 @@ function status_full_description($status)
 	}
 			else if($status==4)
 	{
-		return " Application successfully approved and funded.";
+		return " Application successfully approved and fund has been released.";
 		
 	}
 	
@@ -137,5 +137,6 @@ function convert_date_dmy($dt)
 $newDate = date("d-m-Y", strtotime($originalDate));
 return $newDate;
 }
+
 
 ?>

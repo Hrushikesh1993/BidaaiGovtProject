@@ -100,7 +100,7 @@ $row=mysqli_fetch_array($execQuery);
 							</tr>
 							<tr>
                               
-								  <td colspan="3" ><h4><u>Application Status</u></h4><p> <?php echo status_full_description($row['status']); ?></p></td>
+								  <td colspan="3" ><h4><u>Application Status</u></h4><p><strong> <?php echo status_full_description($row['status']); ?></p></strong></td>
 
                             </tr>
 							<tr>
@@ -108,12 +108,13 @@ $row=mysqli_fetch_array($execQuery);
 							if($row['status']==2 )
 							{
 							?>
-							 <td colspan="3" ><p>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></td>
+							 <td colspan="3" ><p><strong>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</strong></p></td>
 							
 							<?php
 							}
 							?>
 							</tr>
+							<tr><br></tr>
 							
 							    <tr>                        
 								  <td><p><strong>Date:</strong></p><p><strong>Place:</strong></p></td>
@@ -147,7 +148,7 @@ $row=mysqli_fetch_array($execQuery);
 var divToPrint = document.getElementById('divToPrint');
            var popupWin = window.open('', '_blank', 'width=300,height=300');
             popupWin.document.open();
-            popupWin.document.write("<html><body onload='window.print()' style='border: solid black; border-width: thin;'><head> <link href='assets/font-awesome/css/font-awesome.css' rel='stylesheet' /><link href='assets/css/style.css' rel='stylesheet'></head>" + divToPrint.innerHTML + "</html>");
+            popupWin.document.write("<html><head> <link href='assets/font-awesome/css/font-awesome.css' rel='stylesheet' /><link href='assets/css/style.css' rel='stylesheet'></head><body onload='window.print()' style='border: solid black; border-width: thin;'>" + divToPrint.innerHTML + "</html>");
             popupWin.document.close();
 			window.location='reports.php';
 </script>						

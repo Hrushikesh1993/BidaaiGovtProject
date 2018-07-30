@@ -15,11 +15,12 @@ if('Sanction'==$appstatus)
     	if(isset($_POST['process']))
 {
 	$sqlStatus="";
-		$resp=$_POST['inputAccept'];
+		$resp=$_POST['inputAcceptSanction'];
 		$doc=$_POST['verify_status'];
+		$field_check=$_POST['field_check'];
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set verify_document='".$doc."' , status=3 where app_id='".$app_id."'";
+			 $sqlStatus="update application_table set field_check='".$field_check."',verify_document='".$doc."' , status=3 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Application processed to fund release');
 					window.location='application_process.php'
@@ -38,14 +39,31 @@ if('Sanction'==$appstatus)
 }	
 	
 }
+else if('Reverify'==$appstatus)
+{
+	if(isset($_POST['process']))
+{ 
+		 $sqlStatus="update application_table set status=1 where app_id='".$app_id."'";
+			  echo "<script type=\"text/javascript\">
+					alert('Application was revived back to list');
+					window.location='application_process.php'
+         </script>";
+	
+
+	
+    $execQueryStatus=mysqli_query($con,$sqlStatus);	 
+}
+	
+}
 else if('Scrutinize'==$appstatus){
 
 if(isset($_POST['process']))
 {
 		$sqlStatus="";
-		$resp=$_POST['inputAccept'];
-	    $marriage_document=$_POST['document_status'];
-	    $affidavit_attached=$_POST['affidavit_status'];
+		$resp=$_POST['inputAcceptScr'];
+	
+
+	
 		if($resp=='accept')
 		{
 			 $sqlStatus="update application_table set status=2,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
@@ -73,7 +91,7 @@ else
   	if(isset($_POST['process']))
 {
 		$sqlStatus="";
-		$resp=$_POST['inputAccept'];
+		$resp=$_POST['inputAcceptFund'];
 		
 		if($resp=='accept')
 		{
@@ -83,14 +101,6 @@ else
 					window.location='application_process.php'
             </script>";
 		}
-		else
-		{
-			  $sqlStatus="update application_table set status=0 where app_id='".$app_id."'";
-			   echo "<script type=\"text/javascript\">
-					alert('Application Rejected');
-					window.location='application_process.php'
-            </script>";
-		}	
     
     $execQueryStatus=mysqli_query($con,$sqlStatus);	
 }
@@ -197,7 +207,7 @@ else
 	                  	  	  
 	                  	  	 <thead>
 							 <tr>
-								<th><h4>Applicant Details (Would-be Bride)</h4></th>
+								<th><h4>Applicant Details</h4></th>
 								<th></th>
 								<th></th>
 								<th></th>
@@ -207,8 +217,8 @@ else
 							 </thead>
                               <tbody>
 								 <tr>
-                              <td>Applicant Photo</td>
-                                  <td> <img src="<?php echo $row['applicant_photo']; ?>"  height="100" width="100" alt="Applicant Photo"></td>
+                              <td><img src="<?php echo $row['applicant_photo']; ?>"  height="100" width="100" alt="Applicant Photo"></td>
+                                  <td> </td>
 								  <td></td>
 									<td></td>
 									<td></td>
@@ -218,48 +228,48 @@ else
                               </tr>
                            
                               <tr>
-                              <td>Registration ID</td>
-                                  <td><?php echo $row['id_parse'].sprintf('%05d',$row['app_id']);?></td>
-								  <td>Received Date</td>
-                                  <td><?php echo convert_date_dmy($row['received_date']); ?></td>
+                              <td><strong>Registration ID</strong></td>
+                                  <td><strong><?php echo $row['id_parse'].sprintf('%05d',$row['app_id']);?></strong></td>
+								  <td><strong>Received Date</strong></td>
+                                  <td><strong><?php echo convert_date_dmy($row['received_date']); ?></strong></td>
                                  
-                                  <td>Difference</td> 
-								   <td><?php $date1=date_create($row['received_date']);
+                                  <td><strong>Difference</strong></td> 
+								   <td><strong><?php $date1=date_create($row['received_date']);
 											$date2=date_create($row['marriage_date']);
 											$diff=date_diff($date1,$date2);
-											echo $diff->format("%a Days");  ?></td>
+											echo $diff->format("%a Days");  ?></strong></td>
 								
 
                               </tr>
 								<tr>
-                              <td>Name of the Applicant</td>
-                                  <td><?php echo $row['applicant_name']; ?><br><?php echo $row['applicant_name_kannada']; ?></td>
-								  <td>Name of the Father / Mother/ Guardian</td>
-                                  <td><?php echo $row['parent']; ?><br><?php echo $row['parent_kannada']; ?></td>
+                              <td><strong>Name of the Applicant</strong></td>
+                                  <td><strong><?php echo $row['applicant_name']; ?><br><?php echo $row['applicant_name_kannada']; ?></strong></td>
+								  <td><strong>Name of the Father / Mother/ Guardian</strong></td>
+                                  <td><strong><?php echo $row['parent']; ?><br><?php echo $row['parent_kannada']; ?></strong></td>
                                  
-                                  <td>Name of the Would -be Groom</td> 
-								   <td><?php echo $row['name_of_the_would_be_groom']; ?><br><?php echo $row['name_of_the_would_be_groom_kannada']; ?></td>
+                                  <td><strong>Name of the Would-be Groom</strong></td> 
+								   <td><strong><?php echo $row['name_of_the_would_be_groom']; ?><br><?php echo $row['name_of_the_would_be_groom_kannada']; ?></strong></td>
 								
 
                               </tr>
 								<tr>
-                              <td>Applicant Date of Birth</td>
-                                  <td><?php echo convert_date_dmy($row['dob']); ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</td>
-								  <td>Would-be Groom Date of Birth</td>
-                                  <td><?php echo convert_date_dmy($row['groom_dob']); ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</td>
+                              <td><strong>Applicant Date of Birth</strong></td>
+                                  <td><strong><?php echo convert_date_dmy($row['dob']); ?><br>Age:<?php echo date_diff(date_create($row['dob']), date_create('today'))->y;  ?>&nbsp;years</strong></td>
+								  <td><strong>Would-be Groom Date of Birth</strong></td>
+                                  <td><strong><?php echo convert_date_dmy($row['groom_dob']); ?><br>Age:<?php echo date_diff(date_create($row['groom_dob']), date_create('today'))->y;  ?>&nbsp;years</strong></td>
                                  
-                                  <td>Marriage Date Fixed</td> 
-								   <td><?php echo convert_date_dmy($row['marriage_date']); ?></td>
+                                  <td><strong>Marriage Date Fixed<strong></td> 
+								   <td><strong><?php echo convert_date_dmy($row['marriage_date']); ?></strong></td>
 								
 
                               </tr>
 								<tr>
-                              <td>Domicile State</td>
-                                  <td><?php echo $row['domicile_state']; ?></td>
-								  <td>Domicile Certificate</td>
-                                  <td><?php echo $row['domicile_proof']; ?></td>
-								  <td>Annual Income</td> 
-								   <td><?php echo $row['annual_income']; ?></td>
+                              <td><strong>Domicile State</strong></td>
+                                  <td><strong><?php echo $row['domicile_state']; ?></strong></td>
+								  <td><strong>Domicile Certificate</strong></td>
+                                  <td><strong><?php echo $row['domicile_proof']; ?></strong></td>
+								  <td><strong>Annual Income</strong></td> 
+								   <td><strong><?php echo $row['annual_income']; ?></strong></td>
 								  
                                  
                                   
@@ -268,10 +278,10 @@ else
                               </tr>
 							  <tr>
                               
-								  <td>Physically handicap</td>
-                                  <td><?php echo $row['physically_handicap']; ?></td>
-								  <td></td>
-                                  <td></td>
+								  <td><strong>Physically handicap</strong></td>
+                                  <td><strong><?php echo $row['physically_handicap']; ?></strong></td>
+								  <td><strong>Application Status</strong></td>
+                                  <td><strong><?php echo status_description($row['status']); ?></strong></td>
 								  <td></td> 
 								   <td></td>
                                  
@@ -367,9 +377,8 @@ else
                                   <td><?php echo $row['verify_document']; ?></td>
 								
 								<tr>
-                              <td>Application Status &nbsp;<span class="high-light">*</span></td>
-                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
+                              <td>Whether fund has been released ?&nbsp;<span class="high-light">*</span></td>
+                                  <td><input type="Radio"  id="inputAcceptFn" name="inputAcceptFund" value="accept" required><label for="inputAcceptFn">&nbsp;Yes</label></td>
 							
                            
 								
@@ -380,7 +389,7 @@ else
                              
                               </tbody>
                           </table>
-						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Submit</button></div>
 						  <br>
 						</form>
 						 </div>
@@ -410,6 +419,17 @@ else
 
 			  <?php
 			  }
+			else if($appstatus=='Reverify')
+			{
+			?>
+						<form method='post' action="" id="revive_form">
+                         <div align="center"><button type="submit" name="process" class="btn btn-primary"onClick="return  confirm('Do you want to revive???')">Revive Application</button></div>
+						</form>
+				
+			
+		<?php
+			}
+
 			  else if($appstatus=='Scrutinize')
 			  {
 				  ?>
@@ -448,44 +468,53 @@ else
 								 
                                  
 								</tr>
+							 
 								<tr>
-                              <td>Marriage Document/Invitation Card Attached ?&nbsp;<span class="high-light">*</span></td>
-                                  <td>
-    
-    <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" required><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" required><label for="inputDocumentStatusYes">&nbsp;No</label>
-  </td>
+                              <td>Marriage Document/Invitation Card Attached ?</td>
+							  <td><?php echo $row['marriage_document']; ?></td>
 								 
 								
 
                               </tr>
 								<tr>
-                              <td>Affidavit Attached ?&nbsp;<span class="high-light">*</span></td>
-                                  <td> 
-
-    <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
-	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required><label for="inputAffidavitStatusNo">&nbsp;No</label>
-  </td>
+                              <td>Affidavit Attached ?</td>
+                                  <td><?php echo $row['affidavit_attached']; ?></td>
 								  
 								
 
                               </tr>
-								
+								  <?php if($row['affidavit_attached']=='Yes' && $row['marriage_document']=='Yes')
+								{?>
 								<tr>
+
                               <td>Application Status &nbsp;<span class="high-light">*</span></td>
-                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputAccept">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputReject">&nbsp;Reject</label></td>
-							
+                                  <td><input type="Radio"  id="inputAcceptSr" name="inputAcceptScr" value="accept" required  ><label for="inputAccept">&nbsp;Accept</label>&nbsp;
+	<input type="Radio" id="inputRejectSr" name="inputAcceptScr" value="reject" required ><label for="inputReject" >&nbsp;Reject</label></td>
+
                            
 								
 
                               </tr>
+							  <?php
+								}
+							  
+							  ?>
 								
                              
                              
                               </tbody>
                           </table>
+						  							   <?php if($row['affidavit_attached']=='Yes' && $row['marriage_document']=='Yes')
+								{?>
 						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+								<?php } 
+								else
+								{?>
+								<div align="center"><span class="high-light">Please Submit Marriage Document/Invitation Card and Affidavit to process further * </span></div>
+								
+								<?php
+								}
+								?>
 						  <br>
 						</form>
 						 </div>
@@ -567,6 +596,14 @@ else
 
                               </tr>
 							  <tr>
+                              <td>Field Check?&nbsp;<span class="high-light">*</span> </td>
+                                  <td>    <input type="Radio"  id="inputFieldYes" name="field_check" value="Yes"><label for="inputFieldYes" required>&nbsp;Yes</label>&nbsp;
+	<input type="Radio" id="inputFieldNo" name="field_check" value="No" required><label for="inputFieldNo">&nbsp;No</label></td>
+								  
+								
+
+                              </tr>
+							  <tr>
                               <td>Marriage Photo and Necessary Documents have been submitted?&nbsp;<span class="high-light">*</span> </td>
                                   <td>    <input type="Radio"  id="inputVerifyStatusYes" name="verify_status" value="Yes"><label for="inputDocumentStatusYes" required>&nbsp;Yes</label>&nbsp;
 	<input type="Radio" id="inputVerifyStatusNo" name="verify_status" value="No" required><label for="inputDocumentStatusYes">&nbsp;No</label></td>
@@ -577,8 +614,8 @@ else
 								
 								<tr id="showStatus">
                               <td>Application Sanction &nbsp;<span class="high-light">*</span> </td>
-                                  <td><input type="Radio"  id="inputAccept" name="inputAccept" value="accept" required><label for="inputDocumentStatusYes">&nbsp;Accept</label>&nbsp;
-	<input type="Radio" id="inputReject" name="inputAccept" value="reject" required><label for="inputDocumentStatusYes">&nbsp;Reject</label></td>
+                                  <td><input type="Radio"  id="inputAcceptSn" name="inputAcceptSanction" value="accept" required><label for="inputDocumentStatusYes">&nbsp;Accept</label>&nbsp;
+	<input type="Radio" id="inputRejectSn" name="inputAcceptSanction" value="reject" required><label for="inputDocumentStatusYes">&nbsp;Reject</label></td>
 								  
                            
 								
@@ -644,43 +681,30 @@ else
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
 	<script>
-	
-	$(document).ready(function() {
-	$('#inputDocumentStatusNo,#inputAffidavitStatusNo').change(function(e){
-	jQuery('#inputAccept').hide();
-	jQuery('#inputReject').show();
-	
-	});
-	});
-		$(document).ready(function() {
-			
-			
-			
-	$('#inputDocumentStatusYes,#inputAffidavitStatusYes').change(function(e){
-	jQuery('#inputAccept').show();
-	jQuery('#inputReject').hide();
-	
-	});
-	});
+
 	
 		$(document).ready(function() {
-	$('#inputVerifyStatusNo').change(function(e){
-	jQuery('#inputAccept').hide();
-	jQuery('#inputReject').show();
+	$('#inputFieldYes,#inputVerifyStatusYes,#inputVerifyStatusNo,#inputFieldNo,#inputAcceptSn,#inputRejectSn').change(function(e){
+
+    if($('input[name=field_check]:checked').val()=='Yes' && $('input[name=verify_status]:checked').val()=='Yes')
+	{
+		console.log("Yess");
+		$('input:radio[name="inputAcceptSanction"]').filter('[value="accept"]').prop("checked", true);
+	}
+	else
+	{
+		console.log("No");
+		$('input:radio[name="inputAcceptSanction"]').filter('[value="reject"]').prop("checked", true);
+	}
 	
 	});
 	});
-		$(document).ready(function() {
-			
-			
-			
-	$('#inputVerifyStatusYes').change(function(e){
-	jQuery('#inputAccept').show();
-	jQuery('#inputReject').hide();
-	
-	});
-	});
+
 	</script>
+	<script>
+	
+
+</script>
 
 
 

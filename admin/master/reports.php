@@ -16,19 +16,19 @@ if(isset($_POST['searchReport']))
 	 $district=$_POST['district'];
 	if($appStatus=='Total')
 	{
-		 $sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."'";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."'";
 	}
 	else if($appStatus=='Eligibility')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1  and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1  and created_by='".$district."'";
 	}
 	else if($appStatus=='Sanction')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$district."'";
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."'";
 	}
 	else if($appStatus=='Fund')
 	{
@@ -36,7 +36,7 @@ if(isset($_POST['searchReport']))
 	}
 		else
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."'";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -53,7 +53,7 @@ if(isset($_POST['searchReport']))
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>Admin | Manage Users</title>
+    <title>Admin | Reports</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
@@ -227,12 +227,12 @@ if(isset($_POST['searchReport']))
 							  {?>
                               <tr>
                               <td><?php echo $cnt;?></td>
-                                  <td><?php echo $row['app_id'];?></td>
+                                  <td><?php echo $row['id_parse'].sprintf("%05d",$row['app_id']);?></td>
 								  <td><?php echo $row['applicant_name'];?></td>
-                                  <td><?php echo $row['dob'];?></td>
+                                  <td><?php echo convert_date_dmy($row['dob']);?></td>
                                  
-                                  <td><?php echo $row['marriage_date'];?></td> 
-								   <td><?php echo $row['received_date'];?></td>
+                                  <td><?php echo convert_date_dmy($row['marriage_date']);?></td> 
+								   <td><?php echo convert_date_dmy($row['received_date']);?></td>
 								    <td><?php echo $row['name_of_the_would_be_groom'];?></td>
 								  <td><?php echo status_description($row['status']);?></td>
 								  								  <td>

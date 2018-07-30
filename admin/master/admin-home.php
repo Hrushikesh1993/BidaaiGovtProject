@@ -4,10 +4,58 @@ include'dbconnection.php';
 include("function.php");
 include("checklogin.php");
 check_login();
-if(isset($_GET['id']))
+$sql="";
+$district="";
+if(isset($_POST['searchButton']))
 {
+	$district=strtolower($_POST['district']);
+	$sql = "select DISTINCT financial_year as financial_year,\n"
 
+    . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
+
+    . "   count(distinct case when status = 0 then app_id end) as status_0,\n"
+
+    . "   count(distinct case when status = 2 then app_id end) as status_2,\n"
+
+    . "   count(distinct case when status = 3 then app_id end) as status_3,\n"
+
+    . "   count(distinct case when status = 4 then app_id end) as status_4,\n"
+
+    . "   count(distinct app_id) as totals\n"
+
+    . "from application_table where created_by='".$district."' \n"
+
+    . "group by financial_year DESC";	
 }
+else
+{
+$sql = "select DISTINCT financial_year as financial_year,\n"
+
+    . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
+
+    . "   count(distinct case when status = 0 then app_id end) as status_0,\n"
+
+    . "   count(distinct case when status = 2 then app_id end) as status_2,\n"
+
+    . "   count(distinct case when status = 3 then app_id end) as status_3,\n"
+
+    . "   count(distinct case when status = 4 then app_id end) as status_4,\n"
+
+    . "   count(distinct app_id) as totals\n"
+
+    . "from application_table \n"
+
+    . "group by financial_year DESC";	
+}
+
+
+$query=mysqli_query($con,$sql);
+$status_0=0;
+$status_1=0;
+$status_2=0;
+$status_3=0;
+$status_4=0;
+$totals=0;
 ?><!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,6 +70,7 @@ if(isset($_GET['id']))
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	 <link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
 		<style>
 
 	.timer_box{
@@ -103,23 +152,95 @@ if(isset($_GET['id']))
               </ul>
           </div>
       </aside>
-            <section id="main-content">
+      <section id="main-content">
 	  <section class="wrapper">
-	            <div class="container">
-				
+	            <div class="container" id="printCnt">
 				<div class="row">
-				            <div id="timer" data-animated="FadeIn" align="center">
-							<img alt="Brand" src="assets/img/gokdom_new.png" class="img-responsive">
-                
-                <div id="days" class="timer_box"><h1><?php echo admin_get_count(1);?></h1><p>Received<br>Applications</p></div>
-                <div id="hours" class="timer_box"><h1><?php echo admin_get_count(2);?></h1><p>Eligibility<br>Check</p></div>
-                <div id="minutes" class="timer_box"><h1><?php echo admin_get_count(3);?></h1><p>Eligible<br>Applications</p></div>
-                <div id="seconds" class="timer_box"><h1><?php echo admin_get_count(4);?></h1><p>Rejected<br>Applications</p></div>
-				<div id="seconds" class="timer_box"><h1><?php echo admin_get_count(5);?></h1><p>Sanctioned<br>Applications</p></div>
-            </div>
+							<div id="timer" data-animated="FadeIn" align="center">
+			<img alt="Brand" src="assets/img/gokdom_new.png" class="img-responsive">
+			<div class="col-md-1"></div>
+			<div class="col-md-10"><form action="" method="POST" id="searchForm">
+										<div class="col-md-12" id="searchBlock">
+										<div class="form-group col-md-3"> 
+										<input type="text" class="form-control" placeholder="Search for District.." name="district" id="inputDistrict" onfocus="fetchId()" required></div>
+										<div class="form-group col-md-1"> 
+										<button type="submit" name="searchButton" id="searchButton" class="btn btn-primary"><i class="fa fa-search"></i></button>
+										</div>
+										<div class="col-md-4">
+										<h3 align="center"><?php echo strtoupper($district);?> REPORT</h3>
+										</div><div class="col-md-4"></div></div>
+										</form></div>
+			<div class="col-md-1"></div>
+											            
 				</div>
+				</div>
+				<div class="row">
+
+		   <div class="col-md-1"></div>
+				<div class="col-md-10"id="divToPrint">
+				<div class="table-responsive">
+				<table class="table" align="center">
+    <thead>
+      <tr class="success">
+        <th><h4>Financial Year</h4></th>
+        <th><h4>Received Application</h4></th>
+		<th><h4>Eligibility Check</h4></th>
+        <th><h4>Eligibile Application</h4></th>
+		<th><h4>Sanctioned Application</h4></th>
+		<th><h4>Fund Released</h4></th>
+		<th><h4>Rejected Application</h4></th>
+      </tr>
+    </thead>
+    <tbody>
+<?php
+while($row=mysqli_fetch_assoc($query))
+{
+		$status_0=$status_0+$row['status_0'];
+		$status_1=$status_1+$row['status_1'];
+		$status_2=$status_2+$row['status_2'];
+	    $status_3=$status_3+$row['status_3'];
+		$status_4=$status_4+$row['status_4'];
+		$totals=$totals+$row['totals'];
+
+?>
+      <tr class="warning">
+        <td><h5><?php echo $row['financial_year'];?></h5></td>
+		<td><h5><?php echo $row['totals'];?></h5></td>
+        <td><h5><?php echo $row['status_1'];?></h5></td>
+        <td><h5><?php echo $row['status_2'];?></h5></td>
+		<td><h5><?php echo $row['status_3'];?></h5></td>
+		<td><h5><?php echo $row['status_4'];?></h5></td>
+		<td><h5><?php echo $row['status_0'];?></h5></td>
+      </tr>      
+<?php
+}
+?>
+      <tr class="warning">
+        <td><h5>Total</h5></td>
+		<td><h5><?php echo $totals;?></h5></td>
+        <td><h5><?php echo $status_1;?></h5></td>
+        <td><h5><?php echo $status_2;?></h5></td>
+		<td><h5><?php echo $status_3;?></h5></td>
+		<td><h5><?php echo $status_4;?></h5></td>
+		<td><h5><?php echo $status_0;?></h5></td>
+      </tr> 
+
+      
+    </tbody>
+  </table>
+				</div>
+				</div>
+				<div class="col-md-1"></div>
+			
+				
+            
+			
+				</div>
+				<div class="row"><div align="center"><button class="btn btn-primary" id="print_home" onclick="printDiv()">Print</button></div></div>
+
 				</div>
 			</section>
+						
            </section>
 	  </section>
     <script src="assets/js/jquery.js"></script>
@@ -128,11 +249,37 @@ if(isset($_GET['id']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
+		    <script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
   <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+function fetchId()
+{
+	  $.ajax({
+       type: "POST",
+       url: "find_user.php",
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			console.log(array)
 
+$( "#inputDistrict" ).autocomplete({
+	lookup: array
+});
+         
+       }
+     });
+}   
+    function printDiv()
+	  {
+		   var divToPrint = document.getElementById('printCnt');
+           var popupWin = window.open('', '_blank', 'width=300,height=300');
+            popupWin.document.open();
+             popupWin.document.write("<html><head><link href='assets/font-awesome/css/font-awesome.css' rel='stylesheet' /><link href='assets/css/style.css' rel='stylesheet'><style>table, th, td {border: 1px solid black; padding: 5px; text-align: center;}img{ display: block;margin-left: auto;margin-right: auto;width: 30%;}#inputDistrict,#searchButton,#print_home{display: none;} </style></head><body onload='window.print()' style='border: solid black; border-width: thin;'>" + divToPrint.innerHTML + "</html>");
+            popupWin.document.close();
+			
+	  }
   </script>
 
   </body>

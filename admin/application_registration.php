@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include'dbconnection.php';
 include("checklogin.php");
@@ -63,6 +62,8 @@ if(isset($_POST['submit_app']))
 	$marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
 	$marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
 	$sslc_no=$_POST['sslc_no'];
+	$marriage_document=$_POST['document_status'];
+	$affidavit_attached=$_POST['affidavit_status'];
 
 	 $path = "images/";
     $path = $path . basename($applicant_photo);
@@ -96,7 +97,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 
 	
     $sql_query=
-	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no',sslc_no='$sslc_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada',sslc_groom_no='$sslc_groom_no', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',created_by='$created_by',status='$status'";
+	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no',sslc_no='$sslc_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada',sslc_groom_no='$sslc_groom_no', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',created_by='$created_by',status='$status'";
 	$last_id="";
 	$sql_exec=mysqli_query($con,$sql_query);
 	if($sql_exec)
@@ -108,10 +109,10 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 		$set_status=status_description($status);
 		$showVar="";
 		
-							if($status==1 ||$status==2 || $status==3 )
+							if($status==2 )
 							{
 							
-							 $showVar="<td colspan='3' ><p>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></td>";
+							 $showVar="<td colspan='3' ><p><strong>Kindly submit marriage certificate/Daftar,Marriage photo and other document within 15 days after marriage.</p></strong></td>";
 							
 						
 							}
@@ -209,7 +210,7 @@ $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2
 							</tr>
 							<tr>
                               
-								  <td colspan='3' ><h4><u>Application Status</u></h4><p>".status_full_description($status)."</p></td>
+								  <td colspan='3' ><h4><u>Application Status</u></h4><p><strong>".status_full_description($status)."</strong></p></td>
 
                             </tr>
 							<tr>
@@ -741,12 +742,9 @@ function calculateAge(birthday) {
       <label for="inputPhysicalHandicap">18.Physically Handicaped </label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="physical_handicap" id="inputPhysicalHandicap" placeholder="" required>
 	   <option  value="">Choose..</option>
-	  <option  value="Applicant">Applicant</option>
-	  <option  value="Mother">Mother</option>
-	  <option value="Brother">Brother</option>
-	  <option value="Sister">Sister</option>
-	  <option value="Child/Children">Child/Children</option>
-	  <option value="None">None</option>
+	  <option  value="Yes">Yes</option>
+	  <option  value="No">No</option>
+	
 	  </select>
     </div>
     <div class="form-group col-md-4">
@@ -954,7 +952,7 @@ function calculateAge(birthday) {
 	                  
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
-					  <h5><i class="fa fa-users"></i> &nbsp;Marital Status Details</h5>
+					  <h5><i class="fa fa-file-word-o"></i> &nbsp;Document Details</h5>
 					 
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -968,7 +966,7 @@ function calculateAge(birthday) {
 	  </select>
     </div>
      <div class="form-group col-md-6">
-      <label for="inputMaritalStatusBride">1.Marital Status of the Would-be Bride</label>&nbsp;<span class="high-light">*</span>
+      <label for="inputMaritalStatusBride">2.Marital Status of the Would-be Bride</label>&nbsp;<span class="high-light">*</span>
        <select class="form-control" name="bride_marital_status" id="inputMaritalStatusBride" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
 	  <option  value="Married">Married</option>
@@ -976,6 +974,18 @@ function calculateAge(birthday) {
 	  <option value="Divorced">Divorced</option>
 	  <option value="Widow">Widow</option>
 	  </select>
+    </div>
+  </div>
+    <div class="form-row">
+	    <div class="form-group col-md-6">
+	<label for="inputMaritalStatusBride">3.Marriage Document/Invitation Card Attached ?<label>&nbsp;<span class="high-light">*</span>
+           <input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="Yes" required><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" required><label for="inputDocumentStatusYes">&nbsp;No</label>
+    </div>
+    <div class="form-group col-md-6">
+	<label for="inputMaritalStatusBride">4.Affidavit Attached ?<label>&nbsp;<span class="high-light">*</span>
+           <input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required><label for="inputAffidavitStatusNo">&nbsp;No</label>
     </div>
   </div>
 
@@ -995,8 +1005,7 @@ function calculateAge(birthday) {
 			  <button type="reset" class="btn btn-primary">Reset</button>  </div>
 			  <div class="form-group col-md-2">&nbsp;</div>
 			  
-			  </div>
-        <div class="col-md-12">
+			  </div>        <div class="col-md-12">
           <p class="high-light text-center"><?php echo $message;?></p>
         </div>
 			  </form>
@@ -1213,7 +1222,7 @@ $(function () {
 $(function () {
   $("#inputDateOfMarriage").datepicker({ 
         autoclose: true, 
-		todayHighlight: true
+		startDate: today
   }).datepicker();
 });
 $(function () {

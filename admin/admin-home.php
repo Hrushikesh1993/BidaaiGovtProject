@@ -4,6 +4,32 @@ include'dbconnection.php';
 include("function.php");
 include("checklogin.php");
 check_login();
+ $sql = "select DISTINCT financial_year as financial_year,\n"
+
+    . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
+
+    . "   count(distinct case when status = 0 then app_id end) as status_0,\n"
+
+    . "   count(distinct case when status = 2 then app_id end) as status_2,\n"
+
+    . "   count(distinct case when status = 3 then app_id end) as status_3,\n"
+
+    . "   count(distinct case when status = 4 then app_id end) as status_4,\n"
+
+    . "   count(distinct app_id) as totals\n"
+
+    . "from application_table where created_by='".$_SESSION['login']."'\n"
+
+    . "group by financial_year DESC";
+$query=mysqli_query($con,$sql);
+$status_0=0;
+$status_1=0;
+$status_2=0;
+$status_3=0;
+$status_4=0;
+$totals=0;
+
+
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -38,6 +64,13 @@ check_login();
     color: black;
 }
 .timer_box p{ margin-top: 0px;}
+table,tr,td,th{
+text-align:center;
+}
+h3,h4,h5{
+	font-weight:bold;
+	color:black;
+}
 	</style>
   </head>
 
@@ -109,20 +142,74 @@ check_login();
 	            <div class="container">
 				
 				<div class="row">
-				            <div id="timer" data-animated="FadeIn" align="center">
+			<div id="timer" data-animated="FadeIn" align="center">
 							<img alt="Brand" src="assets/img/gokdom_new.png" class="img-responsive">
-                
-                <div id="days" class="timer_box"><h1><?php echo get_count(1);?></h1><p>Received<br>Applications</p></div>
-				<div id="hours" class="timer_box"><h1><?php echo get_count(2);?></h1><p>Eligibility<br>Check</p></div>
-                <div id="hours" class="timer_box"><h1><?php echo get_count(3);?></h1><p>Eligible<br>Application</p></div>
-                <div id="minutes" class="timer_box"><h1><?php echo get_count(4);?></h1><p>Sanctioned<br>Applications</p></div>
-				<div id="seconds" class="timer_box"><h1><?php echo get_count(5);?></h1><p>Fund<br>Released</p></div>
-                <div id="seconds" class="timer_box"><h1><?php echo get_count(6);?></h1><p>Rejected<br>Applications</p></div>
+							<h3 align="center"><?php echo strtoupper($_SESSION['login']);?></h3>
+                <div class="col-md-1"></div>
+				<div class="col-md-10"id="divToPrint">
+				<div class="table-responsive">
+				<table class="table" align="center">
+    <thead>
+      <tr class="success">
+        <th><h4>Financial Year</h4></th>
+        <th><h4>Received Application</h4></th>
+		<th><h4>Eligibility Check</h4></th>
+        <th><h4>Eligibile Application</h4></th>
+		<th><h4>Sanctioned Application</h4></th>
+		<th><h4>Fund Released</h4></th>
+		<th><h4>Rejected Application</h4></th>
+      </tr>
+    </thead>
+    <tbody>
+<?php
+while($row=mysqli_fetch_assoc($query))
+{
+		$status_0=$status_0+$row['status_0'];
+		$status_1=$status_1+$row['status_1'];
+		$status_2=$status_2+$row['status_2'];
+	    $status_3=$status_3+$row['status_3'];
+		$status_4=$status_4+$row['status_4'];
+		$totals=$totals+$row['totals'];
+
+?>
+      <tr class="warning">
+        <td><h5><?php echo $row['financial_year'];?></h5></td>
+		<td><h5><?php echo $row['totals'];?></h5></td>
+        <td><h5><?php echo $row['status_1'];?></h5></td>
+        <td><h5><?php echo $row['status_2'];?></h5></td>
+		<td><h5><?php echo $row['status_3'];?></h5></td>
+		<td><h5><?php echo $row['status_4'];?></h5></td>
+		<td><h5><?php echo $row['status_0'];?></h5></td>
+      </tr>      
+<?php
+}
+?>
+      <tr class="warning">
+        <td><h5>Total</h5></td>
+		<td><h5><?php echo $totals;?></h5></td>
+        <td><h5><?php echo $status_1;?></h5></td>
+        <td><h5><?php echo $status_2;?></h5></td>
+		<td><h5><?php echo $status_3;?></h5></td>
+		<td><h5><?php echo $status_4;?></h5></td>
+		<td><h5><?php echo $status_0;?></h5></td>
+      </tr> 
+
+      
+    </tbody>
+  </table>
+				</div>
+				</div>
+				<div class="col-md-1"></div>
+			
 				
             </div>
+			
 				</div>
+				<div class="row"><div align="center"><button class="btn btn-primary" id="print_home" onclick="printDiv()">Print</button></div></div>
+
 				</div>
 			</section>
+						
            </section>
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -130,12 +217,21 @@ check_login();
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-  <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
-
-  </script>
+<script>
+	
+		 
+      function printDiv()
+	  {
+		   var divToPrint = document.getElementById('timer');
+           var popupWin = window.open('', '_blank', 'width=300,height=300');
+            popupWin.document.open();
+             popupWin.document.write("<html><head><link href='assets/font-awesome/css/font-awesome.css' rel='stylesheet' /><link href='assets/css/style.css' rel='stylesheet'><style>table, th, td {border: 1px solid black; padding: 5px; text-align: center;}img{ display: block;margin-left: auto;margin-right: auto;width: 30%;}</style></head><body onload='window.print()' style='border: solid black; border-width: thin;'>" + divToPrint.innerHTML + "</html>");
+            popupWin.document.close();
+			
+	  }
+	  
+	
+</script>
 
   </body>
 </html>

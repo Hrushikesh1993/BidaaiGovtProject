@@ -812,6 +812,26 @@ function calculateAge(birthday) {
 	  </select>
     </div>
   </div>
+      <div class="form-row">
+	  
+	    <div class="form-group col-md-6">
+		
+	<label for="inputMaritalStatusBride">3.Marriage Document/Invitation Card Attached ?<label>&nbsp;<span class="high-light">*</span>
+			<?php if($result_array['marriage_document']=='Yes'){ ?>
+			<input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="<?php echo $result_array['marriage_document']; ?>" required checked><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="No" required value="<?php echo $result_array['marriage_document']; ?>" ><label for="inputDocumentStatusYes">&nbsp;No</label><?php }?>
+			<?php if($result_array['marriage_document']=='No'){ ?>
+			<input type="Radio"  id="inputDocumentStatusYes" name="document_status" value="<?php echo $result_array['marriage_document']; ?>" required><label for="inputDocumentStatusYes">&nbsp;Yes</label>&nbsp;
+			<input type="Radio" id="inputDocumentStatusNo" name="document_status" value="<?php echo $result_array['marriage_document']; ?>" value="No" required checked><label for="inputDocumentStatusYes">&nbsp;No</label><?php } ?>
+    </div>
+    <div class="form-group col-md-6">
+	<label for="inputMaritalStatusBride">4.Affidavit Attached ?<label>&nbsp;<span class="high-light">*</span>
+	<?php if($result_array['affidavit_attached']=='Yes'){ ?>
+	<input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required checked><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required><label for="inputAffidavitStatusNo">&nbsp;No</label></label><?php }?>
+	<?php if($result_array['affidavit_attached']=='No'){ ?>
+	<input type="Radio"  id="inputAffidavitStatusYes" name="affidavit_status" value="Yes" required><label for="inputAffidavitStatusYes">&nbsp;Yes</label>&nbsp;
+	<input type="Radio"  id="inputAffidavitStatusNo" name="affidavit_status" value="No" required checked><label for="inputAffidavitStatusNo">&nbsp;No</label></label><?php } ?>
+    </div>
+  </div>
 
 
   
