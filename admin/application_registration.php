@@ -1235,6 +1235,7 @@ $("#inputFinancialYear").change(function (e) {
 	}
 	else
 	{
+		$('#inputReceivedDate').datepicker('setEndDate', today_dmy);
 		$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
     }
 

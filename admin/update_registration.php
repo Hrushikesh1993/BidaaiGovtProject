@@ -983,7 +983,7 @@ $("#inputFinancialYear").change(function (e) {
 				$('#inputReceivedDate').datepicker('setStartDate', '01-01-2016');
 	}
 	else
-	{
+	{    $('#inputReceivedDate').datepicker('setEndDate', today_dmy);
 		$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
     }
 
