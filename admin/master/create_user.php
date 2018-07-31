@@ -2,6 +2,7 @@
 session_start();
 include'dbconnection.php';
 include("checklogin.php");
+include("function.php");
 check_login();
 $message="";
 $show="";
@@ -24,10 +25,13 @@ if(isset($_POST['createUser']))
 {
 	$user=trim(strtolower($_POST['username'])," ");
 	$pass=md5($_POST['password']);
-	$sqlQuery=mysqli_query($con,"INSERT into admin(id,username,password,utype) VALUES(null,'$user','$pass','admin')");
+	$user_phone=$_POST['user_phone'];
+	$user_email=$_POST['user_email'];
+	$sqlQuery=mysqli_query($con,"INSERT into admin(id,username,password,user_phone,user_email,utype) VALUES(null,'$user','$pass','$user_phone','$user_email','admin')");
 	if($sqlQuery)
 	{
-		$message="Login has been created successfully";
+		 $rep=send_mail($user_email,$user,$_POST['password']);
+	    $message='Login has been created successfully'.$rep;
 	}
 	else
 	{
@@ -70,6 +74,7 @@ if(isset($_POST['createBank']))
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	 <link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -193,16 +198,36 @@ if(isset($_POST['createBank']))
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
 					  
-					<div class="form-group">
+<div class="form-row">
+	<div class="form-group col-md-6">
     <label for="exampleInputEmail1">User Name</label>
-    <input type="text" class="form-control" name="username" id="exampleInputEmail1" placeholder="Enter Username">
+    <input type="text" class="form-control" name="username" id="exampleInputUserId" placeholder="Enter District Name" required onfocus="fetchDistrict()">
     
   </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+
+	<div class="form-group col-md-6">
+    <label for="exampleInputEmail1">Email</label>
+    <input type="email" class="form-control" name="user_email" id="exampleInputEmail" placeholder="Enter Email" required>
+    
   </div>
-<button type="submit" name="createUser" class="btn btn-primary">Create</button>
+</div>
+<div class="form-row">
+
+  <div class="form-group col-md-6">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" name="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])\S{6,}" id="exampleInputPassword" placeholder="Password" required title="Password must be min length 8 alphanumeric and special character ">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="exampleInputPassword1">Confirm Password</label>
+    <input type="password" class="form-control" name="cnf_password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])\S{6,}" id="exampleInputCnfPassword" placeholder="Password" required title="Password must be min length 8 alphanumeric and special character " onchange="checkPass()">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="exampleInputPassword1">Phone</label>
+    <input type="tel" class="form-control" name="user_phone" id="exampleInputMobile" placeholder="+91-xxxxx-xxxxx" pattern="[6789][0-9]{9}"  required>
+  </div>
+</div>
+<div class="form-row" align="center">
+<button type="submit" name="createUser" class="btn btn-primary">Create</button></div>
 </form>
  
 
@@ -305,11 +330,45 @@ if(isset($_POST['createBank']))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-  <script>
-      $(function(){
-          $('select.styled').customSelect();
-      });
+	<script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
 
+  <script>
+    function fetchDistrict()
+{
+	  $.ajax({
+       type: "POST",
+       url: "find.php",
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			console.log(array)
+
+$( "#exampleInputUserId" ).autocomplete({
+	lookup: array
+});
+         
+       }
+     });
+}
+
+function checkPass()
+{
+		var pass=document.getElementById('exampleInputPassword').value;
+		var cnf=document.getElementById('exampleInputCnfPassword').value;
+		if(pass===cnf)
+		{
+			return;
+		}
+		else
+		{
+			alert("Password didn't Match");
+			document.getElementById('exampleInputPassword').value="";
+			document.getElementById('exampleInputCnfPassword').value="";
+		}
+}
   </script>
 
   </body>

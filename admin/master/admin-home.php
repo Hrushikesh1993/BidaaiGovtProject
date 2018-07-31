@@ -249,7 +249,7 @@ while($row=mysqli_fetch_assoc($query))
     <script src="assets/js/jquery.scrollTo.min.js"></script>
     <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="assets/js/common-scripts.js"></script>
-		    <script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+<script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
 	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
   <script>
 function fetchId()

@@ -8,9 +8,16 @@ if(isset($_POST['Submit']))
 {
 	$uname=$_POST['username'];
 	$utype=$_POST['utype'];
+	$user_email=$_POST['user_email'];
+	$user_phone=$_POST['user_phone'];
 	
-	mysqli_query($con,"update admin set username='$uname' ,utype='$utype' where id='".$_GET['uid']."'");
-$msg="Profile Updated successfully";
+	mysqli_query($con,"update admin set username='$uname',user_email='$user_email',user_phone='$user_phone' ,utype='$utype' where id='".$_GET['uid']."'");
+
+ echo "<script type=\"text/javascript\">
+					alert('Profile Updated successfully');
+					window.location='manage-users.php'
+            </script>";
+
 }
 ?>
 
@@ -99,7 +106,7 @@ $msg="Profile Updated successfully";
 	  <br>
 	  	<h3><i class="fa fa-angle-right"></i>Profile Edit</h3>
           <section class="wrapper">
-          	
+          	<h3><i class="fa fa-angle-right"></i>Edit</h3>
              	
 				<div class="row">
 				
@@ -109,31 +116,41 @@ $msg="Profile Updated successfully";
                       <div class="content-panel col-md-12">
                       
                            <form class="form-horizontal style-form" name="form1" method="post" action="" onSubmit="return valid();">
-                           <p style="color:#F00"><?php echo $msg; ?></p>
-                          <div class="form-group col-md-12">
-						  <div class="col-md-3">
+                          <div class="form-row">
+						  <div class="form-group col-md-5">
                               <label>User Name </label>
+								<input type="text" class="form-control" name="username" value="<?php echo $row['username'];?>" required>
+						  </div><div class="col-md-2"></div>
+								<div class="form-group col-md-5">
+                              <label>Email </label>
+								<input type="text" class="form-control" name="user_email" value="<?php echo $row['user_email'];?>"  required>
 						  </div>
-                            <div class="col-md-9">
-                                  <input type="text" class="form-control" name="username" value="<?php echo $row['username'];?>" >
-                            </div>
+
+							
                           </div>
-						     <div class="form-group col-md-12">
-                              <div class="col-md-3"> <label>User Type </label></div>
-                              <div class="col-md-9">
-                                  <input type="text" class="form-control" name="utype" value="<?php echo $row['utype'];?>" >
-                              </div>
+					<div class="form-row">
+						  <div class="form-group col-md-5">
+                              <label>Mobile No</label>
+								<input type="text" class="form-control" name="user_phone" value="<?php echo $row['user_phone'];?>" required>
+						  </div><div class="col-md-2"></div>
+								<div class="form-group col-md-5">
+                             <label>User Type </label>
+								<input type="text" class="form-control" name="utype" value="<?php echo $row['utype'];?>" required >
+						  </div>
+
+							
                           </div>
+					
                           
                               
                           
                              
                                
 
-                          <div class="form-group col-md-12">
-						  <div class="col-md-3"></div>
-                          <div class="col-md-9"><input type="submit" name="Submit" value="Update" class="btn btn-theme"></div>
-						  </div>
+                          
+						  
+                          <div align="center" ><input type="submit" name="Submit" value="Update" class="btn btn-theme"></div>
+						
                           </form>
                       </div>
                   </div>

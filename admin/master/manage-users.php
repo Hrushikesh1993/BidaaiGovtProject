@@ -31,7 +31,7 @@ if($_SESSION['info']=='User')
 		$msg=mysqli_query($con,"delete from admin where id='$adminid'");
 		if($msg)
 		{
-				echo "<script>alert('Data deleted');</script>";
+				echo "<script>alert('Data deleted');window.location='manage-users.php';</script>";
 		}
 	  }
 }
@@ -43,7 +43,7 @@ if($_SESSION['info']=='Bank')
 		$msg=mysqli_query($con,"delete from bank_details where bank_id='$bankid'");
 		if($msg)
 		{
-				echo "<script>alert('Data deleted');</script>";
+				echo "<script>alert('Data deleted');window.location='manage-users.php'</script>";
 		}
 	  }
 		
@@ -139,6 +139,7 @@ if($_SESSION['info']=='Bank')
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
 					  
+
 					
   <div class="form-row">
     <div class="form-group col-md-3">

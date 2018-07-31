@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("dbconnection.php");
-
+include("function.php");
 if(isset($_POST['login']))
 {
  $adminusername=trim(strtolower($_POST['username']));
@@ -10,13 +10,14 @@ if(isset($_POST['login']))
   $pass=md5($_POST['password']);
 $ret=mysqli_query($con,"SELECT * FROM admin WHERE username='$adminusername' and password='$pass'");
 $num=mysqli_fetch_array($ret);
-$ret_new=mysqli_query($con,"SELECT district_id FROM district_details WHERE district_name='$adminusername'");
+$ret_new=mysqli_query($con,"SELECT district_code,district_id FROM district_details WHERE district_name='$adminusername'");
 $num_new=mysqli_fetch_array($ret_new);
 if($num_new>0)
 {
-	  $n=sprintf("%02d", $num_new['district_id']%100);
+	  $n=$num_new['district_code'];
 	  $_SESSION['district_code']=$n;
 }
+
 if($num>0)
 {
   $_SESSION['login']=trim(strtolower($_POST['username']));
@@ -45,6 +46,24 @@ echo "<script>window.location.href='".$extra."'</script>";
 exit();
 }
 }
+			if(isset($_POST['forgetSubmit']))
+			{
+				$uname=$_POST['uname'];
+				$findQuery=mysqli_query($con,"Select id,user_email from admin where username='$uname'");
+                $return_num=mysqli_num_rows($findQuery);
+				$return_var=mysqli_fetch_array($findQuery);
+				if($return_num==1)
+				{
+					$_SESSION['action1']="Please check your E-mail!";
+					$rep=send_mail_forget($return_var['user_email'],$return_var['id']);
+					
+				}
+				else
+				{
+					$_SESSION['action1']="Usesname does not exists!!";
+				}
+			}
+
 
 ?>
 
@@ -63,6 +82,8 @@ exit();
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
+	<link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
   </head>
 
@@ -91,19 +112,48 @@ exit();
 		            <input type="text" name="username" class="form-control" placeholder="User ID" autofocus>
 		            <br>
 		            <input type="password" name="password" class="form-control" placeholder="Password"><br >
-		            <input  name="login" class="btn btn-theme btn-block" type="submit">
-		         
+		            <input  name="login" class="btn btn-theme btn-block" type="submit"><br>
+					<a  href="#" data-toggle="modal"  data-target="#myModal"><i class="fa fa-unlock-alt" aria-hidden="true"></i>&nbsp;Forget password?</a>
 		        </div>
 		      </form>	  	
 	  	
 	  	</div>
 	  </div>
-    <script src="assets/js/jquery.js"></script>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Forget Password</h4>
+        </div>
+        <div class="modal-body">
+
+    <form method="POST" action="">
+	
+    <input type="text" class="form-control" name="uname" id="exampleInputUserId" placeholder="Enter District Name" required><br>
+	<button type="submit" name="forgetSubmit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+        </div>
+        <div class="modal-footer">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+   <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+    <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="assets/js/jquery.scrollTo.min.js"></script>
+    <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="assets/js/common-scripts.js"></script>
+	<script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
+	
     <script>
-        $.backstretch("assets/img/login-bg.jpg", {speed: 500});
-    </script>
+
+
+	</script>
 
 
   </body>

@@ -678,11 +678,11 @@ function calculateAge(birthday) {
 </div> 
 		
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" id="received">
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
       
 	   <div id="inputReceivedDate" class="input-group date" data-date-format="dd-mm-yyyy">
-    <input class="form-control" type="text" readonly required name="received_date" value="<?php date_default_timezone_set("Asia/Kolkata"); echo date("d-m-Y")?>"/>
+    <input class="form-control" id="received_date" type="text" required name="received_date"/>
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div> 
     </div>
@@ -729,7 +729,7 @@ function calculateAge(birthday) {
 		<option value="Driving License">Driving License</option>
 		<option value="PAN Card">PAN Card</option>
 		<option value="Passport">Passport</option>
-		<option value="Recidential Certificate">Recidential Certificate</option>
+		<option value="Residential Certificate">Residential Certificate</option>
 		
 	  </select>
 	
@@ -1199,6 +1199,7 @@ var yyyy = today.getFullYear();
 by=yyyy-18;
 gy=yyyy-21;
 my=dd+7;
+
  if(dd<10){
         dd='0'+dd
     } 
@@ -1209,6 +1210,47 @@ my=dd+7;
 var today_bride = dd+'-'+mm+'-'+by;
 var today_groom=dd+'-'+mm+'-'+gy;
 var today_my=my+'-'+mm+'-'+yyyy;
+var today_dmy = dd+'-'+mm+'-'+yyyy;
+
+
+$("#inputFinancialYear").change(function (e) {
+	
+	var fy=$('#inputFinancialYear :selected').text();
+	$('#received_date').val('');
+	console.log(fy);
+	var splitY=fy.split("-");
+	
+	if(splitY[0]=="2017")
+	{
+		 console.log("2017");
+		$('#inputReceivedDate').datepicker('setEndDate', '31-12-2017');
+		$('#inputReceivedDate').datepicker('setStartDate','01-01-2017');
+	}
+	
+    else if(splitY[0]=="2016")
+	{
+		console.log("2016");
+				$('#inputReceivedDate').datepicker('setEndDate', '31-12-2016');
+				$('#inputReceivedDate').datepicker('setStartDate', '01-01-2016');
+	}
+	else
+	{
+		$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
+    }
+
+		
+
+	
+	
+});
+$(function () {
+
+		$("#inputReceivedDate").datepicker({ 
+        autoclose: true, 
+		startDate:"now",
+		endDate:"now"
+        }).datepicker();
+});
 
 
  
