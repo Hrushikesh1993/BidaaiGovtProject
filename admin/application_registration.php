@@ -1198,7 +1198,7 @@ var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
 by=yyyy-18;
 gy=yyyy-21;
-my=dd+7;
+my=dd+1;
 
  if(dd<10){
         dd='0'+dd
@@ -1223,20 +1223,27 @@ $("#inputFinancialYear").change(function (e) {
 	if(splitY[0]=="2017")
 	{
 		 console.log("2017");
+		 $('#inputReceivedDate').datepicker('setStartDate','01-01-2017');
 		$('#inputReceivedDate').datepicker('setEndDate', '31-12-2017');
-		$('#inputReceivedDate').datepicker('setStartDate','01-01-2017');
+		$('#inputDateOfMarriage').datepicker('setStartDate','01-01-2017');
+	     $('#inputDateOfMarriage').datepicker('setEndDate', '31-12-2017');
+		
 	}
 	
     else if(splitY[0]=="2016")
 	{
 		console.log("2016");
-				$('#inputReceivedDate').datepicker('setEndDate', '31-12-2016');
 				$('#inputReceivedDate').datepicker('setStartDate', '01-01-2016');
+				$('#inputReceivedDate').datepicker('setEndDate', '31-12-2016');
+				$('#inputDateOfMarriage').datepicker('setStartDate', '01-01-2016');
+				$('#inputDateOfMarriage').datepicker('setEndDate', '31-12-2016');
+				
 	}
 	else
-	{
+	{	$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
 		$('#inputReceivedDate').datepicker('setEndDate', today_dmy);
-		$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
+		$('#inputDateOfMarriage').datepicker('setStartDate',today_my);
+		$('#inputDateOfMarriage').datepicker('setEndDate','31-12-2018');
     }
 
 		
@@ -1265,7 +1272,7 @@ $(function () {
 $(function () {
   $("#inputDateOfMarriage").datepicker({ 
         autoclose: true, 
-		startDate: today
+		startDate: "now"
   }).datepicker();
 });
 $(function () {

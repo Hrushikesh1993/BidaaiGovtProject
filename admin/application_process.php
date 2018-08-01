@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include'dbconnection.php';
@@ -43,7 +44,7 @@ if(isset($_POST['process']))
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title><?php echo strtoupper($_SESSION['login']);?>| Application Process</title>
+    <title><?php echo strtoupper($_SESSION['login']);?> | Application Process</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
@@ -251,21 +252,40 @@ if(isset($_POST['process']))
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-
-
+	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 
 
 
 
   <script>
-     $(document).ready(function() {
+ $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
+       buttons: [
+            'copy',
+            {
+                extend: 'excel',
+                messageTop:null,
+				                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8]
+                },
+			
+            },
+            {
+                extend: 'pdf',
+                 footer: true,
+           exportOptions: {
+                columns: [0,1,2,3,4,5,6,7,8]
+            }
+            },
+            {
+                extend: 'print',
+                messageTop:null,
+                messageBottom: null,
+				exportOptions: {
+                columns: [0,1,2,3,4,5,6,7,8]
+            }
+            }
         ]
     } );
 } );

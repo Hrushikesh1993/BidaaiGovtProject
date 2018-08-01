@@ -1,5 +1,7 @@
 <?php
+
 require_once 'swift/lib/swift_required.php';
+
 function status_description($status)
 {
 	
@@ -416,7 +418,7 @@ $body="
                                 <table border='0' cellpadding='0' cellspacing='0'>
                                   <tbody>
                                     <tr>
-                                      <td> <a href='http://35.173.219.18/reset.php?id=$id' target='_blank'>Reset</a> </td>
+                                      <td> <a href='http://localhost/admin/reset.php?id=$id' target='_blank'>Reset</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -468,6 +470,7 @@ if (!$mailer->send($message, $failures))
   
 
 }
+
 
 
 ?>

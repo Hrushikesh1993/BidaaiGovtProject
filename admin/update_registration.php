@@ -90,11 +90,12 @@ $groom_dob=convert_date($_POST['groom_date_of_birth']);
   $marital_status_of_the_would_be_groom=$_POST['groom_marital_status'];
   $marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
 	$marriage_document=$_POST['document_status'];
-	$affidavit_attached=$_POST['affidavit_status'];
+    $affidavit_attached=$_POST['affidavit_status'];
+
   $status=1; 
 	  
 
-  $sql_query=
+ $sql_query=
   " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',status='$status' where app_id='".$_SESSION['search_id']."'";
 
   $sql_exec=mysqli_query($con,$sql_query);
@@ -520,7 +521,7 @@ function calculateAge(birthday) {
       <label for="inputReceivedDate">12. Received Date</label>&nbsp;<span class="high-light">*</span>
       
 	   <div id="inputReceivedDate" class="input-group date" data-date-format="dd-mm-yyyy">
-    <input class="form-control" type="text" readonly required name="received_date" value="<?php echo convert_date_dmy($result_array['received_date']); ?>"/>
+    <input class="form-control" type="text" required name="received_date" value="<?php echo convert_date_dmy($result_array['received_date']); ?>"/>
     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 </div> 
     </div>
@@ -953,6 +954,8 @@ var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
 by=yyyy-18;
 gy=yyyy-21;
+my=dd+1;
+
  if(dd<10){
         dd='0'+dd
     } 
@@ -962,6 +965,10 @@ gy=yyyy-21;
 
 var today_bride = dd+'-'+mm+'-'+by;
 var today_groom=dd+'-'+mm+'-'+gy;
+var today_my=my+'-'+mm+'-'+yyyy;
+var today_dmy = dd+'-'+mm+'-'+yyyy;
+
+
 $("#inputFinancialYear").change(function (e) {
 	
 	var fy=$('#inputFinancialYear :selected').text();
@@ -972,19 +979,27 @@ $("#inputFinancialYear").change(function (e) {
 	if(splitY[0]=="2017")
 	{
 		 console.log("2017");
+		 $('#inputReceivedDate').datepicker('setStartDate','01-01-2017');
 		$('#inputReceivedDate').datepicker('setEndDate', '31-12-2017');
-		$('#inputReceivedDate').datepicker('setStartDate','01-01-2017');
+		$('#inputDateOfMarriage').datepicker('setStartDate','01-01-2017');
+	     $('#inputDateOfMarriage').datepicker('setEndDate', '31-12-2017');
+		
 	}
 	
     else if(splitY[0]=="2016")
 	{
 		console.log("2016");
-				$('#inputReceivedDate').datepicker('setEndDate', '31-12-2016');
 				$('#inputReceivedDate').datepicker('setStartDate', '01-01-2016');
+				$('#inputReceivedDate').datepicker('setEndDate', '31-12-2016');
+				$('#inputDateOfMarriage').datepicker('setStartDate', '01-01-2016');
+				$('#inputDateOfMarriage').datepicker('setEndDate', '31-12-2016');
+				
 	}
 	else
-	{    $('#inputReceivedDate').datepicker('setEndDate', today_dmy);
-		$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
+	{	$('#inputReceivedDate').datepicker('setStartDate', today_dmy);
+		$('#inputReceivedDate').datepicker('setEndDate', today_dmy);
+		$('#inputDateOfMarriage').datepicker('setStartDate',today_my);
+		$('#inputDateOfMarriage').datepicker('setEndDate','31-12-2018');
     }
 
 		

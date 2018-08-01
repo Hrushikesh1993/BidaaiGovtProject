@@ -9,6 +9,9 @@ $appstatus=$_GET['appstatus'];
 $sql="SELECT * from application_table where app_id='".$app_id."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
+$today= date("Y-m-d");
+
+
 
 if('Sanction'==$appstatus)
 {
@@ -66,7 +69,7 @@ if(isset($_POST['process']))
 	
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set status=2,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
+			 $sqlStatus="update application_table set status=2 where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Application processed to sanction list');
 					window.location='application_process.php'
@@ -375,7 +378,7 @@ else
                               </tr>
 							  <td>Marriage Photo and Necessary Documents have been submitted?</td>
                                   <td><?php echo $row['verify_document']; ?></td>
-								
+								<?php  if($today > date($row['marriage_date'])) {?>
 								<tr>
                               <td>Whether fund has been released ?&nbsp;<span class="high-light">*</span></td>
                                   <td><input type="Radio"  id="inputAcceptFn" name="inputAcceptFund" value="accept" required><label for="inputAcceptFn">&nbsp;Yes</label></td>
@@ -384,13 +387,16 @@ else
 								
 
                               </tr>
-								
+								<?php } ?>
                              
                              
                               </tbody>
                           </table>
-						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Submit</button></div>
+						  <div align="center">
+						  <?php if($today > $row['marriage_date']) {?>
+						  <button type="submit" name="process" class="btn btn-primary" onClick="return  confirm('Do you want to confirm???')">Submit</button></div>
 						  <br>
+						  <?php } ?>
 						</form>
 						 </div>
 				
@@ -506,7 +512,7 @@ else
                           </table>
 						  							   <?php if($row['affidavit_attached']=='Yes' && $row['marriage_document']=='Yes')
 								{?>
-						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary" onClick="return  confirm('Do you want to confirm???')">Application Process</button></div>
 								<?php } 
 								else
 								{?>
@@ -544,7 +550,7 @@ else
 			  
 			  <?php
 			    }
-				else
+				else if($appstatus=='Sanction')
 				{
 			  ?>
 			  				<div class="row">
@@ -581,9 +587,9 @@ else
 								 
                                  
 								</tr>
-								<tr>
+															<tr>
                               <td>Marriage Document/Invitation Card Attached ?</td>
-                                  <td><?php echo $row['marriage_document']; ?></td>
+							  <td><?php echo $row['marriage_document']; ?></td>
 								 
 								
 
@@ -595,6 +601,7 @@ else
 								
 
                               </tr>
+
 							  <tr>
                               <td>Field Check?&nbsp;<span class="high-light">*</span> </td>
                                   <td>    <input type="Radio"  id="inputFieldYes" name="field_check" value="Yes"><label for="inputFieldYes" required>&nbsp;Yes</label>&nbsp;
@@ -603,6 +610,7 @@ else
 								
 
                               </tr>
+
 							  <tr>
                               <td>Marriage Photo and Necessary Documents have been submitted?&nbsp;<span class="high-light">*</span> </td>
                                   <td>    <input type="Radio"  id="inputVerifyStatusYes" name="verify_status" value="Yes"><label for="inputDocumentStatusYes" required>&nbsp;Yes</label>&nbsp;
@@ -626,7 +634,7 @@ else
                              
                               </tbody>
                           </table>
-						  <div align="center"><button type="submit" name="process" class="btn btn-primary">Application Process</button></div>
+						  <div align="center"><button type="submit" name="process" class="btn btn-primary" onClick="return  confirm('Do you want to process???')">Application Process</button></div>
 						  <br>
 						</form>
 						 </div>
