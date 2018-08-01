@@ -145,8 +145,8 @@ function send_mail_forget($user_email,$id)
 
  $user_email;
  $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-  ->setUsername('hkp.anup@gmail.com')
-  ->setPassword('anupHrushi#9740422691');
+  ->setUsername('bidaai2018@gmail.com')
+  ->setPassword('bidaai@123');
 $body="
 <html>
   <head>
@@ -460,7 +460,7 @@ $body="
 $mailer = Swift_Mailer::newInstance($transport);
 
 $message = Swift_Message::newInstance('Reset Password')
-  ->setFrom(array('hkp.anup@gmail.com' => 'Bidaai Admin'))
+  ->setFrom(array('bidaai2018@gmail.com' => 'Bidaai Admin'))
   ->setTo(array($user_email))
   ->addPart($body,'text/html');
 if (!$mailer->send($message, $failures))
