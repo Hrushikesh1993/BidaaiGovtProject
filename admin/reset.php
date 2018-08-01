@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 include'dbconnection.php';
 
 if(isset($_POST['resets']))
