@@ -16,27 +16,27 @@ if(isset($_POST['searchReport']))
 	 $district=$_POST['district'];
 	if($appStatus=='Total')
 	{
-		 $sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."'";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Eligibility')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1  and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1  and created_by='".$district."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Sanction')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$district."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,id_parse,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Fund')
 	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$district."'";
+		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$district."' ORDER BY marriage_date";
 	}
 		else
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."'";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."' ORDER BY marriage_date";
 	}
 	
 	$execQuery=mysqli_query($con,$sql);

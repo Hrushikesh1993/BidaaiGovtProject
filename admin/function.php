@@ -145,8 +145,8 @@ function send_mail_forget($user_email,$id)
 
  $user_email;
  $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-  ->setUsername('hkp.anup@gmail.com')
-  ->setPassword('ranjan#123');
+  ->setUsername('bidaai2018@gmail.com')
+  ->setPassword('bidaai@123');
 $body="
 <html>
   <head>
@@ -400,7 +400,7 @@ $body="
           <div class='content'>
 
             <!-- START CENTERED WHITE CONTAINER -->
-            <span class='preheader'>This is preheader text. Some clients will show this text as a preview.</span>
+            <span class='preheader'>This is a auto generated mail from bidaaigokdom.in.</span>
             <table class='main'>
 
               <!-- START MAIN CONTENT AREA -->
@@ -418,7 +418,7 @@ $body="
                                 <table border='0' cellpadding='0' cellspacing='0'>
                                   <tbody>
                                     <tr>
-                                      <td> <a href='http://localhost/admin/reset.php?id=$id' target='_blank'>Reset</a> </td>
+                                      <td> <a href='http://bidaaigokdom.in/admin/reset.php?id=$id' target='_blank'>Reset</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -460,7 +460,7 @@ $body="
 $mailer = Swift_Mailer::newInstance($transport);
 
 $message = Swift_Message::newInstance('Reset Password')
-  ->setFrom(array('hkp.anup@gmail.com' => 'Bidaai Admin'))
+  ->setFrom(array('bidaai2018@gmail.com' => 'Bidaai Admin'))
   ->setTo(array($user_email))
   ->addPart($body,'text/html');
 if (!$mailer->send($message, $failures))

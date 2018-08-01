@@ -884,12 +884,12 @@ function calculateAge(birthday) {
 					  
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputGroomName">1.Name of the Groom</label>
+      <label for="inputGroomName">1.Name of the Groom</label>&nbsp;<span class="high-light">*</span>
       <input type="text" class="form-control" name="groom_name" id="inputGroomName" pattern="[a-zA-Z\s]+" required>
 	<input type="text" class="form-control" name="groom_name_kannada" id="inputGroomNameKannada" placeholder="">
     </div>
 	  <div class="form-group col-md-4">
-    <label for="inputGroomAddress">2.Address</label>
+    <label for="inputGroomAddress">2.Address</label>&nbsp;<span class="high-light">*</span>
     <input type="text" class="form-control" id="inputGroomAddress" name="groom_address" placeholder="" required>
 	<input type="text" class="form-control" id="inputGroomAddressKannada" name="groom_address_kannada" placeholder="">
   </div>
