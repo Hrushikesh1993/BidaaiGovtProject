@@ -117,7 +117,7 @@ $row=mysqli_fetch_array($execQuery);
 							<tr><br></tr>
 							
 							    <tr>                        
-								  <td><p><strong>Date:</strong></p><p><strong>Place:</strong></p></td>
+								  <td><p><strong>Date:<?php echo convert_date_dmy($row['received_date']);?></strong></p><p><strong>Place:<?php echo strtoupper($_SESSION['login']);?></strong></p></td>
 								  <td></td>
                                   <td  align="center"><p><strong>District Officer,</strong></p><p><strong>Minority Welfare Department</strong></p><p><strong><?php echo strtoupper($_SESSION['login']);?></strong></p></td>
 								

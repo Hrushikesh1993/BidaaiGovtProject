@@ -222,7 +222,7 @@ $table_name=strtolower($_SESSION['district_code'])."_application_table";
 							$showVar
 							 </tr> 
 							    <tr>                        
-								  <td><p><strong>Date:</strong></p><p><strong>Place:</strong></p></td>
+								  <td><p><strong>Date:".convert_date_dmy($received_date)."</strong></p><p><strong>Place:".strtoupper($_SESSION['login'])."</strong></p></td>
 								  <td></td>
                                   <td  align='center'><p><strong>District Officer,</strong></p><p><strong>Minority Welfare Department</strong></p><p><strong>".strtoupper($_SESSION['login'])."</strong></p></td>
 								
