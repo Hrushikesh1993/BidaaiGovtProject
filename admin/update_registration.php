@@ -9,6 +9,7 @@ $show="";
 $status="";
 $message="";
 
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 if(isset($_POST['searchButton']))
 {
   $search_text_unparse=$_POST['search'];
@@ -16,7 +17,7 @@ if(isset($_POST['searchButton']))
   $_SESSION['search']=$search_text_unparse;
   $_SESSION['search_id']=$search_text;
   $result_array="";
-  $result=mysqli_query($con,"SELECT * from application_table where app_id=$search_text and status=1 and created_by='".$_SESSION['login']."'");
+  $result=mysqli_query($con,"SELECT * from $table_name where app_id=$search_text and status=1 and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
   if($rowcount==1)
   {
@@ -91,14 +92,17 @@ $groom_dob=convert_date($_POST['groom_date_of_birth']);
   $marital_status_of_the_would_be_bride=$_POST['bride_marital_status'];
 	$marriage_document=$_POST['document_status'];
     $affidavit_attached=$_POST['affidavit_status'];
+	$sslc_no=$_POST['sslc_no'];
+	$sslc_groom_no=$_POST['sslc_groom_no'];
 
   $status=1; 
 	  
 
  $sql_query=
-  " UPDATE application_table SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',status='$status' where app_id='".$_SESSION['search_id']."'";
-
-  $sql_exec=mysqli_query($con,$sql_query);
+  " UPDATE $table_name SET financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no',sslc_no='$sslc_no',sslc_groom_no='$sslc_groom_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',status='$status',update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$_SESSION['search_id']."'";
+  $sql_query_doc="Update document_table SET aadhar_no=$aadhar_no,groom_aadhar_no=$groom_aadhar_no,father_aadhar_no=$father_aadhar,mother_aadhar_no=$mother_aadhar,caste_no='$caste_certificate_no',income_no='$income_certificate_no',bpl_no='$bpl_card_no',sslc_no='$sslc_no',sslc_groom_no='$sslc_groom_no' where doc_app_id='".$_SESSION['search']."'";
+ $sql_exec=mysqli_query($con,$sql_query);
+ $sql_exec_new=mysqli_query($con,$sql_query_doc);
   if($sql_exec)
   {
     $message="Details of Application Id:".$_SESSION['search']. " Updated Successfully!";
@@ -766,7 +770,7 @@ function calculateAge(birthday) {
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-      <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?>">
+      <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?> " maxlength="12">
 	  
     </div>
 			<div class="form-group col-md-3">

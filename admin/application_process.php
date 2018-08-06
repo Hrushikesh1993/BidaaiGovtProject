@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include'dbconnection.php';
@@ -7,7 +6,7 @@ include("function.php");
 check_login();
 $showTab="";
 $execQuery="";
-
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 if(isset($_POST['process']))
 {
 	$sql="";
@@ -15,20 +14,20 @@ if(isset($_POST['process']))
 	 $appStatus=$_POST['app_process'];
 	if($appStatus=='Sanction')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and status=2 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		
 	}
 	else if($appStatus=='Scrutinize')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=1 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and status=1 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else if($appStatus=='Reverify')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+		$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and status=0 and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 	}
 	else
 	{
-		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
+		 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and status=3 and created_by='".$_SESSION['login']."'ORDER BY marriage_date";
 	}
 	$execQuery=mysqli_query($con,$sql);
 	$showTab=1;

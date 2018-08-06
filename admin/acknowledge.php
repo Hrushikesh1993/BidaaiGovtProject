@@ -3,9 +3,9 @@ session_start();
 include'dbconnection.php';
 include("checklogin.php");
 include("function.php");
-
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 $app_id=$_GET['uid'];
-$sql="SELECT * from application_table where app_id='".$app_id."'";
+$sql="SELECT * from $table_name where app_id='".$app_id."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 

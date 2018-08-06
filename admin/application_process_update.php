@@ -6,12 +6,12 @@ include("function.php");
 check_login();
 $app_id=$_GET['uid'];
 $appstatus=$_GET['appstatus'];
-$sql="SELECT * from application_table where app_id='".$app_id."'";
+$sql="SELECT * from $table_name where app_id='".$app_id."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 $today= date("Y-m-d");
 
-
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 
 if('Sanction'==$appstatus)
 {
@@ -23,7 +23,7 @@ if('Sanction'==$appstatus)
 		$field_check=$_POST['field_check'];
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set field_check='".$field_check."',verify_document='".$doc."' , status=3 where app_id='".$app_id."'";
+			 $sqlStatus="update $table_name set field_check='".$field_check."',verify_document='".$doc."', status=3,update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Application processed to fund release');
 					window.location='application_process.php'
@@ -31,7 +31,7 @@ if('Sanction'==$appstatus)
 		}
 		else
 		{
-			  $sqlStatus="update application_table set verify_document='".$doc."', status=0 where app_id='".$app_id."'";
+			  $sqlStatus="update $table_name set verify_document='".$doc."', status=0,update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
 					alert('Application Rejected');
 					window.location='application_process.php'
@@ -46,7 +46,7 @@ else if('Reverify'==$appstatus)
 {
 	if(isset($_POST['process']))
 { 
-		 $sqlStatus="update application_table set status=1 where app_id='".$app_id."'";
+		 $sqlStatus="update $table_name set status=1,update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Application was revived back to list');
 					window.location='application_process.php'
@@ -69,7 +69,7 @@ if(isset($_POST['process']))
 	
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set status=2 where app_id='".$app_id."'";
+			 $sqlStatus="update $table_name set status=2 ,update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Application processed to sanction list');
 					window.location='application_process.php'
@@ -77,7 +77,7 @@ if(isset($_POST['process']))
 		}
 		else
 		{
-			  $sqlStatus="update application_table set status=0,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached' where app_id='".$app_id."'";
+			  $sqlStatus="update $table_name set status=0,marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			   echo "<script type=\"text/javascript\">
 					alert('Application Rejected');
 					window.location='application_process.php'
@@ -98,7 +98,7 @@ else
 		
 		if($resp=='accept')
 		{
-			 $sqlStatus="update application_table set status=4 where app_id='".$app_id."'";
+			 $sqlStatus="update $table_name set status=4,update_timestamp='".date("Y-m-d h:i:s")."' where app_id='".$app_id."'";
 			  echo "<script type=\"text/javascript\">
 					alert('Fund has been processed');
 					window.location='application_process.php'

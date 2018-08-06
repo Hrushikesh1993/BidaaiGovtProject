@@ -1,7 +1,7 @@
 <?php
-
 require_once 'swift/lib/swift_required.php';
-
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
+date_default_timezone_set("Asia/Kolkata");
 function status_description($status)
 {
 	
@@ -71,27 +71,27 @@ function get_count($cnt)
 	
 	if(1==$cnt)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where created_by='".$_SESSION['login']."'";
 	}
 	if($cnt==2)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where  status=1 and created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where  status=1 and created_by='".$_SESSION['login']."'";
 	}
 	if($cnt==3)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=2 and created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where status=2 and created_by='".$_SESSION['login']."'";
 	}
 	if($cnt==4)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=3 and created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where status=3 and created_by='".$_SESSION['login']."'";
 	}
 	if($cnt==5)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=4 and created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where status=4 and created_by='".$_SESSION['login']."'";
 	}
 		if($cnt==6)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=0 and created_by='".$_SESSION['login']."'";
+		$sql= "SELECT count(app_id) as id from $table_name where status=0 and created_by='".$_SESSION['login']."'";
 	}
 	$res=mysqli_query($con,$sql);
 	$row=mysqli_fetch_array($res);
@@ -105,23 +105,23 @@ function admin_get_count($cnt)
 	
 	if(1==$cnt)
 	{
-		$sql= "SELECT count(app_id) as id from application_table";
+		$sql= "SELECT count(app_id) as id from $table_name";
 	}
 	if($cnt==2)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where (status=1 or status=2)";
+		$sql= "SELECT count(app_id) as id from $table_name where (status=1 or status=2)";
 	}
 	if($cnt==3)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=3";
+		$sql= "SELECT count(app_id) as id from $table_name where status=3";
 	}
 	if($cnt==4)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=0";
+		$sql= "SELECT count(app_id) as id from $table_name where status=0";
 	}
 	if($cnt==5)
 	{
-		$sql= "SELECT count(app_id) as id from application_table where status=4";
+		$sql= "SELECT count(app_id) as id from $table_name where status=4";
 	}
 	$res=mysqli_query($con,$sql);
 	$row=mysqli_fetch_array($res);

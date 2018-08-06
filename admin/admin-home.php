@@ -4,6 +4,7 @@ include'dbconnection.php';
 include("function.php");
 include("checklogin.php");
 check_login();
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
  $sql = "select DISTINCT financial_year as financial_year,\n"
 
     . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
@@ -18,7 +19,7 @@ check_login();
 
     . "   count(distinct app_id) as totals\n"
 
-    . "from application_table where created_by='".$_SESSION['login']."'\n"
+    . "from $table_name where created_by='".$_SESSION['login']."'\n"
 
     . "group by financial_year DESC";
 $query=mysqli_query($con,$sql);

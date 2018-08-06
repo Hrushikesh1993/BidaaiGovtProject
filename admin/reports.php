@@ -10,6 +10,7 @@ $financial_year="";
 $constituency="";
 $taluk="";
 $appStatus="";
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 if(isset($_POST['searchReport']))
 {
 	$sql="";
@@ -21,19 +22,19 @@ if(isset($_POST['searchReport']))
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' ORDER BY marriage_date";
 		}
 		 
 	}
@@ -41,95 +42,95 @@ if(isset($_POST['searchReport']))
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=1 ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=1 ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=1  ORDER BY marriage_date";
 		}
 	}
 	else if($appStatus=='Pending in Sanction')
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=2 ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=2 ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=2  ORDER BY marriage_date";
 		}
 	}
 	else if($appStatus=='Rejected')
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=0 ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=0 ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=0  ORDER BY marriage_date";
 		}
 	}
 	else if($appStatus=='Pending in Fund Release')
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=3 ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=3 ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=3  ORDER BY marriage_date";
 		}
 	}
 	else
 	{
 		if($constituency!='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=4 ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and created_by='".$_SESSION['login']."' and status=4 ORDER BY marriage_date";
 		}
 		else if($constituency!='All' && $taluk=='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
 		}
 		else if($constituency=='All' && $taluk!='All')
 		{
-			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
 		}
 		else
 		{
-				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and created_by='".$_SESSION['login']."' and status=4  ORDER BY marriage_date";
 		}
 		
 	}

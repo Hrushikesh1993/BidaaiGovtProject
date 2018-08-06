@@ -93,18 +93,23 @@ $new_relogion= substr($religion, 0, 1);
 $new_financial_year1=substr($financial_year, 2, 2);
 $new_financial_year2=substr($financial_year, 7,8);
 $new_app_id=$_SESSION['district_code'].$new_financial_year1.$new_financial_year2.$new_relogion;
-
+$table_name=strtolower($_SESSION['district_code'])."_application_table";
 
 	
     $sql_query=
-	"INSERT INTO application_table SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no',sslc_no='$sslc_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada',sslc_groom_no='$sslc_groom_no', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',created_by='$created_by',status='$status'";
+	"INSERT INTO $table_name SET id_parse='$new_app_id',financial_year='$financial_year', taluk='$taluk', constituency='$constituency', village='$village',village_kannada='$village_kannada', applicant_name='$applicant_name',applicant_name_kannada='$applicant_name_kannada', parent='$parent', address='$address', parent_kannada='$parent_kannada', address_kannada='$address_kannada', religion='$religion', mobile='$mobile', annual_income='$annual_income', dob='$dob', received_date='$received_date', marriage_place='$marriage_place',marriage_place_kannada='$marriage_place_kannada', marriage_date='$marriage_date', age_proof='$age_proof', domicile_state='$domicile_state',domicile_proof='$domicile_proof', physically_handicap='$physically_handicap', applicant_photo='$path', aadhar_no='$aadhar_no', father_aadhar='$father_aadhar', mother_aadhar='$mother_aadhar', caste_certificate_no='$caste_certificate_no', income_certificate_no='$income_certificate_no', bpl_card_no='$bpl_card_no',sslc_no='$sslc_no', account_no='$account_no', bank='$bank', district='$district', branch='$branch', ifsc_code='$ifsc_code', name_of_the_would_be_groom='$name_of_the_would_be_groom', address_of_the_would_be_groom='$address_of_the_would_be_groom',name_of_the_would_be_groom_kannada='$name_of_the_would_be_groom_kannada', address_of_the_would_be_groom_kannada='$address_of_the_would_be_groom_kannada',sslc_groom_no='$sslc_groom_no', groom_mobile='$groom_mobile', groom_dob='$groom_dob', groom_age_proof='$groom_age_proof', groom_aadhar_no='$groom_aadhar_no', marital_status_of_the_would_be_groom='$marital_status_of_the_would_be_groom', marital_status_of_the_would_be_bride='$marital_status_of_the_would_be_bride',marriage_document='$marriage_document',affidavit_attached='$affidavit_attached',created_by='$created_by',status='$status'";
+	
 	$last_id="";
+	
 	$sql_exec=mysqli_query($con,$sql_query);
+	
 	if($sql_exec)
 	{
 		$last_id = $con->insert_id;
 			
 		$new_app_id=$new_app_id.sprintf("%05d",$last_id);
+		$sql_query_doc="INSERT INTO document_table SET doc_app_id='$new_app_id',aadhar_no=$aadhar_no,groom_aadhar_no=$groom_aadhar_no,father_aadhar_no=$father_aadhar,mother_aadhar_no=$mother_aadhar,caste_no='$caste_certificate_no',income_no='$income_certificate_no',bpl_no='$bpl_card_no',sslc_no='$sslc_no',sslc_groom_no='$sslc_groom_no'";
+		$sql_exec_new=mysqli_query($con,$sql_query_doc);
 		
 		$set_status=status_description($status);
 		$showVar="";
