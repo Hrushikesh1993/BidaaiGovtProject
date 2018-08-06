@@ -770,7 +770,7 @@ function calculateAge(birthday) {
     </div>
 	 <div class="form-group col-md-3">
       <label for="inputAadharGroom">6.Aadhar No. </label>&nbsp;<span class="high-light">*</span>
-      <input type="text" pattern="[0-9]{12,12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no']; ?> " maxlength="12">
+      <input type="text" pattern="[0-9]{12}" class="form-control" name="groom_aadhar" id="inputAadharGroom" placeholder="xxxx-xxxx-xxxx" required value="<?php echo $result_array['groom_aadhar_no'];?>" maxlength="12">
 	  
     </div>
 			<div class="form-group col-md-3">
@@ -959,6 +959,7 @@ var yyyy = today.getFullYear();
 by=yyyy-18;
 gy=yyyy-21;
 my=dd+1;
+rd=dd-7;
 
  if(dd<10){
         dd='0'+dd
@@ -971,9 +972,10 @@ var today_bride = dd+'-'+mm+'-'+by;
 var today_groom=dd+'-'+mm+'-'+gy;
 var today_my=my+'-'+mm+'-'+yyyy;
 var today_dmy = dd+'-'+mm+'-'+yyyy;
+var update_dmy = rd+'-'+mm+'-'+yyyy;
 
 
-$("#inputFinancialYear").change(function (e) {
+/* $("#inputFinancialYear").change(function (e) {
 	
 	var fy=$('#inputFinancialYear :selected').text();
 	$('#received_date').val('');
@@ -1010,34 +1012,36 @@ $("#inputFinancialYear").change(function (e) {
 
 	
 	
-});
+}); */
+
+
 $(function () {
 
 		$("#inputReceivedDate").datepicker({ 
         autoclose: true, 
-		startDate:"now",
-		endDate:"now"
-        }).datepicker();
+		startDate:update_dmy,
+		endDate:'31-12-2018'
+        }).datepicker().on('changeDate', function(e) {
+        var marriageDate=$('#inputReceivedDate').datepicker('getDate');
+		console.log(marriageDate);
+		$('#inputDateOfMarriage').datepicker('setStartDate',marriageDate);
+		$('#inputDateOfMarriage').datepicker('setEndDate','31-12-2018');
+
+		
+    });
 });
- 
+		$("#inputDateOfMarriage").datepicker({ 
+        autoclose: true
+		
+  }).datepicker();
 $(function () {
   $("#inputDateOfBirth").datepicker({ 
         autoclose: true, 
 		endDate:today_bride
   }).datepicker();
 });
-/* $(function () {
-  $("#inputReceivedDate").datepicker({ 
-        autoclose: true, 
-		todayHighlight: true
-  }).datepicker();
-}); */
-$(function () {
-  $("#inputDateOfMarriage").datepicker({ 
-        autoclose: true, 
-		
-  }).datepicker();
-});
+
+
 $(function () {
   $("#inputDateOfBirthGroom").datepicker({ 
         autoclose: true, 
@@ -1086,7 +1090,7 @@ $(document).ready(function() {
 });
 });
 $(document).ready(function() {
-   $('#inputCasteNo, #inputIncomeNo, #inputBPL').change(function (e) 
+   $('#inputCasteNo, #inputIncomeNo, #inputBPL,#inputSSLC,#inputGroomSSLC').change(function (e) 
 {
 	var doc=e.target.value;
 	console.log(doc);
@@ -1105,15 +1109,20 @@ $(document).ready(function() {
 			}
 			else
 			{
-				var ids=[];
-				var search=e.target.value;
-			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL').map(function() {
+			var ids=[];
+			var search=e.target.value;
+			var search_id=e.target.id;
+			ids=$('#inputCasteNo, #inputIncomeNo, #inputBPL,#inputSSLC,#inputGroomSSLC').map(function() {
 			return this.value;}).get();
 			var numOf = 0;
+			if(search_id=='inputBPL' || search_id=='inputSSLC' || search_id=='inputGroomSSLC' )
+			{
 			for(var i=0;i<ids.length;i++){
 			if(ids[i] === search)
 				numOf++;
-										}
+			}
+			}
+
 			if(numOf>1)
 			{
 			alert("Found to be multiple entries!!!!");
