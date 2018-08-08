@@ -4,39 +4,139 @@ include'dbconnection.php';
 include("checklogin.php");
 include("function.php");
 check_login();
-$sql_query=mysqli_query($con,"SELECT username from admin where utype='admin' ");
+$sql_query=mysqli_query($con,"SELECT username from admin where utype='admin'");
 $showTab="";
 $execQuery="";
-
+$financial_year="";
+$constituency="";
+$taluk="";
+$appStatus="";
+$district="";
 if(isset($_POST['searchReport']))
 {
 	$sql="";
 	$financial_year=$_POST['financial_year'];
+	$district=$_POST['district'];
+	$dist_code=find_district_code($district);
+	$table_name=$dist_code.'_application_table';
 	 $appStatus=$_POST['status'];
-	 $district=$_POST['district'];
-	if($appStatus=='Total')
+	 $constituency=$_POST['constituency'];
+	 $taluk=$_POST['taluk'];
+	if($appStatus=='Total Applications Applied')
 	{
-		 $sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and created_by='".$district."' ORDER BY marriage_date";
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk'  ORDER BY marriage_date";
+		}
+		else
+		{
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' ORDER BY marriage_date";
+		}
+		 
 	}
-	else if($appStatus=='Eligibility')
+	else if($appStatus=='Pending in Eligibility Check')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and  status=1  and created_by='".$district."' ORDER BY marriage_date";
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and  status=1 ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and  status=1  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and  status=1  ORDER BY marriage_date";
+		}
+		else
+		{
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  status=1  ORDER BY marriage_date";
+		}
 	}
-	else if($appStatus=='Sanction')
+	else if($appStatus=='Pending in Sanction')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=2 and created_by='".$district."' ORDER BY marriage_date";
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and  status=2 ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and  status=2  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and  status=2  ORDER BY marriage_date";
+		}
+		else
+		{
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  status=2  ORDER BY marriage_date";
+		}
 	}
 	else if($appStatus=='Rejected')
 	{
-		$sql="SELECT app_id,id_parse,dob,applicant_name,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=0 and created_by='".$district."' ORDER BY marriage_date";
-	}
-	else if($appStatus=='Fund')
-	{
-		$sql="SELECT app_id,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=3 and created_by='".$district."' ORDER BY marriage_date";
-	}
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and  status=0 ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and  status=0  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and  status=0  ORDER BY marriage_date";
+		}
 		else
+		{
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  status=0  ORDER BY marriage_date";
+		}
+	}
+	else if($appStatus=='Pending in Fund Release')
 	{
-		$sql="SELECT app_id,id_parse,applicant_name,dob,marriage_date,received_date,name_of_the_would_be_groom,status from application_table where financial_year='$financial_year' and status=4 and created_by='".$district."' ORDER BY marriage_date";
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and  status=3 ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and  status=3  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and  status=3  ORDER BY marriage_date";
+		}
+		else
+		{
+				$sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  status=3  ORDER BY marriage_date";
+		}
+	}
+	else
+	{
+		if($constituency!='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency'and taluk='$taluk' and  status=4 ORDER BY marriage_date";
+		}
+		else if($constituency!='' && $taluk=='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and constituency='$constituency' and  status=4  ORDER BY marriage_date";
+		}
+		else if($constituency=='' && $taluk!='')
+		{
+			 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  taluk='$taluk' and  status=4  ORDER BY marriage_date";
+		}
+		else
+		{
+				 $sql="SELECT app_id,id_parse,applicant_name,dob,parent,marriage_date,received_date,name_of_the_would_be_groom,status from $table_name where financial_year='$financial_year' and  status=4  ORDER BY marriage_date";
+		}
+		
 	}
 	
 	$execQuery=mysqli_query($con,$sql);
@@ -58,8 +158,9 @@ if(isset($_POST['searchReport']))
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
-	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+			<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
 	<link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet">
+	<link href="assets/js/autocomplete/content/styles.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -138,7 +239,7 @@ if(isset($_POST['searchReport']))
     <div class="form-group col-md-3">
       <label for="inputFinancialYear">1. Financial Year</label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="financial_year" id="inputFinancialYear" placeholder="" required>
-	  <option  value="" selected>Choose..</option>
+	  <option  value="<?php echo $financial_year;?>" selected><?php echo $financial_year;?></option>
 	  <option  value="2018-2019">2018-2019</option>
 	  <option value="2017-2018">2017-2018</option>
 	  <option value="2016-2017">2016-2017</option>
@@ -148,19 +249,21 @@ if(isset($_POST['searchReport']))
 	    <div class="form-group col-md-3">
       <label for="inputStatus">2. Status </label>&nbsp;<span class="high-light">*</span>
             <select class="form-control" name="status" id="inputStatus" required>
-	 	  <option  value="" selected>Choose..</option>
-	  <option  value="Total">Total Applications Applied</option>
-	  <option value="Eligibility">Pending in Eligibility Check</option>
-	  <option value="Sanction">Pending in Sanction</option>
-	  <option value="Fund">Pending in Fund Release</option>
-	  <option value="Release">Fund Release</option>
+	  <option  value="<?php echo $appStatus;?>" selected><?php echo $appStatus;?></option>
+	  <option  value="Total Applications Applied">Total Applications Applied</option>
+	  <option value="Pending in Eligibility Check">Pending in Eligibility Check</option>
+	  <option value="Pending in Sanction">Pending in Sanction</option>
+	  <option value="Pending in Fund Release">Pending in Fund Release</option>
+	  <option value="Fund Released">Fund Released</option>
 	  <option value="Rejected">Rejected</option>
+	  
+	 
 	  </select>
     </div>
 		    <div class="form-group col-md-3">
       <label for="inputStatus">3. District  </label>&nbsp;<span class="high-light">*</span>
-            <select class="form-control" name="district" id="inputStatus" required>
-			<option selected>Choose..</option>
+            <select class="form-control" name="district" id="inputDistrict" required>
+			<option value="<?php echo $district;?>" selected><?php echo strtoupper($district);?></option>
 		<?php
 		while($result=mysqli_fetch_array($sql_query))
 		{
@@ -172,8 +275,20 @@ if(isset($_POST['searchReport']))
 	 
 	  </select>
     </div>
+			    <div class="form-group col-md-3">
+      <label for="inputStatus">4. Taluk  </label>
+		<input type="text" class="form-control" placeholder="Search for Taluk.." name="taluk" id="inputTaluk" onfocus="fetchTaluk()" title="Leave blank to select " value="<?php echo $taluk;?>">
+    </div>
+  </div>
+    <div class="form-row">
+	<div class="form-group col-md-3">
+      <label for="inputStatus">5. Constituency  </label>
+		<input type="text" class="form-control" placeholder="Search for Constituency.." name="constituency" id="inputConstituency" onfocus="fetchCon()" title="Leave blank to select " value="<?php echo $constituency;?>">
+    </div>
 	<br/>
 	<div class="form-group col-md-3"><button type="submit" name="searchReport" class="btn btn-primary"><i class="fa fa-search"></i></button></div>
+	<div class="form-group col-md-3"></div>
+	<div class="form-group col-md-3"></div>
   </div>
 
 
@@ -274,17 +389,29 @@ if(isset($_POST['searchReport']))
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-
-
-
+		<script src="assets/js/autocomplete/src/jquery.autocomplete.js"></script>
+	<script src="assets/js/autocomplete/scripts/jquery.mockjax.js"></script>
 
 
 
   <script>
-     $(document).ready(function() {
+  var fy=$('#inputFinancialYear :selected').text();
+  var st=$('#inputStatus :selected').text();
+  var dis=$('#inputDistrict :selected').text();
+  var tal=$('#inputTaluk').val();
+  var con=$('#inputConstituency').val();
+  var display=fy+"\n"+st+" "+"Report"
+  var pntDisplay=dis+" "+"Report"
+  var display_bottom="* The above list is of "+dis+" "+"district"+" "+tal+" "+"taluk"+" "+"and"+" "+con+" "+"constituency."
+    $(document).ready(function() {
+    
+ 
+    
+    
+ 
     $('#example').DataTable( {
         dom: 'Bfrtip',
-       buttons: [
+        buttons: [
             'copy',
             {
                 extend: 'excel',
@@ -292,6 +419,7 @@ if(isset($_POST['searchReport']))
 				                exportOptions: {
                     columns: [0,1,2,3,4,5,6,7]
                 },
+				messageBottom:display_bottom
 			
             },
             {
@@ -299,12 +427,14 @@ if(isset($_POST['searchReport']))
                  footer: true,
            exportOptions: {
                 columns: [0,1,2,3,4,5,6,7]
-            }
+            },
+			   title: display,
+			   messageBottom:display_bottom
             },
             {
                 extend: 'print',
-                messageTop:null,
-                messageBottom: null,
+                title:pntDisplay,
+                messageBottom: display_bottom,
 				exportOptions: {
                 columns: [0,1,2,3,4,5,6,7]
             }
@@ -312,6 +442,52 @@ if(isset($_POST['searchReport']))
         ]
     } );
 } );
+  </script>
+
+  <script>
+
+function fetchTaluk()
+{
+	var district=$("#inputDistrict").val();
+	  $.ajax({
+       type: "POST",
+       url: "find_taluk.php",
+	   data:"district="+district,
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			console.log(array)
+
+$( "#inputTaluk" ).autocomplete({
+	lookup: array
+});
+         
+       }
+     });
+}
+function fetchCon()
+{
+	var district=$("#inputDistrict").val();
+	  $.ajax({
+       type: "POST",
+       url: "find_constituency.php",
+	   data:"district="+district,
+       cache: false,
+       success: function(response)
+       {
+			
+			var array = response.split(",");
+			console.log(array)
+
+$( "#inputConstituency" ).autocomplete({
+	lookup: array
+});
+         
+       }
+     });
+} 
 
   </script>
 

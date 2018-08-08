@@ -9,43 +9,30 @@ $district="";
 if(isset($_POST['searchButton']))
 {
 	$district=strtolower($_POST['district']);
-	$sql = "select DISTINCT financial_year as financial_year,\n"
+	$dist_code=find_district_code($district);
+	$sql = "select * from ".$dist_code.'_view'." group by financial_year desc";
 
-    . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
-
-    . "   count(distinct case when status = 0 then app_id end) as status_0,\n"
-
-    . "   count(distinct case when status = 2 then app_id end) as status_2,\n"
-
-    . "   count(distinct case when status = 3 then app_id end) as status_3,\n"
-
-    . "   count(distinct case when status = 4 then app_id end) as status_4,\n"
-
-    . "   count(distinct app_id) as totals\n"
-
-    . "from application_table where created_by='".$district."' \n"
-
-    . "group by financial_year DESC";	
+  	
 }
 else
 {
-$sql = "select DISTINCT financial_year as financial_year,\n"
+$sql = "select financial_year,\n"
 
-    . "   count(distinct case when status = 1 then app_id end) as status_1, \n"
+    . "    sum(status_1) as status_1,\n"
 
-    . "   count(distinct case when status = 0 then app_id end) as status_0,\n"
+    . "    sum(status_0) as status_0,\n"
 
-    . "   count(distinct case when status = 2 then app_id end) as status_2,\n"
+    . "    sum(status_2) as status_2,\n"
 
-    . "   count(distinct case when status = 3 then app_id end) as status_3,\n"
+    . "    sum(status_3) as status_3,\n"
 
-    . "   count(distinct case when status = 4 then app_id end) as status_4,\n"
+    . "    sum(status_4) as status_4,\n"
 
-    . "   count(distinct app_id) as totals\n"
+    . "      sum(totals) as totals\n"
 
-    . "from application_table \n"
+    . " FROM full_union\n"
 
-    . "group by financial_year DESC";	
+    . "  group by financial_year";	
 }
 
 

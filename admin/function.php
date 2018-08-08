@@ -38,7 +38,7 @@ function status_full_description($status)
 	
 	if($status==0)
 	{
-		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage or the applicant may not be resident of Karnataka. ";
+		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage. ";
 	}
 	else if($status==1)
 	{

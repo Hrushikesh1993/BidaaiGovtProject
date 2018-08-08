@@ -1,6 +1,7 @@
 <?php
 require_once 'swift/lib/swift_required.php';
 
+
 function status_description($status)
 {
 	
@@ -37,7 +38,7 @@ function status_full_description($status)
 	
 	if($status==0)
 	{
-		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage or the applicant may be not resident of Karnataka. ";
+		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage. ";
 	}
 	else if($status==1)
 	{
@@ -99,7 +100,7 @@ function get_count($cnt)
 }
 function admin_get_count($cnt)
 {
-	global $con;
+	
 	$sql="";
 	
 	if(1==$cnt)
@@ -470,6 +471,15 @@ if (!$mailer->send($message, $failures))
     }
   
 
+}
+function find_district_code($district)
+{
+	global $con;
+	$query= "SELECT district_code from district_details where district_name='$district'";
+	$sql= mysqli_query($con,$query);
+	$dis_res=mysqli_fetch_assoc($sql);
+	return strtolower($dis_res['district_code']);
+	
 }
 
 
