@@ -38,26 +38,29 @@ function status_full_description($status)
 	
 	if($status==0)
 	{
-		return "Application has been rejected due improper submission of documents or submitted application less than the 7 days of marriage. ";
+		return "Application has been rejected as it has been submitted less than 7 days of the marriage date . "."<br>"."
+ಮದುವೆ ದಿನಾಂಕದ 7 ದಿನಗಳೊಳಗೆ ಸಲ್ಲಿಸಿದ ಕಾರಣ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ತಿರಸ್ಕರಿಸಲಾಗಿದೆ";
 	}
 	else if($status==1)
 	{
-		return "Application is pending at eligibility check.";
+		return "Kindly submit marriage certificate,photograph and other documents early."."<br>"."ಮದುವೆಯ ಪ್ರಮಾಣಪತ್ರ, ಛಾಯಾಚಿತ್ರ ಮತ್ತು ಇತರ ದಾಖಲೆಗಳನ್ನು ಮೊದಲೇ ದಯವಿಟ್ಟು ಸಲ್ಲಿಸಿ.";
 		
 	}
 		else if($status==2)
 	{
-		return "Eligible application is pending to get sanctioned";
+		return "Eligible application is pending to get sanctioned"."<br>"."
+ಮಂಜೂರು ಮಾಡಲು ಅರ್ಹ ಅರ್ಜಿ ಬಾಕಿ ಉಳಿದಿದೆ";
 		
 	}
 		else if($status==3)
 	{
-		return "Eligible application is pending to get funded";
+		return "Eligible application is pending to get funded"."<br>"."ಹಣವನ್ನು ಪಡೆಯಲು ಅರ್ಹ ಅರ್ಜಿ ಬಾಕಿ ಉಳಿದಿದೆ";
 		
 	}
 			else if($status==4)
 	{
-		return " Application successfully approved and funded.";
+		return " Application successfully approved and funded."."<br>"."
+ಅಪ್ಲಿಕೇಶನ್ ಯಶಸ್ವಿಯಾಗಿ ಅಂಗೀಕರಿಸಿದೆ ಮತ್ತು ಹಣವನ್ನು ನೀಡಲಾಗಿದೆ";
 		
 	}
 	

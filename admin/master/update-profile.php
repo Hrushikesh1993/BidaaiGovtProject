@@ -4,9 +4,41 @@ include'dbconnection.php';
 include("checklogin.php");
 $msg="";
 check_login();
+$show="";
 if(isset($_POST['Submit']))
 {
-	$uname=$_POST['username'];
+	if(isset($_GET['bankid']))
+	{
+	$bank_id=$_GET['bankid'];
+	$bank_name=$_POST['bank_name'];
+	$ifsc_code=$_POST['ifsc_code'];
+	$micr_code=$_POST['micr_code'];
+	$branch_name=$_POST['branch_name'];
+	$address=$_POST['address'];
+	$bank_mobile=$_POST['bank_mobile'];
+	$bank_taluk=$_POST['bank_taluk'];
+	$bank_district=$_POST['bank_district'];
+	$bank_state=$_POST['bank_state'];
+	
+	$sqlQuery=mysqli_query($con,"update bank_details set bank_name='$bank_name', ifsc_code='$ifsc_code', micr_code='$micr_code', branch_name='$branch_name', address='$address', bank_mobile='$bank_mobile', bank_taluk='$bank_taluk', bank_district='$bank_district', bank_state='$bank_state' where bank_id=$bank_id");
+	if($sqlQuery)
+	{
+		echo "<script type=\"text/javascript\">
+					alert('Updated successfully');
+					window.location='manage-users.php'
+            </script>";
+	}
+	else
+	{
+		echo "<script type=\"text/javascript\">
+					alert('Some error occured, Please try again!!');
+					window.location='manage-users.php'
+            </script>";
+	}
+}
+if(isset($_GET['uid']))
+{
+		$uname=$_POST['username'];
 	$utype=$_POST['utype'];
 	$user_email=$_POST['user_email'];
 	$user_phone=$_POST['user_phone'];
@@ -17,8 +49,26 @@ if(isset($_POST['Submit']))
 					alert('Profile Updated successfully');
 					window.location='manage-users.php'
             </script>";
+}
+	
+
 
 }
+?>
+ <?php 
+	if(isset($_GET['uid']))
+	{
+		$show=1;
+		
+ $ret=mysqli_query($con,"select * from admin where id='".$_GET['uid']."' and utype='admin'");
+	 
+	}
+	else
+	{
+		$show=2;
+		$ret=mysqli_query($con,"select * from bank_details where bank_id='".$_GET['bankid']."'");
+	}
+	  $row=mysqli_fetch_array($ret); 
 ?>
 
 <!DOCTYPE html>
@@ -96,9 +146,7 @@ if(isset($_POST['Submit']))
               </ul>
           </div>
       </aside>
-      <?php $ret=mysqli_query($con,"select * from admin where id='".$_GET['uid']."' and utype='admin'");
-	  $row=mysqli_fetch_array($ret);
-	  ?>
+
 	  
 	  
 
@@ -107,15 +155,20 @@ if(isset($_POST['Submit']))
 	  	<h3><i class="fa fa-angle-right"></i>Profile Edit</h3>
           <section class="wrapper">
           	<h3><i class="fa fa-angle-right"></i>Edit</h3>
-             	
-				<div class="row">
+             	<form class="form-horizontal style-form" name="form1" method="post" action="">
+					<?php
+					if($show==1)
+					{
+						
+					?>
+					<div class="row">
 				
                   
 	                  
                   <div class="col-md-12">
                       <div class="content-panel col-md-12">
                       
-                           <form class="form-horizontal style-form" name="form1" method="post" action="" onSubmit="return valid();">
+                           
                           <div class="form-row">
 						  <div class="form-group col-md-5">
                               <label>User Name </label>
@@ -149,12 +202,82 @@ if(isset($_POST['Submit']))
 
                           
 						  
-                          <div align="center" ><input type="submit" name="Submit" value="Update" class="btn btn-theme"></div>
+                          
 						
-                          </form>
+                          
                       </div>
                   </div>
               </div>
+					<?php }
+					else{
+						?>
+						
+						
+										<div class="row">
+				
+                  
+	                  
+                  <div class="col-md-12">
+                      <div class="content-panel col-md-12">
+					  
+					<div class="form-group">
+    <label for="inputBankName">Bank Name</label>
+    <input type="text" class="form-control" name="bank_name" id="inputBankName" placeholder="" required value="<?php echo $row['bank_name']?>">
+    
+  </div>
+    <div class="form-group">
+    <label for="inputBranch">Branch Name</label>
+    <input type="text" class="form-control" name="branch_name" id="inputBranch" placeholder="" required value="<?php echo $row['branch_name']?>" >
+  </div>
+     <div class="form-group">
+    <label for="inputIfsc">IFSC Code</label>
+    <input type="text" class="form-control" name="ifsc_code" id="inputIfsc" placeholder="" required value="<?php echo $row['ifsc_code']?>">
+  </div>
+     <div class="form-group">
+    <label for="inputMicr">MICR Code</label>
+    <input type="text" class="form-control" name="micr_code" id="inputMicr" placeholder="" required value="<?php echo $row['micr_code']?>">
+  </div>
+       <div class="form-group">
+    <label for="inputAddress">Address</label>
+    <input type="text" class="form-control" name="address" id="inputAddress" placeholder=""required value="<?php echo $row['address']?>">
+  </div>
+         <div class="form-group">
+    <label for="inputContact">Contact No.</label>
+    <input type="tel" class="form-control" name="bank_mobile" id="inputContact" placeholder="" required value="<?php echo $row['bank_mobile']?>">
+  </div>
+  <div class="form-group">
+    <label for="inputDistrict">District</label>
+    <input type="text" class="form-control" name="bank_district" id="inputDistrict" placeholder="" required value="<?php echo $row['bank_district']?>">
+  </div>
+    <div class="form-group">
+    <label for="inputTaluk">Taluk</label>
+    <input type="text" class="form-control" name="bank_taluk" id="inputTaluk" placeholder="" required value="<?php echo $row['bank_taluk']?>">
+  </div>
+      <div class="form-group">
+    <label for="inputState">State</label>
+    <input type="text" class="form-control" name="bank_state" id="inputState" placeholder="" required value="<?php echo $row['bank_state']?>">
+  </div>
+  
+
+ 
+
+
+
+
+
+	 
+
+	
+
+  
+
+                         
+                      </div>
+                  </div>
+						
+					<?php } ?>
+					<div align="center" ><input type="submit" name="Submit" value="Update" class="btn btn-theme"></div>
+			  </form>
 		</section>
         
       </section></section>

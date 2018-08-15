@@ -352,7 +352,7 @@ if(isset($_POST['searchReport']))
 								  <td><?php echo status_description($row['status']);?></td>
 								  								  <td>
                                      
-                                     <a href="acknowledge.php?uid=<?php echo $row['app_id'];?>"> 
+                                     <a href="acknowledge.php?uid=<?php echo $row['app_id'];?>&district=<?php echo $district;?>"> 
                                      <button class="btn btn-primary btn-xs"><i class="fa fa-print"></i></button></a>
                                      
                                   </td>

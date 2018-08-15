@@ -16,23 +16,7 @@ if(isset($_POST['searchButton']))
 }
 else
 {
-$sql = "select financial_year,\n"
-
-    . "    sum(status_1) as status_1,\n"
-
-    . "    sum(status_0) as status_0,\n"
-
-    . "    sum(status_2) as status_2,\n"
-
-    . "    sum(status_3) as status_3,\n"
-
-    . "    sum(status_4) as status_4,\n"
-
-    . "      sum(totals) as totals\n"
-
-    . " FROM full_union\n"
-
-    . "  group by financial_year";	
+$sql = "select * from full_union";	
 }
 
 
@@ -169,6 +153,7 @@ $totals=0;
 				<table class="table" align="center">
     <thead>
       <tr class="success">
+		<th><h4>District</h4></th>
         <th><h4>Financial Year</h4></th>
         <th><h4>Received Application</h4></th>
 		<th><h4>Eligibility Check</h4></th>
@@ -191,6 +176,7 @@ while($row=mysqli_fetch_assoc($query))
 
 ?>
       <tr class="warning">
+		<td><h5><?php echo strtoupper($row['district']);?></h5></td>
         <td><h5><?php echo $row['financial_year'];?></h5></td>
 		<td><h5><?php echo $row['totals'];?></h5></td>
         <td><h5><?php echo $row['status_1'];?></h5></td>
@@ -204,6 +190,7 @@ while($row=mysqli_fetch_assoc($query))
 ?>
       <tr class="warning">
         <td><h5>Total</h5></td>
+		<td></td>
 		<td><h5><?php echo $totals;?></h5></td>
         <td><h5><?php echo $status_1;?></h5></td>
         <td><h5><?php echo $status_2;?></h5></td>

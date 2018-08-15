@@ -5,7 +5,10 @@ include("checklogin.php");
 include("function.php");
 
 $app_id=$_GET['uid'];
-$sql="SELECT * from application_table where app_id='".$app_id."'";
+$district=$_GET['district'];
+$dist_code=find_district_code($district);
+$table_name=$dist_code.'_application_table';
+$sql="SELECT * from $table_name where app_id='".$app_id."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 
@@ -16,7 +19,7 @@ $row=mysqli_fetch_array($execQuery);
 ?>
 
 <div id="divToPrint" style="display:none"><div class='container'>
-<h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'><?php echo strtoupper($_SESSION['login']);?></h4>
+<h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'><?php echo strtoupper($district);?></h4>
 						<div class="row">
 						<table>
 	                  	  	  
@@ -31,7 +34,7 @@ $row=mysqli_fetch_array($execQuery);
 							 </thead>
                               <tbody>
 							<tr>
-                              <td colspan="3"><img src="<?php echo $row['applicant_photo']; ?>"  height="100" width="100" alt="Applicant Photo"></td>
+                              <td colspan="3"><img src="../<?php echo $row['applicant_photo']; ?>"  height="100" width="100" alt="Applicant Photo"></td>
 							 </tr>
                            
                             <tr>
@@ -118,7 +121,7 @@ $row=mysqli_fetch_array($execQuery);
 							    <tr>                        
 								  <td><p><strong>Date:</strong></p><p><strong>Place:</strong></p></td>
 								  <td></td>
-                                  <td  align="center"><p><strong>District Officer,</strong></p><p><strong>Minority Welfare Department</strong></p><p><strong><?php echo strtoupper($_SESSION['login']);?></strong></p></td>
+                                  <td  align="center"><p><strong>District Officer,</strong></p><p><strong>Minority Welfare Department</strong></p><p><strong><?php echo strtoupper($district);?></strong></p></td>
 								
                                  
                                   
