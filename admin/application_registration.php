@@ -714,6 +714,7 @@ function calculateAge(birthday) {
 	  <option value="TC">TC</option>
 	  <option value="Notary">Notary</option>
 	  <option value="Affidavit">Affidavit</option>
+	  <option value="Study Certificate">Study Certificate</option>
 	  </select>
     </div>
     <div class="form-group col-md-4">
@@ -924,6 +925,7 @@ function calculateAge(birthday) {
 	  <option value="TC">TC</option>
 	  <option value="Notary">Notary</option>
 	  <option value="Affidavit">Affidavit</option>
+	  <option value="Study Certificate">Study Certificate</option>
 	  </select>
     </div>
 	 <div class="form-group col-md-3">
