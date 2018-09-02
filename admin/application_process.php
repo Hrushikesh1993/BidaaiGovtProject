@@ -147,7 +147,7 @@ if(isset($_POST['process']))
 	  <option  value="Scrutinize">Scrutinize</option>
 	  <option value="Sanction">Sanction</option>
 	  <option value="Fund">Release Fund</option>
-	  <option value="Reverify">Revive Rejected Application</option>
+	  <!--<option value="Reverify">Revive Rejected Application</option>-->
 	 
 	  </select>
     </div>
