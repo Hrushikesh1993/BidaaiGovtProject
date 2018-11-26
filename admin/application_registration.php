@@ -123,7 +123,7 @@ $table_name=strtolower($_SESSION['district_code'])."_application_table";
 							}
 						
 
-		 $print_var= "<div class='container'><h4 align='center'>BIDAAI / SHADI BHAGYA APPLICATION</h4><h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'>".strtoupper($_SESSION['login'])."</h4>
+		 $print_var= "<div class='container'><div class='row print-header-one'>GOVERNMENT OF KARNATAKA</div><div class='row print-header-one'>MINORITY WELFARE DEPARTMENT</div><div class='row print-header-one'>".strtoupper($_SESSION['login'])."</div><br><div class='row print-header-two'>BIDAAI APPLICATION</div>
 						<div class='row'>
 						  <table>
 	                  	  	  
