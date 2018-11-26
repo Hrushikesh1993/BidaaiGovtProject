@@ -2232,4 +2232,15 @@ label {
 .high-light{
 	color:red;
 }
-
+.print-header-one
+{
+	font-weight:bold;
+	font-size:15px;
+	text-align:center;
+}
+.print-header-two
+{
+		font-weight:bold;
+	    font-size:25px;
+		text-align:center;
+}
