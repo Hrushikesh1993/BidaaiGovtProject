@@ -1218,6 +1218,7 @@ var today_bride = dd+'-'+mm+'-'+by;
 var today_groom=dd+'-'+mm+'-'+gy;
 var today_my=my+'-'+mm+'-'+yyyy;
 var today_dmy = dd+'-'+mm+'-'+yyyy;
+var today_dom=dd+'-'+mm+'-'+(yyyy+1)
 
 
 $("#inputFinancialYear").change(function (e) {
@@ -1279,7 +1280,8 @@ $(function () {
 $(function () {
   $("#inputDateOfMarriage").datepicker({ 
         autoclose: true, 
-		startDate: "now"
+		startDate: "now",
+		endDate:today_dom
   }).datepicker();
 });
 $(function () {
