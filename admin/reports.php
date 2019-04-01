@@ -239,6 +239,7 @@ if(isset($_POST['searchReport']))
       <label for="inputFinancialYear">1. Financial Year</label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="financial_year" id="inputFinancialYear" placeholder="" required>
 	  <option  value="<?php echo $financial_year;?>" selected><?php echo $financial_year;?></option>
+	  <option  value="2019-2020">2019-2020</option>
 	  <option  value="2018-2019">2018-2019</option>
 	  <option value="2017-2018">2017-2018</option>
 	  <option value="2016-2017">2016-2017</option>
@@ -375,7 +376,7 @@ if(isset($_POST['searchReport']))
 								  <td><?php echo status_description($row['status']);?></td>
 								  <td>
                                      
-                                     <a href="acknowledge.php?uid=<?php echo $row['app_id'];?>"> 
+                                     <a href="acknowledge.php?uid=<?php echo $row['app_id'];?>&fid=<?php echo $row['id_parse'];?>"> 
                                      <button class="btn btn-primary btn-xs"><i class="fa fa-print"></i></button></a>
                                      
                                   </td>
@@ -411,6 +412,7 @@ if(isset($_POST['searchReport']))
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
 
 
 

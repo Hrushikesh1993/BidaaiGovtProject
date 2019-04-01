@@ -5,7 +5,8 @@ include("checklogin.php");
 include("function.php");
 $table_name=strtolower($_SESSION['district_code'])."_application_table";
 $app_id=$_GET['uid'];
-$sql="SELECT * from $table_name where app_id='".$app_id."'";
+$fid=$_GET['fid'];
+$sql="SELECT * from $table_name where app_id='".$app_id."' and id_parse='".$fid."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 
@@ -15,9 +16,9 @@ $row=mysqli_fetch_array($execQuery);
 
 ?>
 
-<div id="divToPrint" style="display:none"><div class='container'><div class="row print-header-one">GOVERNMENT OF KARNATAKA</div><div class="row print-header-one">MINORITY WELFARE DEPARTMENT</div><div class="row print-header-one"><?php echo strtoupper($_SESSION['login']);?></div><br><div class="row print-header-two">BIDAAI APPLICATION</div>
-						<div class="row">
-						<table>
+<div id="divToPrint" style="display:none"><div class='container'>
+<div class="row print-header-one">GOVERNMENT OF KARNATAKA</div><div class="row print-header-one">MINORITY WELFARE DEPARTMENT</div><div class="row print-header-one"><?php echo strtoupper($_SESSION['login']);?></div><br><div class="row print-header-two">BIDAAI APPLICATION</div>
+						<div class="row"><table>
 	                  	  	  
 	                  	  	 <thead>
 							 <tr>
@@ -130,12 +131,8 @@ $row=mysqli_fetch_array($execQuery);
                              
                              
                               </tbody>
-                          </table>
-	
-		
-
-		
-						</div>
+                          </table></div>
+					
 					
 						</div>
 						 </div>

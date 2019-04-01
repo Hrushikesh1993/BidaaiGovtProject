@@ -5,10 +5,11 @@ include("checklogin.php");
 include("function.php");
 
 $app_id=$_GET['uid'];
+$fid=$_GET['fid'];
 $district=$_GET['district'];
 $dist_code=find_district_code($district);
 $table_name=$dist_code.'_application_table';
-$sql="SELECT * from $table_name where app_id='".$app_id."'";
+$sql="SELECT * from $table_name where app_id='".$app_id."' and id_parse='".$fid."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 
@@ -18,8 +19,7 @@ $row=mysqli_fetch_array($execQuery);
 
 ?>
 
-<div id="divToPrint" style="display:none"><div class='container'><h4 align='center'>BIDAAI / SHADI BHAGYA APPLICATION</h4>
-<h4 align='center'>GOVERNMENT OF KARNATAKA</h4><h2 align='center'>MINORITY WELFARE DEPARTMENT</h2><h4 align='center'><?php echo strtoupper($district);?></h4>
+<div id="divToPrint" style="display:none"><div class='container'><div class='container'><div class="row print-header-one">GOVERNMENT OF KARNATAKA</div><div class="row print-header-one">MINORITY WELFARE DEPARTMENT</div><div class="row print-header-one"><?php echo strtoupper($_SESSION['login']);?></div><br><div class="row print-header-two">BIDAAI APPLICATION</div>
 						<div class="row">
 						<table>
 	                  	  	  

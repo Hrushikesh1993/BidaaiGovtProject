@@ -134,6 +134,7 @@ if(isset($_POST['process']))
       <label for="inputFinancialYear">1. Financial Year</label>&nbsp;<span class="high-light">*</span>
       <select class="form-control" name="financial_year" id="inputFinancialYear" placeholder="" required>
 	  <option  value="" selected>Choose..</option>
+	  <option  value="2019-2020">2019-2020</option>
 	  <option  value="2018-2019">2018-2019</option>
 	  <option value="2017-2018">2017-2018</option>
 	  <option value="2016-2017">2016-2017</option>
@@ -218,7 +219,7 @@ if(isset($_POST['process']))
 								  <td><?php echo status_description($row['status']);?></td>
 									<td>
                                      
-                                     <a href="application_process_update.php?uid=<?php echo $row['app_id'];?>&appstatus=<?php echo $appStatus;?>"> 
+                                     <a href="application_process_update.php?uid=<?php echo $row['app_id'];?>&appstatus=<?php echo $appStatus;?>&fid=<?php echo $row['id_parse'];?>"> 
                                      <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a>
                                      
                                   </td>
