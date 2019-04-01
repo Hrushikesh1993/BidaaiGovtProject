@@ -14,12 +14,12 @@ if(isset($_POST['searchButton']))
 {
   $search_text_unparse=$_POST['search'];
   $search_text=(int)substr($_POST['search'], -5);
-  
+  $search_text_parse=substr($_POST['search'],0,-5);
   $_SESSION['search']=$search_text_unparse;
   $_SESSION['search_id']=$search_text;
-  $_SESSION['fid']=substr($_POST['search'],0,-5);
+  $_SESSION['fid']=
   $result_array="";
-  $result=mysqli_query($con,"SELECT * from $table_name where app_id=$search_text and status=1 and created_by='".$_SESSION['login']."'");
+  $result=mysqli_query($con,"SELECT * from $table_name where app_id=$search_text and id_parse='".$search_text_parse."' and status=1 and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
   if($rowcount==1)
   {
