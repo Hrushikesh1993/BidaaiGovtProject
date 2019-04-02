@@ -17,7 +17,7 @@ if(isset($_POST['searchButton']))
   $search_text_parse=substr($_POST['search'],0,-5);
   $_SESSION['search']=$search_text_unparse;
   $_SESSION['search_id']=$search_text;
-  $_SESSION['fid']=
+  $_SESSION['fid']=$search_text_parse;
   $result_array="";
   $result=mysqli_query($con,"SELECT * from $table_name where app_id=$search_text and id_parse='".$search_text_parse."' and status=1 and created_by='".$_SESSION['login']."'");
   $rowcount=mysqli_num_rows($result);
