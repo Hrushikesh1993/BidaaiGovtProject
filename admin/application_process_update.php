@@ -7,7 +7,7 @@ check_login();
 $app_id=$_GET['uid'];
 $fid=$_GET['fid'];
 $appstatus=$_GET['appstatus'];
-$sql="SELECT * from $table_name where app_id='".$app_id."'";
+$sql="SELECT * from $table_name where app_id='".$app_id."' and id_parse='".$fid."'";
 $execQuery=mysqli_query($con,$sql);
 $row=mysqli_fetch_array($execQuery);
 $today= date("Y-m-d");
