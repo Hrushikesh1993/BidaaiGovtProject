@@ -98,7 +98,6 @@ $table_name=strtolower($_SESSION['district_code'])."_application_table";
 	$last_id_query="SELECT app_id FROM $table_name WHERE created_timestamp =(SELECT MAX(created_timestamp) FROM $table_name where financial_year='$financial_year')";
 	$last_id_exec=mysqli_query($con,$last_id_query);
 	$last_id_num_rows=mysqli_num_rows($last_id_exec);
-	echo $last_id_num_rows;
 	$sql_query="";
 	$new_id="";
 	if($last_id_num_rows==1)
